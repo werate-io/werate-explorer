@@ -5,14 +5,27 @@
     "dev": "next dev",
     "start": "next start"
   },
+  "proxy": "https://mobile.werate.io",
   "dependencies": {
+    "@radix-ui/react-icons": "^1.3.0",
+    "@shadcn/ui": "^0.0.4",
+    "autoprefixer": "^10.4.20",
+    "axios": "^1.7.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-geosearch": "^4.0.0",
+    "lucide-react": "^0.439.0",
     "next": "latest",
+    "postcss": "^8.4.45",
     "react": "18.2.0",
+    "react-confetti": "^6.1.0",
     "react-dom": "18.2.0",
-    "react-leaflet": "^4.2.1"
+    "react-leaflet": "^4.2.1",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss": "^3.4.10",
+    "tailwindcss-animate": "^1.0.7"
   },
   "engines": {
     "node": ">=18"
