@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, CardHeader, CardBody, CardFooter, Text, Heading, Box, Flex, Badge, Button, Spinner } from '@shadcn/ui';
 
 interface UIReview {
     id: string;
@@ -39,7 +38,8 @@ const ReviewsList: React.FC = () => {
     const [skip, setSkip] = useState(0);
     const [take] = useState(10); // Number of items per page
     const [loading, setLoading] = useState(false);
-    const [expandedReview, setExpandedReview] = useState<number | null>(null);
+    const [expandedReview, setExpandedReview] = useState(null);
+
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -117,7 +117,7 @@ const ReviewsList: React.FC = () => {
         setSkip(prevSkip => prevSkip + take);
     };
 
-    const toggleReadMore = (index: number) => {
+    const toggleReadMore = (index) => {
         setExpandedReview(expandedReview === index ? null : index);
     };
 
@@ -128,88 +128,94 @@ const ReviewsList: React.FC = () => {
         const emptyStars = totalStars - fullStars;
 
         return (
-            <Flex align="center" color="yellow.600" spacing="1">
+            <div className="flex items-center text-yellow-600 space-x-1">
                 {Array(fullStars).fill('★').map((star, index) => (
-                    <Text key={`full-${index}`} size="xs">★</Text>
+                    <span key={`full-${index}`} className="text-xs">★</span>
                 ))}
                 {Array(emptyStars).fill('☆').map((star, index) => (
-                    <Text key={`empty-${index}`} size="xs" color="gray.400">☆</Text>
+                    <span key={`empty-${index}`} className="text-xs text-gray-400">☆</span>
                 ))}
-            </Flex>
+            </div>
         );
     };
 
     return (
-        <Box p="8" bg="white" minH="screen" display="flex" alignItems="center" justifyContent="center">
-            {loading ? (
-                <Box position="absolute" inset="0" display="flex" alignItems="center" justifyContent="center" bg="gray.100" bgOpacity="75" zIndex="50">
-                    <Button variant="primary" disabled>
+        <div className="relative min-h-screen flex items-center justify-center">
+            {loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75 z-50">
+                    <button type="button" className="bg-primary text-white py-2 px-4 rounded inline-flex items-center" disabled>
                         Loading
-                        <Spinner ml="3" />
-                    </Button>
-                </Box>
-            ) : (
-                <Box className="reviews-list-container" p="8" bg="white">
-                    <Heading size="2xl" mb="6">Ratings & Reviews</Heading>
-                    <Flex justify="center" align="center">
-                        <Card w="40" h="40" p="4" mb="4" rounded="lg" shadow="lg" bg="white">
-                            <CardHeader>
-                                <Heading size="lg" mb="2">Total Reviews</Heading>
-                            </CardHeader>
-                            <CardBody>
-                                <Text size="4xl" color="purple.600">{reviews.length}</Text>
-                            </CardBody>
-                        </Card>
-                    </Flex>
-                    <Box spacing="6">
+                        <svg className="animate-spin h-5 w-5 ml-3 text-white" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="currentColor" />
+                            <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="url(#gradient)" />
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style={{ stopColor: '#4A5568', stopOpacity: 1 }} />
+                                    <stop offset="100%" style={{ stopColor: '#A0AEC0', stopOpacity: 1 }} />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </button>
+                </div>
+            )}
+            {!loading && (
+                <div className="reviews-list-container p-8 bg-white">
+                    <h2 className="text-4xl font-semibold text-black mb-6">Ratings & Reviews</h2>
+                    <div className="flex justify-center items-center">
+                        <div className="total-reviews-container flex flex-col items-center bg-white p-4 mb-4 rounded-lg shadow-lg relative w-40 h-40">
+                            <h3 className="text-lg lg:text-lg font-bold mb-2">Total Reviews</h3>
+                            <span className="text-6xl font-bold text-purple-600">{reviews.length}</span>
+                        </div>
+                    </div>
+                    <ul className="space-y-6">
                         {reviews.map((review, index) => (
-                            <Card key={review.id || index} p="4" bg="#EFE5FF" rounded="lg" shadow="lg">
-                                <CardHeader>
-                                    <Flex justify="space-between" align="center">
-                                        <Box>
-                                            <Heading size="xl" color="white">{review.userId}</Heading>
-                                            <Text>{review.venueLocation.name}</Text>
-                                            <Text size="sm" color="gray.400">{review.venueLocation.type}</Text>
-                                            {renderStars(review.starRatings)}
-                                        </Box>
-                                        <Text size="sm" color="gray.400">{review.timestamp}</Text>
-                                    </Flex>
-                                </CardHeader>
-                                <CardBody mt="4">
-                                    <Text size="xl" fontWeight="bold">
-                                        {expandedReview === index ? review.description : `${review.description.substring(0, 200)}...`}
-                                        {review.description.length > 200 && (
-                                            <Text
-                                                onClick={() => toggleReadMore(index)}
-                                                color="purple.500"
-                                                cursor="pointer"
-                                            >
-                                                {expandedReview === index ? ' Show less' : ' Read more'}
-                                            </Text>
-                                        )}
-                                    </Text>
-                                </CardBody>
-                                <CardFooter mt="2">
-                                    <Text size="sm" color="gray.400">
+                            <li key={review.id || index} className="p-4 bg-[#EFE5FF] bg-opacity-100 rounded-lg shadow-lg">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex flex-col">
+                                        <span className="text-xl font-bold text-white">{review.userId}</span>
+                                        <span className="lg:text">{review.venueLocation.name}</span>
+                                        <span className="text-sm text-gray-400">{review.venueLocation.type}</span>
+                                        {renderStars(review.starRatings)}
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm text-gray-400">{review.timestamp}</p>
+                                    </div>
+                                </div>
+                                <div className="mt-4">
+                                    <p className="text-1xl lg:text-1xl font-bold">
+                                    {expandedReview === index ? review.description : `${review.description.substring(0, 200)}...`}
+                                {review.description.length > 200 && (
+                                    <span
+                                        onClick={() => toggleReadMore(index)}
+                                        className="text-purple-500 cursor-pointer"
+                                    >
+                                        {expandedReview === index ? ' Show less' : ' Read more'}
+                                    </span>
+                                )}
+                                    </p>
+                                </div>
+                                <div className="mt-2 text-sm text-gray-400">
+                                    <p>
                                         Location: {review.venueLocation.country}
                                         (Lat: {review.venueLocation.lat}, Long: {review.venueLocation.long})
-                                    </Text>
-                                </CardFooter>
-                            </Card>
+                                    </p>
+                                </div>
+                            </li>
                         ))}
-                    </Box>
-                    <Flex justify="center" mt="6">
-                        <Button
+                    </ul>
+                    <div className="flex justify-center mt-6">
+                        <button
                             onClick={loadMoreReviews}
                             disabled={loading}
-                            variant="primary"
+                            className="px-6 py-2 bg-purple-700 text-white font-semibold rounded hover:bg-purple-900"
                         >
                             Load More
-                        </Button>
-                    </Flex>
-                </Box>
+                        </button>
+                    </div>
+                </div>
             )}
-        </Box>
+        </div>
     );
 };
 
