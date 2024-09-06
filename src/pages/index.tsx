@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import "@/styles/Home.module.css"
+import AppWalletProvider from "@/components/AppWalletProvider";
 
 const LazyMap = dynamic(() => import("@/components/map"), {
   loading: () => <p>Loading...</p>,
@@ -9,7 +10,9 @@ const LazyMap = dynamic(() => import("@/components/map"), {
 export default function Home() {
   return (
     <main style={{ height: "100vh", width: "100vw" }}>
-      <LazyMap />
+      <AppWalletProvider>
+        <LazyMap />
+      </AppWalletProvider>
     </main>
   );
 }
