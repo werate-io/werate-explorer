@@ -6,7 +6,6 @@ import { Spinner } from './ui/spinner';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationNext } from './ui/pagination';
 import { Flex } from './ui/flex';
-import { Text } from './ui/text';
 import { Box } from './ui/box';
 import ShowMoreText from './ui/show-more-text';
 
