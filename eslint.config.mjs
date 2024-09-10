@@ -15,7 +15,16 @@ const compat = new FlatCompat({
   allConfig: js.configs.all
 });
 
-export default [
+export default [{
+  ignores: [
+    '**/*.config.mjs',
+    'public/*',
+    '**/node_modules',
+    '**/.next',
+    '**/build',
+    '**/.github'
+  ],
+},
   ...compat.extends(
     'eslint:recommended',
     'plugin:react/recommended',
@@ -62,9 +71,7 @@ export default [
           format: ['camelCase', 'snake_case']
         }
       ]
-    },
-
-    ignores: ['**/*.config.mjs'] //remove *.config.mjs files from this configuration object
+    }
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
