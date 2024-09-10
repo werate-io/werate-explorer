@@ -24,7 +24,8 @@ const Map = (Map: MapProps) => {
       center={posix}
       zoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: '100%', width: '100%' }}>
+      style={{ height: '100%', width: '100%' }}
+    >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
