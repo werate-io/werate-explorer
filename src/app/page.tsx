@@ -1,18 +1,23 @@
-import dynamic from "next/dynamic";
+"use client";
 import ReviewsList from "@/components/ReviewsList";
+import Sidebar from "@/components/Sidebar";
+import dynamic from "next/dynamic";
 
 const LazyMap = dynamic(() => import("@/components/map"), {
-  loading: () => <p>Loading...</p>,
   ssr: false,
+  loading: () => <p>Loading map...</p>,
 });
 
 export default function Home() {
   return (
-    <main style={{ display: 'flex', height: '100vh', width: '100vw' }}>
-      <div style={{ flex: '3 1 0%' }}>
+    <main className="flex h-screen w-screen overflow-hidden">
+      <div className="relative top-0 left-0 h-full z-10">
+        <Sidebar />
+      </div>
+      <div className="relative flex">
         <LazyMap />
       </div>
-      <div style={{ flex: '2 1 0%', overflowY: 'auto' }}>
+      <div className="flex-shrink-0 w-1/3 overflow-y-auto">
         <ReviewsList />
       </div>
     </main>
