@@ -22,7 +22,9 @@ export default [{
     '**/node_modules',
     '**/.next',
     '**/build',
-    '**/.github'
+    '**/.github',
+    '**/.vscode',
+    './tailwind.config.js'
   ],
 },
   ...compat.extends(
