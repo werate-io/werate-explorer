@@ -23,6 +23,8 @@ export default [{
     '**/.next',
     '**/build',
     '**/.github',
+    '**/.vscode',
+    './tailwind.config.js',
     '**/.dockerfile',
     '**/.gitignore',
     '**/.nvmrc',

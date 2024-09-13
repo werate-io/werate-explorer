@@ -1,6 +1,8 @@
+'use client';
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngExpression, LatLngTuple } from 'leaflet';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
@@ -24,8 +26,10 @@ const Map = (Map: MapProps) => {
       center={posix}
       zoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: '100%', width: '100%' }}
-    >
+      style={{ height: '100%', width: '100%' }}>
+      <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1000 }}>
+        <WalletMultiButton />
+      </div>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

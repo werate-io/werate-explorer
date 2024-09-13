@@ -3,7 +3,8 @@ name: Docker Image CI on tag
 on:
   workflow_dispatch:
   push:
-    # Pattern matched against refs/tags
+    branches:
+      - main
     tags:
       - '*'
 
