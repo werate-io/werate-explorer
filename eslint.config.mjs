@@ -22,7 +22,15 @@ export default [{
     '**/node_modules',
     '**/.next',
     '**/build',
-    '**/.github'
+    '**/.github',
+    '**/.dockerfile',
+    '**/.gitignore',
+    '**/.nvmrc',
+    '**/.prettierrc',
+    '**/*.d.ts',
+    '**/*.config.js',
+    '**/*.md',
+    '**/yarn.lock'
   ],
 },
   ...compat.extends(
