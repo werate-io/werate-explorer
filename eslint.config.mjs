@@ -24,7 +24,7 @@ export default [{
     '**/build',
     '**/.github',
     '**/.vscode',
-    './tailwind.config.js',
+    '**/*.config.ts',
     '**/.dockerfile',
     '**/.gitignore',
     '**/.nvmrc',
