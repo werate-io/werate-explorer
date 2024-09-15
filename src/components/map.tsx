@@ -31,19 +31,19 @@ const Map = (Map: MapProps) => {
   }, [connected, publicKey, signMessage]);
 
   const sign = async () => {
-    if (!connected) {
-      alert('Please select a wallet first!');
+    if (!connected || !publicKey || !signMessage) {
+      alert('Please select a wallet!');
       return;
     }
 
     const message = 'WeRate';
     const signature = await signMessage(decodeUTF8(message));
 
-    const data = {
+    const data = JSON.stringify({
       message,
       signature: bs58.encode(signature),
       publicKey: publicKey.toString()
-    };
+    });
 
     const wallet_linking_result = await postData('/api/v1/wallets/link', data);
     

@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({path: '.env'});
 
-export const postData = async (backend_api: string, data?: object) => {
+export const postData = async (backend_api: string, data?: string) => {
   try {
     const response = await axios.post(
       `http://localhost:8080${backend_api}`,
