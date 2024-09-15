@@ -59,7 +59,7 @@ export const ratingCategoriesData = [
   { name: "Value", min: 1, q1: 2.5, median: 3.5, q3: 4.5, max: 5 },
   { name: "Amenities", min: 1, q1: 2, median: 3, q3: 3.5, max: 5 },
 ];
-
+//            //bg-[#EFE5FF]
 export const COLORS = [
   "#8B5CF6",
   "#A78BFA",
@@ -90,3 +90,5 @@ export const phoneUsageData = [
   { name: "iOS", percentage: 40 },
   { name: "Saga", percentage: 10 },
 ];
+
+export const TAKE = 3;

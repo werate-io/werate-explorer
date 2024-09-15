@@ -6,7 +6,6 @@
     "dev": "next dev",
     "start": "next start"
   },
-  "proxy": "https://mobile.werate.io",
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
@@ -23,6 +22,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.5.4",
+    "json-server": "^1.0.0-beta.2",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-geosearch": "^4.0.0",
@@ -34,6 +34,7 @@
     "react-confetti": "^6.1.0",
     "react-dom": "18.2.0",
     "react-leaflet": "^4.2.1",
+    "react-query": "^3.39.3",
     "tweetnacl": "^1.0.3",
     "tweetnacl-util": "^0.15.1",
     "recharts": "^2.12.7",

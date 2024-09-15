@@ -1,0 +1,220 @@
+{
+  "places": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "summary": {
+        "placeId": "550e8400-e29b-41d4-a716-446655440000",
+        "overallRating": 4.5,
+        "reviewsCount": 120,
+        "checkinsCount": 300
+      },
+      "details": {
+        "placeId": "550e8400-e29b-41d4-a716-446655440000",
+        "name": "Beautiful Park",
+        "address": "123 Park Lane, City Center",
+        "telephone": "+1234567890",
+        "geocodes": {
+          "main": {
+            "latitude": 40.712776,
+            "longitude": -74.005974
+          }
+        },
+        "website": "http://beautifulpark.example.com",
+        "types": [
+          "Park",
+          "Recreation"
+        ],
+        "category": "PARK",
+        "openingHours": {
+          "display": "Mon-Sun: 6:00 AM - 10:00 PM",
+          "openNow": true,
+          "regular": [
+            {
+              "close": "22:00",
+              "day": 0,
+              "open": "06:00"
+            },
+            {
+              "close": "22:00",
+              "day": 1,
+              "open": "06:00"
+            }
+          ]
+        },
+        "photos": [
+          "http://example.com/photo1.jpg",
+          "http://example.com/photo2.jpg"
+        ]
+      }
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "summary": {
+        "placeId": "550e8400-e29b-41d4-a716-446655440001",
+        "overallRating": 4.0,
+        "reviewsCount": 80,
+        "checkinsCount": 200
+      },
+      "details": {
+        "placeId": "550e8400-e29b-41d4-a716-446655440001",
+        "name": "Historic Museum",
+        "address": "456 Museum Road, Old Town",
+        "telephone": "+0987654321",
+        "geocodes": {
+          "main": {
+            "latitude": 34.052235,
+            "longitude": -118.243683
+          }
+        },
+        "website": "http://historicmuseum.example.com",
+        "types": [
+          "Museum",
+          "History"
+        ],
+        "category": "MUSEUM",
+        "openingHours": {
+          "display": "Tue-Sun: 9:00 AM - 5:00 PM",
+          "openNow": false,
+          "regular": [
+            {
+              "close": "17:00",
+              "day": 2,
+              "open": "09:00"
+            },
+            {
+              "close": "17:00",
+              "day": 3,
+              "open": "09:00"
+            }
+          ]
+        },
+        "photos": [
+          "http://example.com/photo3.jpg",
+          "http://example.com/photo4.jpg"
+        ]
+      }
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "summary": {
+        "placeId": "550e8400-e29b-41d4-a716-446655440002",
+        "overallRating": 3.5,
+        "reviewsCount": 60,
+        "checkinsCount": 150
+      },
+      "details": {
+        "placeId": "550e8400-e29b-41d4-a716-446655440002",
+        "name": "Modern Art Gallery",
+        "address": "789 Art Street, Downtown",
+        "telephone": "+1122334455",
+        "geocodes": {
+          "main": {
+            "latitude": 37.774929,
+            "longitude": -122.419418
+          }
+        },
+        "website": "http://modernartgallery.example.com",
+        "types": [
+          "Gallery",
+          "Art"
+        ],
+        "category": "GALLERY",
+        "openingHours": {
+          "display": "Wed-Mon: 10:00 AM - 6:00 PM",
+          "openNow": true,
+          "regular": [
+            {
+              "close": "18:00",
+              "day": 3,
+              "open": "10:00"
+            },
+            {
+              "close": "18:00",
+              "day": 4,
+              "open": "10:00"
+            }
+          ]
+        },
+        "photos": [
+          "http://example.com/photo5.jpg",
+          "http://example.com/photo6.jpg"
+        ]
+      }
+    }
+  ],
+  "reviews": {
+    "content": [
+      {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "placeId": "550e8400-e29b-41d4-a716-446655440000",
+        "reviewAuthorNickname": "Author1",
+        "reviewAuthorWisdom": 10,
+        "rating": 5,
+        "text": "This place is absolutely beautiful! The scenery is breathtaking, the facilities are well-maintained, and the staff is incredibly friendly. Highly recommend visiting!",
+        "avatarId": "550e8400-e29b-41d4-a716-446655440003",
+        "likeCount": 15,
+        "createdAt": "2023-10-01T12:34:56.789Z",
+        "photoUrls": [
+          "http://example.com/photo1.jpg"
+        ]
+      },
+      {
+        "id": "4fa85f64-5717-4562-b3fc-2c963f66afa7",
+        "placeId": "550e8400-e29b-41d4-a716-446655440001",
+        "reviewAuthorNickname": "Author2",
+        "reviewAuthorWisdom": 20,
+        "rating": 4,
+        "text": "I enjoyed my visit to this place. The attractions are interesting and the environment is clean. However, it can get a bit crowded during peak hours.",
+        "avatarId": "550e8400-e29b-41d4-a716-446655440004",
+        "likeCount": 10,
+        "createdAt": "2023-10-02T12:34:56.789Z",
+        "photoUrls": [
+          "http://example.com/photo2.jpg"
+        ]
+      },
+      {
+        "id": "5fa85f64-5717-4562-b3fc-2c963f66afa8",
+        "placeId": "550e8400-e29b-41d4-a716-446655440002",
+        "reviewAuthorNickname": "Author3",
+        "reviewAuthorWisdom": 30,
+        "rating": 3,
+        "text": "The place has potential, but it needs better management. The facilities are a bit outdated and the staff could be more helpful. With some improvements, it could be a great spot.",
+        "avatarId": "550e8400-e29b-41d4-a716-446655440005",
+        "likeCount": 5,
+        "createdAt": "2023-10-03T12:34:56.789Z",
+        "photoUrls": [
+          "http://example.com/photo3.jpg"
+        ]
+      },
+      {
+        "id": "6fa85f64-5717-4562-b3fc-2c963f66afa9",
+        "placeId": "550e8400-e29b-41d4-a716-446655440000",
+        "reviewAuthorNickname": "Author4",
+        "reviewAuthorWisdom": 15,
+        "rating": 4,
+        "text": "Great place to relax and enjoy nature. The park is well-maintained and has plenty of space for activities.",
+        "avatarId": "550e8400-e29b-41d4-a716-446655440006",
+        "likeCount": 12,
+        "createdAt": "2023-10-04T12:34:56.789Z",
+        "photoUrls": [
+          "http://example.com/photo4.jpg"
+        ]
+      },
+      {
+        "id": "7fa85f64-5717-4562-b3fc-2c963f66afaa",
+        "placeId": "550e8400-e29b-41d4-a716-446655440001",
+        "reviewAuthorNickname": "Author5",
+        "reviewAuthorWisdom": 25,
+        "rating": 5,
+        "text": "The museum is a treasure trove of history. The exhibits are well-curated and informative.",
+        "avatarId": "550e8400-e29b-41d4-a716-446655440007",
+        "likeCount": 20,
+        "createdAt": "2023-10-05T12:34:56.789Z",
+        "photoUrls": [
+          "http://example.com/photo5.jpg"
+        ]
+      }
+    ],
+    "total_elements": 5
+  }
+}
