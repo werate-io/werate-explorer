@@ -1,3 +1,4 @@
+"use client";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -44,7 +45,7 @@ const Map = (Map: MapProps) => {
       publicKey: publicKey.toString()
     };
 
-    const wallet_linking_result = postData('/api/v1/wallets/link', data);
+    const wallet_linking_result = await postData('/api/v1/wallets/link', data);
     
     if(wallet_linking_result)
     {
@@ -60,7 +61,7 @@ const Map = (Map: MapProps) => {
       style={{ height: "100%", width: "100%" }}
     >
       <div style={{ position: "absolute", top: 5, right: 5, zIndex: 1000 }}>
-        <WalletMultiButton style={{}} />
+        <WalletMultiButton/>
       </div>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
