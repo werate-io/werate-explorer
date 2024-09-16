@@ -1,0 +1,16 @@
+name: PR - ESLint
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run ESLint
+        run: yarn lint
