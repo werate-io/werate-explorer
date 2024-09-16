@@ -1,11 +1,11 @@
-"use client";
-import ReviewsList from "@/components/ReviewsList";
-import Sidebar from "@/components/Sidebar";
-import dynamic from "next/dynamic";
+'use client';
+import ReviewsList from '@/components/ReviewsList';
+import Sidebar from '@/components/Sidebar';
+import dynamic from 'next/dynamic';
 
-const LazyMap = dynamic(() => import("@/components/map"), {
+const LazyMap = dynamic(() => import('@/components/map'), {
   ssr: false,
-  loading: () => <p>Loading map...</p>,
+  loading: () => <p>Loading map...</p>
 });
 
 export default function Home() {
