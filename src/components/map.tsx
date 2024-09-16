@@ -25,8 +25,8 @@ const defaults = {
 
 const Map = (Map: MapProps) => {
 	const { zoom = defaults.zoom, posix = defaults.posix } = Map;
-	const { publicKey, connected, signMessage } = useWallet();
-	const [isAuthenticated, setIsAuthenticated] = useState(true);
+	const { publicKey, connected, signMessage, disconnect } = useWallet();
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	useEffect(() => {
 		// Check if the user is authenticated
@@ -37,7 +37,11 @@ const Map = (Map: MapProps) => {
 	}, []);
 
 	useEffect(() => {
-		sign();
+		if(isAuthenticated){
+			sign();
+		}else{
+			alert('Please login!');
+		}
 	}, [connected, publicKey, signMessage]);
 
 	const sign = async () => {
@@ -47,24 +51,28 @@ const Map = (Map: MapProps) => {
 		}
 
 		const message = 'WeRate';
-		const signature = await signMessage(decodeUTF8(message));
-
-		const data = JSON.stringify({
-			message,
-			signature: bs58.encode(signature),
-			publicKey: publicKey.toString()
-    	});
-
-		const response = await postData('/api/v1/wallets/link', data);
-		
-		if(response)
-			if(response.data.success)
-				{
-					alert('Wallet is connected to your profile!');
+		try {
+			const signature = await signMessage(decodeUTF8(message));
+			const data = JSON.stringify({
+				message,
+				signature: bs58.encode(signature),
+				publicKey: publicKey.toString()
+			});
+	
+			const response = await postData('/api/v1/wallets/link', data);
+			
+			if(response)
+				if(response.data.success)
+					{
+						alert('Wallet is connected to your profile!');
+					}
+				else{
+					alert(response.data.message);
 				}
-			else{
-				alert(response.data.message);
-			}
+
+		} catch (error) {
+			disconnect();
+		}
   	}
 
   return (
