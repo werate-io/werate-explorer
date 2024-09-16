@@ -1,8 +1,8 @@
-name: Docker Image CI on tag
+name: PR - Docker Image CI
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, edited, reopened]
 
 jobs:
   build:
