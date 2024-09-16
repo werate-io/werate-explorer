@@ -9,7 +9,7 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
-  "proxy": "https://mobile.werate.io",
+  "proxy": "https://api.werate.io",
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
