@@ -1,6 +1,6 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpIcon, ArrowDownIcon, ChevronRightIcon } from "lucide-react";
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowUpIcon, ArrowDownIcon, ChevronRightIcon } from 'lucide-react';
 
 interface StatCardProps {
   title: string;
@@ -23,22 +23,14 @@ export function StatCard({ title, value, change }: StatCardProps) {
           <div>
             <p className="text-2xl font-bold">{value.toLocaleString()}</p>
             <div className="flex items-center mt-1">
-              <div
-                className={`p-1 rounded ${
-                  isPositive ? "bg-green-100" : "bg-red-100"
-                } mr-1`}
-              >
+              <div className={`p-1 rounded ${isPositive ? 'bg-green-100' : 'bg-red-100'} mr-1`}>
                 {isPositive ? (
                   <ArrowUpIcon className="h-3 w-3 text-green-600" />
                 ) : (
                   <ArrowDownIcon className="h-3 w-3 text-red-600" />
                 )}
               </div>
-              <span
-                className={`text-sm ${
-                  isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
+              <span className={`text-sm ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
                 {changeAbs}
               </span>
             </div>
