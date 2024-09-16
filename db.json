@@ -20,10 +20,7 @@
           }
         },
         "website": "http://beautifulpark.example.com",
-        "types": [
-          "Park",
-          "Recreation"
-        ],
+        "types": ["Park", "Recreation"],
         "category": "PARK",
         "openingHours": {
           "display": "Mon-Sun: 6:00 AM - 10:00 PM",
@@ -41,10 +38,7 @@
             }
           ]
         },
-        "photos": [
-          "http://example.com/photo1.jpg",
-          "http://example.com/photo2.jpg"
-        ]
+        "photos": ["http://example.com/photo1.jpg", "http://example.com/photo2.jpg"]
       }
     },
     {
@@ -67,10 +61,7 @@
           }
         },
         "website": "http://historicmuseum.example.com",
-        "types": [
-          "Museum",
-          "History"
-        ],
+        "types": ["Museum", "History"],
         "category": "MUSEUM",
         "openingHours": {
           "display": "Tue-Sun: 9:00 AM - 5:00 PM",
@@ -88,10 +79,7 @@
             }
           ]
         },
-        "photos": [
-          "http://example.com/photo3.jpg",
-          "http://example.com/photo4.jpg"
-        ]
+        "photos": ["http://example.com/photo3.jpg", "http://example.com/photo4.jpg"]
       }
     },
     {
@@ -114,10 +102,7 @@
           }
         },
         "website": "http://modernartgallery.example.com",
-        "types": [
-          "Gallery",
-          "Art"
-        ],
+        "types": ["Gallery", "Art"],
         "category": "GALLERY",
         "openingHours": {
           "display": "Wed-Mon: 10:00 AM - 6:00 PM",
@@ -135,10 +120,7 @@
             }
           ]
         },
-        "photos": [
-          "http://example.com/photo5.jpg",
-          "http://example.com/photo6.jpg"
-        ]
+        "photos": ["http://example.com/photo5.jpg", "http://example.com/photo6.jpg"]
       }
     }
   ],
@@ -154,9 +136,7 @@
         "avatarId": "550e8400-e29b-41d4-a716-446655440003",
         "likeCount": 15,
         "createdAt": "2023-10-01T12:34:56.789Z",
-        "photoUrls": [
-          "http://example.com/photo1.jpg"
-        ]
+        "photoUrls": ["http://example.com/photo1.jpg"]
       },
       {
         "id": "4fa85f64-5717-4562-b3fc-2c963f66afa7",
@@ -168,9 +148,7 @@
         "avatarId": "550e8400-e29b-41d4-a716-446655440004",
         "likeCount": 10,
         "createdAt": "2023-10-02T12:34:56.789Z",
-        "photoUrls": [
-          "http://example.com/photo2.jpg"
-        ]
+        "photoUrls": ["http://example.com/photo2.jpg"]
       },
       {
         "id": "5fa85f64-5717-4562-b3fc-2c963f66afa8",
@@ -182,9 +160,7 @@
         "avatarId": "550e8400-e29b-41d4-a716-446655440005",
         "likeCount": 5,
         "createdAt": "2023-10-03T12:34:56.789Z",
-        "photoUrls": [
-          "http://example.com/photo3.jpg"
-        ]
+        "photoUrls": ["http://example.com/photo3.jpg"]
       },
       {
         "id": "6fa85f64-5717-4562-b3fc-2c963f66afa9",
@@ -196,9 +172,7 @@
         "avatarId": "550e8400-e29b-41d4-a716-446655440006",
         "likeCount": 12,
         "createdAt": "2023-10-04T12:34:56.789Z",
-        "photoUrls": [
-          "http://example.com/photo4.jpg"
-        ]
+        "photoUrls": ["http://example.com/photo4.jpg"]
       },
       {
         "id": "7fa85f64-5717-4562-b3fc-2c963f66afaa",
@@ -210,9 +184,7 @@
         "avatarId": "550e8400-e29b-41d4-a716-446655440007",
         "likeCount": 20,
         "createdAt": "2023-10-05T12:34:56.789Z",
-        "photoUrls": [
-          "http://example.com/photo5.jpg"
-        ]
+        "photoUrls": ["http://example.com/photo5.jpg"]
       }
     ],
     "total_elements": 5
