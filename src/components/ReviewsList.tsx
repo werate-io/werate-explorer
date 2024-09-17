@@ -75,8 +75,8 @@ const ReviewsList: React.FC = () => {
     try {
       const response = await axios.get(`/api/v1/game/players/reviews?skip=${skip}&take=${take}`, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('token')
+          ['Content-Type']: 'application/json',
+          ['Authorization']: 'Bearer ' + localStorage.getItem('token')
         }
       });
       const reviewsData: Review[] = response.data.content;
@@ -88,8 +88,8 @@ const ReviewsList: React.FC = () => {
           try {
             const placeResponse = await axios.get(`/api/v1/places/${review.placeId}`, {
               headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + localStorage.getItem('token')
+                ['Content-Type']: 'application/json',
+                ['Authorization']: 'Bearer ' + localStorage.getItem('token')
               }
             });
             if (placeResponse.status === 200) {

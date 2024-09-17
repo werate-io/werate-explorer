@@ -1,5 +1,5 @@
 'use client';
-
+import React from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,7 @@ const API_BASE_URL = 'https://mobile.werate.io/api';
 async function register(username: string, password: string) {
   const response = await fetch(`${API_BASE_URL}/v1/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ['Content-Type']: 'application/json' },
     body: JSON.stringify({ username, password })
   });
   return response.json();
@@ -29,7 +29,7 @@ async function register(username: string, password: string) {
 async function login(username: string, password: string) {
   const response = await fetch(`${API_BASE_URL}/v2/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ['Content-Type']: 'application/json' },
     body: JSON.stringify({ username, password })
   });
   return response.json();
@@ -39,8 +39,8 @@ async function checkMfa(preAuthToken: string, mfaCode: string) {
   const response = await fetch(`${API_BASE_URL}/v1/check-mfa`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${preAuthToken}`
+      ['Content-Type']: 'application/json',
+      ['Authorization']: `Bearer ${preAuthToken}`
     },
     body: JSON.stringify({ code: mfaCode })
   });
@@ -84,7 +84,7 @@ export default function Navbar() {
         }
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError(`An error occurred: ${err instanceof Error ? err.message : 'Please try again.'}`);
     }
   };
 
@@ -102,7 +102,7 @@ export default function Navbar() {
         setError(data.error || 'MFA verification failed');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError(`An error occurred: ${err instanceof Error ? err.message : 'Please try again.'}`);
     }
   };
 

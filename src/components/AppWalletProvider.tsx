@@ -13,7 +13,7 @@ import {
 } from '@solana/wallet-adapter-wallets';
 
 // Default styles that can be overridden by your app
-require('@solana/wallet-adapter-react-ui/styles.css');
+import '@solana/wallet-adapter-react-ui/styles.css';
 
 // imports here
 

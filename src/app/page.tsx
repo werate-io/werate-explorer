@@ -3,6 +3,7 @@ import ReviewsList from '@/components/ReviewsList';
 import LeftSidebar from '@/components/LeftSidebar';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
+import React from 'react';
 
 const LazyMap = dynamic(() => import('@/components/map'), {
   ssr: false,
