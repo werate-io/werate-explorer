@@ -37,7 +37,7 @@ import {
   TimelineFilter
 } from '@/lib/constants';
 
-export default function Sidebar() {
+export default function LeftSidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1W');
 
