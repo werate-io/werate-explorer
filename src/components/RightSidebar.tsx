@@ -15,8 +15,7 @@ export default function RightSidebar() {
       className="h-full bg-white text-slate-800 shadow-lg fixed right-0 top-0 bottom-0 max-h-screen overflow-y-auto"
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
-      initial="open"
-    >
+      initial="open">
       <motion.div
         className="absolute top-1/2 -left-4 transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
@@ -25,8 +24,7 @@ export default function RightSidebar() {
         style={{
           left: isOpen ? '-12px' : '-16px',
           transition: 'left 0.3s'
-        }}
-      >
+        }}>
         {isOpen ? (
           <ChevronRightIcon className="w-6 h-6 text-purple-800" />
         ) : (
@@ -36,15 +34,13 @@ export default function RightSidebar() {
       <motion.div
         variants={contentVariants}
         className="p-4 overflow-y-auto"
-        animate={isOpen ? 'open' : 'closed'}
-      >
+        animate={isOpen ? 'open' : 'closed'}>
         <ProfileWithStats />
       </motion.div>
       <motion.div
         variants={contentVariants}
         className="p-4 h-full overflow-y-auto"
-        animate={isOpen ? 'open' : 'closed'}
-      >
+        animate={isOpen ? 'open' : 'closed'}>
         <ReviewsList />
       </motion.div>
     </motion.div>

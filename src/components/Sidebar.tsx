@@ -46,8 +46,7 @@ export default function Sidebar() {
       className="h-full bg-white text-slate-800 shadow-lg relative"
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
-      initial="open"
-    >
+      initial="open">
       <motion.div
         className="absolute top-1/2 -right-4 transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
@@ -56,8 +55,7 @@ export default function Sidebar() {
         style={{
           right: isOpen ? '-12px' : '-16px',
           transition: 'right 0.3s'
-        }}
-      >
+        }}>
         {isOpen ? (
           <ChevronLeftIcon className="w-6 h-6 text-purple-800" />
         ) : (
@@ -67,8 +65,7 @@ export default function Sidebar() {
       <motion.div
         variants={contentVariants}
         className="p-4 h-full overflow-y-auto"
-        animate={isOpen ? 'open' : 'closed'}
-      >
+        animate={isOpen ? 'open' : 'closed'}>
         <Card className="mb-4 bg-purple-800 text-white border-none">
           <CardHeader>
             <CardTitle className="text-xl font-bold">Overview</CardTitle>
@@ -87,8 +84,7 @@ export default function Sidebar() {
             <CardTitle className="text-xl font-semibold">Timeline of Reviews</CardTitle>
             <Select
               value={timelineFilter}
-              onValueChange={(value: TimelineFilter) => setTimelineFilter(value)}
-            >
+              onValueChange={(value: TimelineFilter) => setTimelineFilter(value)}>
               <SelectTrigger className="w-[80px]">
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
@@ -147,8 +143,7 @@ export default function Sidebar() {
                 <div key={entry.name} className="flex items-center">
                   <div
                     className="w-3 h-3 mr-1 rounded-full"
-                    style={{ backgroundColor: COLORS[index] }}
-                  ></div>
+                    style={{ backgroundColor: COLORS[index] }}></div>
                   <span>
                     {entry.name}: {entry.percentage}%
                   </span>
@@ -173,8 +168,7 @@ export default function Sidebar() {
                   outerRadius={60}
                   fill="#8884d8"
                   paddingAngle={5}
-                  dataKey="value"
-                >
+                  dataKey="value">
                   {continentData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -195,8 +189,7 @@ export default function Sidebar() {
               <BarChart
                 data={ratingCategoriesData}
                 layout="vertical"
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <XAxis type="number" domain={[0, 5]} />
                 <YAxis dataKey="name" type="category" />
                 <Tooltip />

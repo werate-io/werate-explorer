@@ -26,8 +26,7 @@ const Map = (Map: MapProps) => {
       center={posix}
       zoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: '100%', width: '100%' }}
-    >
+      style={{ height: '100%', width: '100%' }}>
       <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1000 }}>
         <WalletMultiButton />
       </div>

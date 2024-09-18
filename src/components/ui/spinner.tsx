@@ -39,8 +39,7 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
       <div className={cn('flex justify-center items-center', className)} ref={ref} {...props}>
         <div
           className={cn(spinnerVariants({ size, color }))}
-          style={{ borderTopColor: borderColor }}
-        ></div>
+          style={{ borderTopColor: borderColor }}></div>
       </div>
     );
   }
