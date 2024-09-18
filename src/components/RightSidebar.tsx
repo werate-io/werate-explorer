@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import ReviewsList from '@/components/reviews/ReviewList';
 import { sidebarVariants, contentVariants } from '@/lib/constants';
-import ProfileWithStats from '@/components/profile/profileStats';
+import ProfileWithStats from '@/components/profile/Profile';
 
 export default function RightSidebar() {
   const [isOpen, setIsOpen] = useState(true);

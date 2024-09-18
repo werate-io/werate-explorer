@@ -1,10 +1,10 @@
 import React from 'react';
 import { UIReview } from '@/types/review';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
 import { Box } from '@/components/ui/Box';
-import ShowMoreText from '@/components/ui/show-more-text';
+import ShowMoreText from '@/components/ui/ShowMoreText';
 
 interface ReviewItemProps {
   review: UIReview;

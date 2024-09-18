@@ -1,12 +1,12 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
+import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import React from 'react';
 import { StatCard } from '@/components/StatCard';
 
 export default function ProfileWithStats() {
   return (
     <>
-      <Card className="w-full bg-purple-800 p-4 rounded-lg shadow-lg">
+      <Card className="w-full bg-primary p-4 rounded-lg shadow-lg">
         <CardTitle className="text-white text-2xl font-bold">Profile</CardTitle>
         <CardHeader className="flex flex-row items-center gap-4 p-4">
           <Avatar className="h-12 w-12 bg-slate-50">

@@ -4,7 +4,7 @@ import Sidebar from '@/components/Sidebar';
 import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
 
-const LazyMap = dynamic(() => import('@/components/map'), {
+const LazyMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
   loading: () => <p>Loading map...</p>
 });
