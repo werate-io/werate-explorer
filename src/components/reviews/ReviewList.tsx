@@ -8,8 +8,8 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext
-} from '@/components/ui/pagination';
-import { Spinner } from '@/components/ui/spinner';
+} from '@/components/ui/Pagination';
+import { Spinner } from '@/components/ui/Spinner';
 import { useTransformedReviews } from '@/hooks/useTransformedReviews';
 import * as constants from '@/lib/constants';
 
@@ -62,7 +62,7 @@ const ReviewsList: React.FC = () => {
                   <PaginationLink
                     href="#"
                     onClick={() => handlePageChange(index + 1)}
-                    className={currentPage === index + 1 ? 'bg-purple-800' : ''}>
+                    className={currentPage === index + 1 ? 'bg-primary text-white' : ''}>
                     {index + 1}
                   </PaginationLink>
                 </PaginationItem>
