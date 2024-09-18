@@ -7,7 +7,13 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run format"
+    }
   },
   "proxy": "https://api.werate.io",
   "dependencies": {
@@ -60,6 +66,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.35.2",
     "globals": "^15.9.0",
+    "husky": "^9.1.6",
     "prettier": "^3.3.3",
     "typescript": "5.5.4",
     "typescript-eslint": "^8.5.0"
