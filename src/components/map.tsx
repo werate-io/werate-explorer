@@ -1,10 +1,18 @@
 // Map.tsx
 "use client";
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression, LatLngTuple } from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import "leaflet-defaulticon-compatibility";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useState, useEffect } from "react";
+import { decodeUTF8 } from "tweetnacl-util";
+import { postData } from "../services/werate-api"
+import bs58 from 'bs58';
+
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
+import 'leaflet-defaulticon-compatibility';
 import SolanaWallet from "./solana-wallet";
 
 interface MapProps {
@@ -14,7 +22,7 @@ interface MapProps {
 
 const defaults = {
   zoom: 7,
-  posix: { lat: 50.85, lng: 4.348 },
+  posix: { lat: 50.85, lng: 4.348 }
 };
 
 const Map = (Map: MapProps) => {
