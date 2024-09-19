@@ -14,43 +14,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const API_BASE_URL = 'https://mobile.werate.io/api';
-
-async function register(username: string, password: string) {
-  const response = await fetch(`${API_BASE_URL}/v1/register`, {
-    method: 'POST',
-    headers: { ['Content-Type']: 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-  return response.json();
-}
-
-async function login(username: string, password: string) {
-  const response = await fetch(`${API_BASE_URL}/v2/login`, {
-    method: 'POST',
-    headers: { ['Content-Type']: 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-  return response.json();
-}
-
-async function checkMfa(preAuthToken: string, mfaCode: string) {
-  const response = await fetch(`${API_BASE_URL}/v1/check-mfa`, {
-    method: 'POST',
-    headers: {
-      ['Content-Type']: 'application/json',
-      ['Authorization']: `Bearer ${preAuthToken}`
-    },
-    body: JSON.stringify({ code: mfaCode })
-  });
-  return response.json();
-}
+import { checkMfa, login, register } from '@/services/auth';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mfaCode, setMfaCode] = useState('');
   const [error, setError] = useState('');
@@ -63,7 +32,7 @@ export default function Navbar() {
 
     try {
       if (activeTab === 'register') {
-        const data = await register(username, password);
+        const data = await register(email, password);
         if (data.error) {
           setError(data.error);
         } else {
@@ -71,7 +40,7 @@ export default function Navbar() {
           setActiveTab('login');
         }
       } else {
-        const data = await login(username, password);
+        const data = await login(email, password);
         if (data.preAuthToken) {
           setPreAuthToken(data.preAuthToken);
           setNeedsMfa(true);
@@ -157,7 +126,8 @@ export default function Navbar() {
                   className={cn(
                     'data-[state=active]:bg-purple-600 data-[state=active]:text-white',
                     'data-[state=inactive]:bg-gray-700 data-[state=inactive]:text-gray-300'
-                  )}>
+                  )}
+                >
                   Login
                 </TabsTrigger>
                 <TabsTrigger
@@ -165,7 +135,8 @@ export default function Navbar() {
                   className={cn(
                     'data-[state=active]:bg-purple-600 data-[state=active]:text-white',
                     'data-[state=inactive]:bg-gray-700 data-[state=inactive]:text-gray-300'
-                  )}>
+                  )}
+                >
                   Register
                 </TabsTrigger>
               </TabsList>
@@ -174,10 +145,10 @@ export default function Navbar() {
                   <div>
                     <Label htmlFor="username">Username</Label>
                     <Input
-                      id="username"
+                      id="email"
                       type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="bg-gray-700 text-white border-gray-600"
                     />
                   </div>
@@ -199,7 +170,8 @@ export default function Navbar() {
                   )}
                   <Button
                     type="submit"
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  >
                     Login
                   </Button>
                 </form>
@@ -209,10 +181,10 @@ export default function Navbar() {
                   <div>
                     <Label htmlFor="reg-username">Username</Label>
                     <Input
-                      id="reg-username"
+                      id="reg-email"
                       type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="bg-gray-700 text-white border-gray-600"
                     />
                   </div>
@@ -234,7 +206,8 @@ export default function Navbar() {
                   )}
                   <Button
                     type="submit"
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  >
                     Register
                   </Button>
                 </form>
