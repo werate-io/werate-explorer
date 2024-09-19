@@ -8,12 +8,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "postinstall": "husky"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run format"
-    }
+    "postinstall": "husky",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable"
   },
   "proxy": "https://api.werate.io",
   "dependencies": {
@@ -67,6 +64,7 @@
     "eslint-plugin-react": "^7.35.2",
     "globals": "^15.9.0",
     "husky": "^9.1.6",
+    "pinst": "^3.0.0",
     "prettier": "^3.3.3",
     "typescript": "5.5.4",
     "typescript-eslint": "^8.5.0"
