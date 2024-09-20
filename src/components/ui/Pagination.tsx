@@ -1,8 +1,9 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { ButtonProps, buttonVariants } from '@/components/ui/button';
+import { ButtonProps, buttonVariants } from '@/components/ui/Button';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -13,6 +14,9 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   />
 );
 Pagination.displayName = 'Pagination';
+Pagination.propTypes = {
+  className: PropTypes.string
+};
 
 const PaginationContent = React.forwardRef<HTMLUListElement, React.ComponentProps<'ul'>>(
   ({ className, ...props }, ref) => (
@@ -20,11 +24,17 @@ const PaginationContent = React.forwardRef<HTMLUListElement, React.ComponentProp
   )
 );
 PaginationContent.displayName = 'PaginationContent';
+PaginationContent.propTypes = {
+  className: PropTypes.string
+};
 
 const PaginationItem = React.forwardRef<HTMLLIElement, React.ComponentProps<'li'>>(
   ({ className, ...props }, ref) => <li ref={ref} className={cn('', className)} {...props} />
 );
 PaginationItem.displayName = 'PaginationItem';
+PaginationItem.propTypes = {
+  className: PropTypes.string
+};
 
 type PaginationLinkProps = {
   isActive?: boolean;
@@ -45,6 +55,11 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
   />
 );
 PaginationLink.displayName = 'PaginationLink';
+PaginationLink.propTypes = {
+  className: PropTypes.string,
+  isActive: PropTypes.bool,
+  size: PropTypes.string
+};
 
 const PaginationPrevious = ({
   className,
@@ -60,6 +75,9 @@ const PaginationPrevious = ({
   </PaginationLink>
 );
 PaginationPrevious.displayName = 'PaginationPrevious';
+PaginationPrevious.propTypes = {
+  className: PropTypes.string
+};
 
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
@@ -72,6 +90,9 @@ const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof Pag
   </PaginationLink>
 );
 PaginationNext.displayName = 'PaginationNext';
+PaginationNext.propTypes = {
+  className: PropTypes.string
+};
 
 const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
   <span
@@ -83,6 +104,9 @@ const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'
   </span>
 );
 PaginationEllipsis.displayName = 'PaginationEllipsis';
+PaginationEllipsis.propTypes = {
+  className: PropTypes.string
+};
 
 export {
   Pagination,

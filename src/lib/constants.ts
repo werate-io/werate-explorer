@@ -2,7 +2,7 @@ export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
 export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;
 
 export const reviewTimelineData: TimelineData = {
-  '1D': [
+  ['1D']: [
     { date: '00:00', count: 10 },
     { date: '04:00', count: 5 },
     { date: '08:00', count: 15 },
@@ -10,7 +10,7 @@ export const reviewTimelineData: TimelineData = {
     { date: '16:00', count: 25 },
     { date: '20:00', count: 18 }
   ],
-  '1W': [
+  ['1W']: [
     { date: 'Mon', count: 50 },
     { date: 'Tue', count: 40 },
     { date: 'Wed', count: 60 },
@@ -19,13 +19,13 @@ export const reviewTimelineData: TimelineData = {
     { date: 'Sat', count: 70 },
     { date: 'Sun', count: 65 }
   ],
-  '1M': [
+  ['1M']: [
     { date: 'Week 1', count: 200 },
     { date: 'Week 2', count: 180 },
     { date: 'Week 3', count: 220 },
     { date: 'Week 4', count: 240 }
   ],
-  '1Y': [
+  ['1Y']: [
     { date: 'Jan', count: 1000 },
     { date: 'Feb', count: 1200 },
     { date: 'Mar', count: 1100 },
@@ -80,3 +80,5 @@ export const phoneUsageData = [
   { name: 'iOS', percentage: 40 },
   { name: 'Saga', percentage: 10 }
 ];
+
+export const TAKE = 3;
