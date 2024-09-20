@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   LineChart,
   Line,
@@ -24,7 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select';
+} from '@/components/ui/Select';
 import StatsSection from '@/components/StatCard';
 import {
   COLORS,
@@ -57,16 +57,16 @@ export default function Sidebar() {
           transition: 'right 0.3s'
         }}>
         {isOpen ? (
-          <ChevronLeftIcon className="w-6 h-6 text-purple-800" />
+          <ChevronLeftIcon className="w-6 h-6 text-primary" />
         ) : (
-          <ChevronRightIcon className="w-6 h-6 text-purple-800" />
+          <ChevronRightIcon className="w-6 h-6 text-primary" />
         )}
       </motion.div>
       <motion.div
         variants={contentVariants}
         className="p-4 h-full overflow-y-auto"
         animate={isOpen ? 'open' : 'closed'}>
-        <Card className="mb-4 bg-purple-800 text-white border-none">
+        <Card className="mb-4 bg-primary text-white border-none">
           <CardHeader>
             <CardTitle className="text-xl font-bold">Overview</CardTitle>
           </CardHeader>
