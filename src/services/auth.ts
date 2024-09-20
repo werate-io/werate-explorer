@@ -16,7 +16,31 @@ async function login(username: string, password: string) {
     headers: { ['Content-Type']: 'application/json' },
     body: JSON.stringify({ username, password })
   });
-  return response.json();
+  const data = await response.json();
+
+  /* // Store tokens in cookies with expiration based on response, keeping this on hold to take pull changes
+  if (data.accessToken && data.refreshToken) {
+    const cookies = new Cookies(req, res);
+
+    // Calculate maxAge based on expiration dates
+    const accessExpirationDate = new Date(data.accessExpirationDate).getTime() - Date.now();
+    const refreshExpirationDate = new Date(data.refreshExpirationDate).getTime() - Date.now();
+
+    cookies.set('accessToken', data.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: accessExpirationDate
+    });
+    cookies.set('refreshToken', data.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: refreshExpirationDate
+    });
+  } */
+
+  return data;
 }
 
 async function checkMfa(preAuthToken: string, mfaCode: string) {

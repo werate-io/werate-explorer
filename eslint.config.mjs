@@ -15,26 +15,27 @@ const compat = new FlatCompat({
   allConfig: js.configs.all
 });
 
-export default [{
-  ignores: [
-    '**/*.config.mjs',
-    'public/*',
-    '**/node_modules',
-    '**/.next',
-    '**/build',
-    '**/.github',
-    '**/.vscode',
-    '**/*.config.ts',
-    '**/.dockerfile',
-    '**/.gitignore',
-    '**/.nvmrc',
-    '**/.prettierrc',
-    '**/*.d.ts',
-    '**/*.config.js',
-    '**/*.md',
-    '**/yarn.lock'
-  ],
-},
+export default [
+  {
+    ignores: [
+      '**/*.config.mjs',
+      'public/*',
+      '**/node_modules',
+      '**/.next',
+      '**/build',
+      '**/.github',
+      '**/.vscode',
+      '**/*.config.ts',
+      '**/.dockerfile',
+      '**/.gitignore',
+      '**/.nvmrc',
+      '**/.prettierrc',
+      '**/*.d.ts',
+      '**/*.config.js',
+      '**/*.md',
+      '**/yarn.lock'
+    ]
+  },
   ...compat.extends(
     'eslint:recommended',
     'plugin:react/recommended',
