@@ -1,10 +1,10 @@
-import apiClient from './apiClient';
+import { getData } from './werate-api';
 import { ReviewsResponse } from '@/types/review';
 
-export async function getReviews(page: number, take: number): Promise<ReviewsResponse> {
-  console.log('page', page);
-  const response = await apiClient.get('/reviews', {
-    params: { ['_limit']: take, ['_page']: page }
+export async function getReviews(skip: number, take: number): Promise<ReviewsResponse> {
+  const response = await getData('/reviews', {
+    take: take,
+    skip: skip
   });
   return response.data;
 }
