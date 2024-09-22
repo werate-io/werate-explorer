@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://mobile.werate.io/api';
+/* const API_BASE_URL = 'https://mobile.werate.io/api';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 async function register(username: string, password: string) {
@@ -18,7 +18,7 @@ async function login(username: string, password: string) {
   });
   const data = await response.json();
 
-  /* // Store tokens in cookies with expiration based on response, keeping this on hold to take pull changes
+  // Store tokens in cookies with expiration based on response, keeping this on hold to take pull changes
   if (data.accessToken && data.refreshToken) {
     const cookies = new Cookies(req, res);
 
@@ -38,7 +38,7 @@ async function login(username: string, password: string) {
       sameSite: 'strict',
       maxAge: refreshExpirationDate
     });
-  } */
+  }
 
   return data;
 }
@@ -56,3 +56,4 @@ async function checkMfa(preAuthToken: string, mfaCode: string) {
 }
 
 export { register, login, checkMfa };
+ */

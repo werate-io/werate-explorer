@@ -80,3 +80,5 @@ export const phoneUsageData = [
   { name: 'iOS', percentage: 40 },
   { name: 'Saga', percentage: 10 }
 ];
+
+export const TAKE = 3;

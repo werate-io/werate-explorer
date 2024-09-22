@@ -1,9 +1,8 @@
 'use client';
-import ReviewsList from '@/components/ReviewsList';
+import React from 'react';
 import LeftSidebar from '@/components/LeftSidebar';
 import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
-import React from 'react';
+import RightSidebar from '@/components/RightSidebar';
 
 const LazyMap = dynamic(() => import('@/components/map'), {
   ssr: false,
@@ -13,7 +12,6 @@ const LazyMap = dynamic(() => import('@/components/map'), {
 export default function Home() {
   return (
     <main className="flex h-screen w-screen overflow-hidden">
-      <Navbar />
       <div className="relative top-0 left-0 h-full z-10">
         <LeftSidebar />
       </div>
@@ -21,7 +19,7 @@ export default function Home() {
         <LazyMap />
       </div>
       <div className="flex-shrink-0 w-1/3 overflow-y-auto">
-        <ReviewsList />
+        <RightSidebar />
       </div>
     </main>
   );
