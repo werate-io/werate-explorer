@@ -16,7 +16,7 @@ export default function Home() {
       <div className="relative top-0 left-0 h-full z-10">
         <Sidebar />
       </div>
-      <div className="relative flex">
+      <div className="relative flex w-full">
         <AppWalletProvider>
           <LazyMap />
         </AppWalletProvider>

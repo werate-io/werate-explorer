@@ -7,7 +7,7 @@ import { postData } from "../services/werate-api";
 
 const SolanaWallet = () => {
   const { publicKey, connected, signMessage, disconnect, connect } = useWallet();
-  const [isSolanaAuthenticated, setIsSolanaAuthenticated] = useState(false);
+  const [isSolanaAuthenticated, setIsSolanaAuthenticated] = useState(true);
   const [attemptedSign, setAttemptedSign] = useState(false); // New state to prevent multiple alerts
 
   useEffect(() => {
