@@ -1,8 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import SidebarBase from './SidebarBase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/Select';
+import StatsSection from '@/components/StatCard';
 import {
   LineChart,
   Line,
@@ -17,67 +25,44 @@ import {
   BarChart,
   Bar
 } from 'recharts';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/Select';
-import StatsSection from '@/components/StatCard';
 import {
   COLORS,
-  contentVariants,
   continentData,
   phoneUsageData,
   ratingCategoriesData,
   reviewTimelineData,
-  sidebarVariants,
   TimelineFilter
 } from '@/lib/constants';
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1W');
+interface SidebarProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  side: 'left' | 'right';
+}
 
+export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
   return (
-    <motion.div
-      className="h-full bg-white text-slate-800 shadow-lg relative"
-      variants={sidebarVariants}
-      animate={isOpen ? 'open' : 'closed'}
-      initial="open">
-      <motion.div
-        className="absolute top-1/2 -right-4 transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{
-          right: isOpen ? '-12px' : '-16px',
-          transition: 'right 0.3s'
-        }}>
-        {isOpen ? (
-          <ChevronLeftIcon className="w-6 h-6 text-primary" />
-        ) : (
-          <ChevronRightIcon className="w-6 h-6 text-primary" />
-        )}
-      </motion.div>
-      <motion.div
-        variants={contentVariants}
-        className="p-4 h-full overflow-y-auto"
-        animate={isOpen ? 'open' : 'closed'}>
-        <Card className="mb-4 bg-primary text-white border-none">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm">
-              The WeRate Explorer is an open-source mapping system that shows all reviews made by
-              consumers using the WeRate mobile app. Each review is immutable, permanently stored on
-              Arweave, and verifiable at any point in time by the reviewer.
-            </p>
-          </CardContent>
-        </Card>
+    <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
+      <SidebarContent />
+    </SidebarBase>
+  );
+}
+
+function SidebarContent({ timelineFilter, setTimelineFilter }: { timelineFilter?: TimelineFilter, setTimelineFilter?: (filter: TimelineFilter) => void }) {
+  return (
+    <div className="space-y-4">
+      <Card className="bg-primary text-white border-none">
+        <CardHeader>
+          <CardTitle className="text-lg md:text-xl font-bold">Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-xs md:text-sm">
+            The WeRate Explorer is an open-source mapping system that shows all reviews made by
+            consumers using the WeRate mobile app. Each review is immutable, permanently stored on
+            Arweave, and verifiable at any point in time by the reviewer.
+          </p>
+        </CardContent>
+      </Card>
 
         <Card className="mb-4 bg-slate-50 border-none">
           <CardHeader className="flex flex-row items-center justify-between">
@@ -202,7 +187,6 @@ export default function Sidebar() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
-      </motion.div>
-    </motion.div>
+    </div>
   );
 }

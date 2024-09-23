@@ -28,7 +28,7 @@ const Map = (Map: MapProps) => {
       zoom={zoom}
       scrollWheelZoom={false}
       style={{ height: '100%', width: '100%' }}>
-      <SolanaWallet />
+      {/* <SolanaWallet /> */}
 
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
@@ -7,34 +7,35 @@ const instance = axios.create({
   baseURL: 'https://api.werate.io'
 });
 
-const getBearerToken = () => {
+const getBearerToken = (): string => {
   const accessToken = localStorage.getItem('token');
   // TODO add error handling
   return `Bearer ${accessToken}`;
 };
 
-const getBaseHeaders = () => {
-  return {
-    'Content-Type': 'application/json',
-    Authorization: getBearerToken()
-  };
-};
+const getBaseHeaders = (): Record<string, string> => ({
+  'Content-Type': 'application/json',
+  Authorization: getBearerToken()
+});
+
 const baseHeaders = getBaseHeaders();
 
-export const postData = async (backend_api: string, data?: string) => {
+export const postData = async <T>(backendApi: string, data?: unknown): Promise<T> => {
   try {
-    const response = await instance.post(backend_api, data, {
-      headers: baseHeaders
-    });
-    return response;
+    const response = await instance.post(backendApi, data);
+    return response.data as T;
   } catch (error) {
-    console.error('Error posting data:', error);
+    // Handle error appropriately
+    throw new Error('Failed to post data');
   }
 };
 
-export const getData = async (backend_api: string, params?: Record<string, any>) => {
+export const getData = async <T>(
+  backendApi: string,
+  params?: Record<string, unknown>
+): Promise<T> => {
   try {
-    const response = await instance.get(backend_api, {
+    const response = await instance.get<T>(backendApi, {
       headers: baseHeaders,
       params
     });
@@ -42,6 +43,6 @@ export const getData = async (backend_api: string, params?: Record<string, any>)
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
-    throw error; // Re-throw to allow caller to handle
+    throw error;
   }
 };

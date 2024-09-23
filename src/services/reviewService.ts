@@ -6,5 +6,5 @@ export async function getReviews(skip: number, take: number): Promise<ReviewsRes
     take: take,
     skip: skip
   });
-  return response.data;
+  return response as ReviewsResponse;
 }

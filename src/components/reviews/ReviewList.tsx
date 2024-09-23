@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import ReviewItem from '@/components/reviews/ReviewItem';
 import {
   Pagination,
@@ -73,6 +75,7 @@ function ReviewSkeleton() {
 }
 
 function ReviewsList() {
+  const { publicKey } = useWallet();
   const take = constants.TAKE;
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,6 +104,14 @@ function ReviewsList() {
   React.useEffect(() => {
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
+
+  if (!publicKey) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full space-y-6">
+        <p className="text-xl font-semibold text-center">Connect your wallet to view reviews</p>
+      </div>
+    );
+  }
 
   return (
     <div>
