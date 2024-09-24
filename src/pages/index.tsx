@@ -3,6 +3,7 @@ import React from 'react';
 import LeftSidebar from '@/components/LeftSidebar';
 import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
+import Navbar from '@/components/Navbar';
 
 const LazyMap = dynamic(() => import('@/components/map'), {
   ssr: false,
@@ -12,13 +13,14 @@ const LazyMap = dynamic(() => import('@/components/map'), {
 export default function Home() {
   return (
     <main className="flex h-screen w-screen overflow-hidden">
-      <div className="relative top-0 left-0 h-full z-10">
+      <div className="flex relative top-0 left-0 h-full z-10">
         <LeftSidebar />
       </div>
-      <div className="relative flex">
+      <div className="flex flex-col flex-grow w-auto">
+        <Navbar />
         <LazyMap />
       </div>
-      <div className="flex-shrink-0 w-1/3 overflow-y-auto">
+      <div className="flex relative top-0 right-0 z-10">
         <RightSidebar />
       </div>
     </main>

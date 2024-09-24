@@ -4,10 +4,15 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 
 const instance = axios.create({
-  baseURL: 'https://cors-anywhere.herokuapp.com/https://api.werate.io'
+  baseURL: 'https://api.werate.io'
 });
 
 const getBearerToken = () => {
+  if (typeof localStorage === 'undefined') {
+    console.error('localStorage is not available');
+    return null; // or handle accordingly
+  }
+
   const accessToken = localStorage.getItem('token');
   // TODO add error handling
   return `Bearer ${accessToken}`;
@@ -34,10 +39,12 @@ export const postData = async (backend_api: string, data?: string) => {
 };
 
 //authentication
+const API_BASE_URL = 'https://mobile.werate.io/api';
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 export const register = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      `/v1/register`,
+      proxyUrl + `${API_BASE_URL}/v1/register`,
       { email, password },
       { headers: { ['Content-Type']: ['application/json'] } }
     );
@@ -51,7 +58,7 @@ export const register = async (email: string, password: string) => {
 export const login = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      `/v2/login`,
+      proxyUrl + `${API_BASE_URL}/v2/login`,
       { email, password },
       { headers: { ['Content-Type']: ['application/json'] } }
     );
@@ -73,7 +80,7 @@ export const login = async (email: string, password: string) => {
 export const checkMfa = async (preAuthToken: string, mfaCode: string) => {
   try {
     const response = await axios.post(
-      `/v1/check-mfa`,
+      proxyUrl + `${API_BASE_URL}/v1/check-mfa`,
       { code: mfaCode },
       {
         headers: {

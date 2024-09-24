@@ -12,7 +12,7 @@ export default function RightSidebar() {
 
   return (
     <motion.div
-      className="h-full bg-white text-slate-800 shadow-lg fixed right-0 top-0 bottom-0 max-h-screen overflow-y-auto"
+      className="h-full bg-white text-slate-800 shadow-lg relative" // Changed 'fixed' to 'relative'
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
       initial="open"

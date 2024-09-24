@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import {
   Dialog,
@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { checkMfa, login, register } from '@/services/auth';
+import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { checkMfa, login, register } from '@/services/werate-api';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +25,16 @@ export default function Navbar() {
   const [error, setError] = useState('');
   const [needsMfa, setNeedsMfa] = useState(false);
   const [preAuthToken, setPreAuthToken] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInitials, setUserInitials] = useState('');
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+      setIsLoggedIn(true);
+      setUserInitials(getInitials(storedEmail));
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +55,7 @@ export default function Navbar() {
           setPreAuthToken(data.preAuthToken);
           setNeedsMfa(true);
         } else if (data.accessToken) {
-          // Handle successful login
-          console.log('Logged in successfully', data.accessToken);
-          setIsOpen(false);
+          handleSuccessfulLogin(data.accessToken);
         } else {
           setError(data.error || 'Login failed');
         }
@@ -64,9 +72,7 @@ export default function Navbar() {
     try {
       const data = await checkMfa(preAuthToken, mfaCode);
       if (data.accessToken) {
-        // Handle successful login with MFA
-        console.log('Logged in successfully with MFA', data.accessToken);
-        setIsOpen(false);
+        handleSuccessfulLogin(data.accessToken);
       } else {
         setError(data.error || 'MFA verification failed');
       }
@@ -75,90 +81,82 @@ export default function Navbar() {
     }
   };
 
+  const handleSuccessfulLogin = (accessToken: string) => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('email', email);
+    setIsLoggedIn(true);
+    setUserInitials(getInitials(email));
+    setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('email');
+    setIsLoggedIn(false);
+    setUserInitials('');
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((part) => part[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-transparent text-white p-4 flex items-center z-10">
+    <nav className="relative top-0 left-0 right-0 bg-transparent text-white p-4 flex justify-between items-center">
       <div className="flex-1">
-        <div className="flex-1 flex justify-center">
-          <Input
-            type="search"
-            placeholder="Search for venue, location, bohemian, date?"
-            className="w-full max-w-md bg-gray-800 text-white placeholder-gray-400 border-gray-700"
-          />
-        </div>
+        <Input
+          type="search"
+          placeholder="Search for venue, location, bohemian, date?"
+          className="max-w-sm bg-gray-800 text-white placeholder-gray-400 border-gray-700"
+        />
       </div>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button variant="secondary" className="bg-purple-600 hover:bg-purple-700 text-white">
-            Login
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-gray-800 text-white">
-          <DialogHeader>
-            <DialogTitle>{needsMfa ? '2FA Verification' : 'Login / Register'}</DialogTitle>
-          </DialogHeader>
-          {needsMfa ? (
-            <form onSubmit={handleMfaSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="mfaCode">2FA Code</Label>
-                <Input
-                  id="mfaCode"
-                  type="text"
-                  value={mfaCode}
-                  onChange={(e) => setMfaCode(e.target.value)}
-                  className="bg-gray-700 text-white border-gray-600"
-                />
-              </div>
-              {error && (
-                <div className="text-red-500 flex items-center">
-                  <AlertCircle className="mr-2" size={16} />
-                  {error}
+      <div className="flex items-center space-x-4">
+        {isLoggedIn ? (
+          <>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="bg-purple-600 hover:bg-purple-700 text-white">
+                  {userInitials} <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 bg-gray-800 text-white border-gray-700">
+                <div className="grid gap-4">
+                  <Button variant="ghost" className="w-full justify-start">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </Button>
+                  <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </Button>
                 </div>
-              )}
-              <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                Verify
+              </PopoverContent>
+            </Popover>
+          </>
+        ) : (
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button variant="secondary" className="bg-purple-600 hover:bg-purple-700 text-white">
+                Login
               </Button>
-            </form>
-          ) : (
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-700">
-                <TabsTrigger
-                  value="login"
-                  className={cn(
-                    'data-[state=active]:bg-purple-600 data-[state=active]:text-white',
-                    'data-[state=inactive]:bg-gray-700 data-[state=inactive]:text-gray-300'
-                  )}
-                >
-                  Login
-                </TabsTrigger>
-                <TabsTrigger
-                  value="register"
-                  className={cn(
-                    'data-[state=active]:bg-purple-600 data-[state=active]:text-white',
-                    'data-[state=inactive]:bg-gray-700 data-[state=inactive]:text-gray-300'
-                  )}
-                >
-                  Register
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="login">
-                <form onSubmit={handleSubmit} className="space-y-4">
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-gray-800 text-white">
+              <DialogHeader>
+                <DialogTitle>{needsMfa ? '2FA Verification' : 'Login / Register'}</DialogTitle>
+              </DialogHeader>
+              {needsMfa ? (
+                <form onSubmit={handleMfaSubmit} className="space-y-4">
                   <div>
-                    <Label htmlFor="username">Username</Label>
+                    <Label htmlFor="mfaCode">2FA Code</Label>
                     <Input
-                      id="email"
+                      id="mfaCode"
                       type="text"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="bg-gray-700 text-white border-gray-600"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={mfaCode}
+                      onChange={(e) => setMfaCode(e.target.value)}
                       className="bg-gray-700 text-white border-gray-600"
                     />
                   </div>
@@ -172,50 +170,97 @@ export default function Navbar() {
                     type="submit"
                     className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                   >
-                    Login
+                    Verify
                   </Button>
                 </form>
-              </TabsContent>
-              <TabsContent value="register">
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="reg-username">Username</Label>
-                    <Input
-                      id="reg-email"
-                      type="text"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="bg-gray-700 text-white border-gray-600"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="reg-password">Password</Label>
-                    <Input
-                      id="reg-password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="bg-gray-700 text-white border-gray-600"
-                    />
-                  </div>
-                  {error && (
-                    <div className="text-red-500 flex items-center">
-                      <AlertCircle className="mr-2" size={16} />
-                      {error}
-                    </div>
-                  )}
-                  <Button
-                    type="submit"
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                  >
-                    Register
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
-          )}
-        </DialogContent>
-      </Dialog>
+              ) : (
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="login" className="active:bg-primary">
+                      Login
+                    </TabsTrigger>
+                    <TabsTrigger value="register" className="active:bg-primary">
+                      Register
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="login">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div>
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="bg-gray-700 text-white border-gray-600"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          id="password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="bg-gray-700 text-white border-gray-600"
+                        />
+                      </div>
+                      {error && (
+                        <div className="text-red-500 flex items-center">
+                          <AlertCircle className="mr-2" size={16} />
+                          {error}
+                        </div>
+                      )}
+                      <Button
+                        type="submit"
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        Login
+                      </Button>
+                    </form>
+                  </TabsContent>
+                  <TabsContent value="register">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div>
+                        <Label htmlFor="reg-email">Email</Label>
+                        <Input
+                          id="reg-email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="bg-gray-700 text-white border-gray-600"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="reg-password">Password</Label>
+                        <Input
+                          id="reg-password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="bg-gray-700 text-white border-gray-600"
+                        />
+                      </div>
+                      {error && (
+                        <div className="text-red-500 flex items-center">
+                          <AlertCircle className="mr-2" size={16} />
+                          {error}
+                        </div>
+                      )}
+                      <Button
+                        type="submit"
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        Register
+                      </Button>
+                    </form>
+                  </TabsContent>
+                </Tabs>
+              )}
+            </DialogContent>
+          </Dialog>
+        )}
+      </div>
     </nav>
   );
 }

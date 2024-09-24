@@ -108,7 +108,7 @@ SelectContent.displayName = SelectPrimitive.Content.displayName;
 SelectContent.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
-  position: PropTypes.string
+  position: PropTypes.oneOf(['popper', 'item-aligned'])
 };
 
 const SelectLabel = React.forwardRef<
