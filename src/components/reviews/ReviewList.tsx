@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext
-} from '@/components/ui/Pagination';
+} from '@/components/ui/pagination';
 import { Spinner } from '@/components/ui/Spinner';
 import { useTransformedReviews } from '@/hooks/useTransformedReviews';
 import * as constants from '@/lib/constants';
@@ -68,13 +68,11 @@ const ReviewsList: React.FC = () => {
                   </PaginationLink>
                 </PaginationItem>
               ))}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              />
-            </PaginationItem>
+            {currentPage < totalPages ? (
+              <PaginationNext href="#" onClick={() => handlePageChange(currentPage + 1)} />
+            ) : (
+              <span className="disabled">Next</span> // Render a disabled span instead
+            )}
           </PaginationContent>
         </Pagination>
       </div>

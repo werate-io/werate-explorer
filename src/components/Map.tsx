@@ -6,7 +6,6 @@ import { LatLngExpression, LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import SolanaWallet from './solana-wallet';
 
 interface MapProps {
   posix?: LatLngExpression | LatLngTuple;
@@ -28,8 +27,6 @@ const Map = (Map: MapProps) => {
       scrollWheelZoom={false}
       style={{ height: '100%', width: '100%', flex: 'grow', zIndex: 1 }}
     >
-      <SolanaWallet />
-
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

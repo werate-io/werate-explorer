@@ -55,7 +55,7 @@ export default function Navbar() {
           setPreAuthToken(data.preAuthToken);
           setNeedsMfa(true);
         } else if (data.accessToken) {
-          handleSuccessfulLogin(data.accessToken);
+          handleSuccessfulLogin(email);
         } else {
           setError(data.error || 'Login failed');
         }
@@ -72,7 +72,7 @@ export default function Navbar() {
     try {
       const data = await checkMfa(preAuthToken, mfaCode);
       if (data.accessToken) {
-        handleSuccessfulLogin(data.accessToken);
+        handleSuccessfulLogin(email);
       } else {
         setError(data.error || 'MFA verification failed');
       }
@@ -81,8 +81,7 @@ export default function Navbar() {
     }
   };
 
-  const handleSuccessfulLogin = (accessToken: string) => {
-    localStorage.setItem('accessToken', accessToken);
+  const handleSuccessfulLogin = (email: string) => {
     localStorage.setItem('email', email);
     setIsLoggedIn(true);
     setUserInitials(getInitials(email));
@@ -90,7 +89,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('email');
     setIsLoggedIn(false);
     setUserInitials('');
@@ -106,7 +105,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 bg-transparent text-white p-4 flex justify-between items-center">
+    <nav className="relative top-0 left-0 right-0 bg-white text-white p-4 flex justify-between items-center z-50">
       <div className="flex-1">
         <Input
           type="search"
@@ -119,12 +118,12 @@ export default function Navbar() {
           <>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="bg-purple-600 hover:bg-purple-700 text-white">
+                <Button variant="outline" className="bg-primary hover:bg-primary/55 text-white">
                   {userInitials} <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-56 bg-gray-800 text-white border-gray-700">
-                <div className="grid gap-4">
+              <PopoverContent className="w-36 bg-gray-800 text-white border-gray-700">
+                <div className="grid gap-2">
                   <Button variant="ghost" className="w-full justify-start">
                     <Settings className="mr-2 h-4 w-4" />
                     Settings
@@ -144,7 +143,7 @@ export default function Navbar() {
                 Login
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-gray-800 text-white">
+            <DialogContent className="sm:max-w-[425px] bg-gray-800 text-white z-50">
               <DialogHeader>
                 <DialogTitle>{needsMfa ? '2FA Verification' : 'Login / Register'}</DialogTitle>
               </DialogHeader>
@@ -176,10 +175,16 @@ export default function Navbar() {
               ) : (
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="login" className="active:bg-primary">
+                    <TabsTrigger
+                      value="login"
+                      className={`${activeTab === 'login' ? '!bg-primary !text-white' : ''}`}
+                    >
                       Login
                     </TabsTrigger>
-                    <TabsTrigger value="register" className="active:bg-primary">
+                    <TabsTrigger
+                      value="register"
+                      className={`${activeTab === 'register' ? '!bg-primary !text-white' : ''}`}
+                    >
                       Register
                     </TabsTrigger>
                   </TabsList>
