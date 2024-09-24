@@ -7,7 +7,7 @@ import { ButtonProps, buttonVariants } from '@/components/ui/Button';
 const Pagination = ({
   className,
   ...props
-}: React.ComponentProps<'nav'> & { className?: string }) => (
+}: { className?: string } & React.ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
