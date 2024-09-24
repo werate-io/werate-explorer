@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext
-} from '@/components/ui/pagination';
+} from '@/components/ui/Pagination';
 import { Spinner } from '@/components/ui/Spinner';
 import { useTransformedReviews } from '@/hooks/useTransformedReviews';
 import * as constants from '@/lib/constants';

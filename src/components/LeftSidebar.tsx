@@ -24,7 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select';
+} from '@/components/ui/Select';
 import StatsSection from '@/components/StatCard';
 import {
   COLORS,
