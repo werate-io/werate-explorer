@@ -22,10 +22,10 @@ export default function AppWalletProvider({ children }: { children: React.ReactN
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
     () => [
+      new SolflareWalletAdapter(),
       new PhantomWalletAdapter(),
       new LedgerWalletAdapter(),
-      new TorusWalletAdapter(),
-      new SolflareWalletAdapter()
+      new TorusWalletAdapter()
     ],
     [network]
   );
