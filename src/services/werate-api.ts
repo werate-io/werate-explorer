@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
@@ -25,7 +25,7 @@ export const postData = async <T>(backendApi: string, data?: unknown): Promise<T
     const response = await instance.post(backendApi, data);
     return response.data as T;
   } catch (error) {
-    // Handle error appropriately
+    console.error('Error posting data:', error);
     throw new Error('Failed to post data');
   }
 };

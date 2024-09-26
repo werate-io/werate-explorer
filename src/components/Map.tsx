@@ -7,7 +7,6 @@ import { LatLngExpression, LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import SolanaWallet from './solana-wallet';
 
 interface MapProps {
   posix?: LatLngExpression | LatLngTuple;

@@ -74,11 +74,16 @@ export default [{
         }
       ],
 
+      'react/prop-types': 'off',
       '@typescript-eslint/naming-convention': [
         'error',
         {
-          selector: 'objectLiteralProperty',
-          format: ['camelCase', 'snake_case']
+          selector: 'property',
+          format: ['camelCase'],
+          filter: {
+            regex: '^(Content-Type|Authorization)$',
+            match: false
+          }
         }
       ]
     }

@@ -6,9 +6,9 @@ import ReviewsList from '@/components/reviews/ReviewList';
 import ProfileWithStats from '@/components/profile/Profile';
 
 interface RightSidebarProps {
-  isOpen: boolean
-  setIsOpen: (isOpen: boolean) => void
-  side: 'left' | 'right'
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  side: 'left' | 'right';
 }
 
 export default function RightSidebar({ isOpen, setIsOpen, side }: RightSidebarProps) {
@@ -16,7 +16,7 @@ export default function RightSidebar({ isOpen, setIsOpen, side }: RightSidebarPr
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
       <RightSidebarContent />
     </SidebarBase>
-  )
+  );
 }
 
 function RightSidebarContent() {
@@ -25,5 +25,5 @@ function RightSidebarContent() {
       <ProfileWithStats />
       <ReviewsList />
     </div>
-  )
+  );
 }

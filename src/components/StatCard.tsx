@@ -1,6 +1,13 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/Card';
-import { ArrowUpIcon, ArrowDownIcon, ChevronRightIcon, StarIcon, UsersIcon, GlobeIcon, } from 'lucide-react';
+import {
+  ArrowUpIcon,
+  ArrowDownIcon,
+  ChevronRightIcon,
+  StarIcon,
+  UsersIcon,
+  GlobeIcon
+} from 'lucide-react';
 interface StatCardProps {
   title: string;
   value: number;
@@ -15,7 +22,7 @@ export function StatCard({ title, value, change, icon: Icon }: StatCardProps) {
   return (
     <Card className="w-full">
       <CardContent className="p-4">
-       <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             {Icon && <Icon className="h-5 w-5 mr-2 text-gray-500" />}
             <h3 className="text-sm font-medium text-gray-500">{title}</h3>

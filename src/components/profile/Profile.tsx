@@ -1,8 +1,9 @@
+import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { StatCard } from '@/components/StatCard';
-import { MapPinIcon, StarIcon, GlobeIcon, UsersIcon } from 'lucide-react';
-import { WalletIcon, Wallet } from 'lucide-react'
+import { MapPinIcon, StarIcon, GlobeIcon } from 'lucide-react';
+import { WalletIcon, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
@@ -30,10 +31,9 @@ export default function ProfileWithStats() {
       <Card className="w-full bg-primary p-4 rounded-lg shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between gap-4 p-4">
           <CardTitle className="text-white text-2xl font-bold">Profile</CardTitle>
-          <Button 
+          <Button
             className="flex items-center gap-2 bg-purple-600 hover:bg-purple-800 text-white p-2 rounded"
-            onClick={disconnect}
-          >
+            onClick={disconnect}>
             <Wallet className="h-5 w-5" />
             Disconnect
           </Button>
@@ -54,8 +54,8 @@ export default function ProfileWithStats() {
         </CardHeader>
       </Card>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-      <StatCard title="Reviews" value={697738} change={203} icon={StarIcon} />
-      <StatCard title="Venues" value={58704} change={203} icon={MapPinIcon} />
+        <StatCard title="Reviews" value={697738} change={203} icon={StarIcon} />
+        <StatCard title="Venues" value={58704} change={203} icon={MapPinIcon} />
         <StatCard title="Countries" value={195} change={2} icon={GlobeIcon} />
         <StatCard title="Avg Rating" value={195} change={-2} icon={StarIcon} />
       </div>

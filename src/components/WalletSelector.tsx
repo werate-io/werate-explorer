@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { Button } from '@/components/ui/Button'
+import React from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { Button } from '@/components/ui/Button';
 
 interface WalletSelectorProps {
-  isOpen: boolean
-  setIsOpen: (isOpen: boolean) => void
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 export default function WalletSelector({ isOpen, setIsOpen }: WalletSelectorProps) {
-  const { wallet, disconnect } = useWallet()
+  const { wallet, disconnect } = useWallet();
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed top-4 right-4 z-50">
@@ -26,11 +26,10 @@ export default function WalletSelector({ isOpen, setIsOpen }: WalletSelectorProp
             variant="outline"
             size="sm"
             onClick={() => {
-              disconnect()
-              setIsOpen(false)
+              disconnect();
+              setIsOpen(false);
             }}
-            className="text-xs md:text-sm"
-          >
+            className="text-xs md:text-sm">
             Disconnect
           </Button>
         </div>
@@ -38,5 +37,5 @@ export default function WalletSelector({ isOpen, setIsOpen }: WalletSelectorProp
         <WalletMultiButton className="!bg-primary hover:!bg-primary-dark text-white font-bold py-2 px-4 rounded text-xs md:text-sm" />
       )}
     </div>
-  )
+  );
 }
