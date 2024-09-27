@@ -1,8 +1,8 @@
+import { ActionResponse } from '@/types/actions';
 import { Place } from '@/types/place';
-import { getData } from '@/services/werate-api';
+import { getData } from './werate-api';
 
-export async function getPlaceById(placeId: string): Promise<Place> {
-  const response = await getData(`/places/${placeId}`);
-  if (!response.ok) throw new Error('Failed to fetch place');
-  return response.json();
+export async function getPlaceById(placeId: string): Promise<ActionResponse<Place>> {
+  const place = await getData<Place>(`/places/${placeId}`);
+  return { data: place } as ActionResponse<Place>;
 }

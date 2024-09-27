@@ -41,20 +41,24 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
+  const [timelineFilter, setTimelineFilter] = React.useState<TimelineFilter>('1D');
+
   return (
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
-      <SidebarContent />
+      <SidebarContent
+        timelineFilter={timelineFilter}
+        setTimelineFilter={(filter: TimelineFilter) => setTimelineFilter(filter)}
+      />
     </SidebarBase>
   );
 }
 
-function SidebarContent({
-  timelineFilter,
-  setTimelineFilter
-}: {
-  timelineFilter?: TimelineFilter;
-  setTimelineFilter?: (filter: TimelineFilter) => void;
-}) {
+interface SidebarContentProps {
+  timelineFilter: TimelineFilter;
+  setTimelineFilter: (filter: TimelineFilter) => void;
+}
+
+function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentProps) {
   return (
     <div className="space-y-4">
       <Card className="bg-primary text-white border-none">
@@ -73,9 +77,7 @@ function SidebarContent({
       <Card className="mb-4 bg-slate-50 border-none">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-xl font-semibold">Timeline of Reviews</CardTitle>
-          <Select
-            value={timelineFilter}
-            onValueChange={(value: TimelineFilter) => setTimelineFilter(value)}>
+          <Select value={timelineFilter} onValueChange={setTimelineFilter}>
             <SelectTrigger className="w-[80px]">
               <SelectValue placeholder="Filter" />
             </SelectTrigger>

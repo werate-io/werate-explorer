@@ -6,7 +6,8 @@ import {
   ChevronRightIcon,
   StarIcon,
   UsersIcon,
-  GlobeIcon
+  GlobeIcon,
+  LucideIcon
 } from 'lucide-react';
 interface StatCardProps {
   title: string;

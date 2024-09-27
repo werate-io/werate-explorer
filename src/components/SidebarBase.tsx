@@ -13,8 +13,8 @@ interface SidebarBaseProps {
 }
 
 interface TimelineFilterProps {
-  timelineFilter: string;
-  setTimelineFilter: (filter: string) => void;
+  timelineFilter: TimelineFilter;
+  setTimelineFilter: (filter: TimelineFilter) => void;
 }
 
 export default function SidebarBase({ isOpen, setIsOpen, side, children }: SidebarBaseProps) {
@@ -63,9 +63,9 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
         animate={isOpen ? 'open' : 'closed'}>
         {React.Children.map(children, (child) =>
           React.isValidElement<TimelineFilterProps>(child)
-            ? React.cloneElement(child as React.ReactElement<TimelineFilterProps>, {
+            ? React.cloneElement(child, {
                 timelineFilter,
-                setTimelineFilter
+                setTimelineFilter: (filter: TimelineFilter) => setTimelineFilter(filter)
               })
             : child
         )}
