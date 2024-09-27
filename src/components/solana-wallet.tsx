@@ -10,6 +10,12 @@ const PublicKey = () => {
 
   return <p>{publicKey ? `Public Key: ${publicKey.toBase58()}` : `Not Connected`}</p>;
 };
+interface WalletLinkResponse {
+  data: {
+    success: boolean;
+    message?: string;
+  };
+}
 
 const SolanaWallet = () => {
   const { publicKey, connected, signMessage, disconnect } = useWallet();
@@ -44,7 +50,7 @@ const SolanaWallet = () => {
       };
 
       // Connect a user's wallet to the profile
-      const response = await postData('/api/v1/wallets/link', data);
+      const response = await postData<WalletLinkResponse>('/api/v1/wallets/link', data);
       if (response && response.data.success) {
         alert('Wallet is connected to your profile!');
       } else {

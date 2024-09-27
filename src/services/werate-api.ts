@@ -7,29 +7,46 @@ const instance = axios.create({
   baseURL: 'https://api.werate.io'
 });
 
-const getBearerToken = () => {
+const getBearerToken = (): string => {
   const accessToken = localStorage.getItem('token');
   // TODO add error handling
   return `Bearer ${accessToken}`;
 };
 
-const getBaseHeaders = () => {
-  return {
-    /* eslint-disable */
+const getBaseHeaders = (): Record<string, string> => ({
+  /* eslint-disable */
     'Content-Type': 'application/json',
     Authorization: getBearerToken()
 	 /* eslint-enable */
-  };
-};
+});
+
 const baseHeaders = getBaseHeaders();
 
-export const postData = async (backend_api: string, data?: object) => {
+export const postData = async <T>(backendApi: string, data?: object): Promise<T> => {
   try {
-    const response = await instance.post(backend_api, data, {
+    const response = await instance.post(backendApi, data, {
       headers: baseHeaders
     });
-    return response;
+    return response as T;
   } catch (error) {
     console.error('Error posting data:', error);
+    throw new Error('Failed to post data');
+  }
+};
+
+export const getData = async <T>(
+  backendApi: string,
+  params?: Record<string, unknown>
+): Promise<T> => {
+  try {
+    const response = await instance.get<T>(backendApi, {
+      headers: baseHeaders,
+      params
+    });
+
+    return response as T;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
   }
 };
