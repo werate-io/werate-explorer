@@ -1,19 +1,12 @@
 // Map.tsx
-"use client";
+'use client';
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { LatLngExpression, LatLngTuple } from "leaflet";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useState, useEffect } from "react";
-import { decodeUTF8 } from "tweetnacl-util";
-import { postData } from "../services/werate-api"
-import bs58 from 'bs58';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { LatLngExpression, LatLngTuple } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import SolanaWallet from "./solana-wallet";
 
 interface MapProps {
   posix?: LatLngExpression | LatLngTuple;
@@ -33,9 +26,8 @@ const Map = (Map: MapProps) => {
       center={posix}
       zoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: "100%", width: "100%" }}
-    >
-      <SolanaWallet />
+      style={{ height: '100%', width: '100%' }}>
+      {/* <SolanaWallet /> */}
 
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
