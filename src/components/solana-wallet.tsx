@@ -1,16 +1,14 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useState, useEffect, useCallback } from "react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { decodeUTF8 } from "tweetnacl-util";
+import { useWallet } from '@solana/wallet-adapter-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
-import { postData } from "../services/werate-api";
+import { postData } from '../services/werate-api';
 
 const PublicKey = () => {
   const { publicKey } = useWallet();
 
-  return (
-    <p>{publicKey ? `Public Key: ${publicKey.toBase58()}` : `Not Connected`}</p>
-  );
+  return <p>{publicKey ? `Public Key: ${publicKey.toBase58()}` : `Not Connected`}</p>;
 };
 
 const SolanaWallet = () => {
@@ -32,12 +30,12 @@ const SolanaWallet = () => {
   }, [connected, publicKey, signMessage]);
 
   const sign = useCallback(async () => {
-		try {
-			if (!publicKey) throw new Error('Wallet not connected!')
-			if (!signMessage) throw new Error('Wallet does not support message signing!')
+    try {
+      if (!publicKey) throw new Error('Wallet not connected!');
+      if (!signMessage) throw new Error('Wallet does not support message signing!');
 
-			const message = "werate";
-			const signature = await signMessage(decodeUTF8(message));
+      const message = 'werate';
+      const signature = await signMessage(decodeUTF8(message));
 
       const data = {
         message,
@@ -53,16 +51,16 @@ const SolanaWallet = () => {
         disconnect();
         alert(response?.data?.message || 'An error occurred');
       }
-		} catch (error: unknown) {
+    } catch (error: unknown) {
       alert(`Sign Message failed: ${(error as Error)?.message}`);
       disconnect();
-		}
-	}, [publicKey, signMessage])
+    }
+  }, [publicKey, signMessage]);
 
   return (
     <>
       {isSolanaAuthenticated && (
-        <div style={{ position: "absolute", top: 5, right: 5, zIndex: 1000 }}>
+        <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1000 }}>
           <WalletMultiButton />
           <PublicKey />
         </div>

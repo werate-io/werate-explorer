@@ -1,12 +1,12 @@
 // Map.tsx
-"use client";
+'use client';
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { LatLngExpression, LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import SolanaWallet from "./solana-wallet";
+import SolanaWallet from './solana-wallet';
 
 interface MapProps {
   posix?: LatLngExpression | LatLngTuple;
@@ -26,8 +26,7 @@ const Map = (Map: MapProps) => {
       center={posix}
       zoom={zoom}
       scrollWheelZoom={false}
-      style={{ height: "100%", width: "100%" }}
-    >
+      style={{ height: '100%', width: '100%' }}>
       <SolanaWallet />
 
       <TileLayer
