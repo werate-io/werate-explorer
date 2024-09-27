@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { checkMfa, login, register } from '@/services/werate-api';
+import { checkMfa, login, register } from '@/services/auth';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
