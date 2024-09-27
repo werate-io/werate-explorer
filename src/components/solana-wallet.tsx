@@ -28,8 +28,6 @@ const SolanaWallet = () => {
   useEffect(() => {
     if (isSolanaAuthenticated && connected && publicKey && signMessage) {
       sign();
-    } else {
-      alert("Not signed in or wallet not connected");
     }
   }, [connected, publicKey, signMessage]);
 
@@ -41,11 +39,11 @@ const SolanaWallet = () => {
 			const message = "werate";
 			const signature = await signMessage(decodeUTF8(message));
 
-      const data = JSON.stringify({
+      const data = {
         message,
         signature: bs58.encode(signature),
-        publicKey: publicKey.toString(),
-      });
+        publicKey: publicKey.toString()
+      };
 
       // Connect a user's wallet to the profile
       const response = await postData('/api/v1/wallets/link', data);

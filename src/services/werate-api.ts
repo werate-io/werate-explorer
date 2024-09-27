@@ -12,7 +12,7 @@ const getBearerToken = () => {
 	// TODO add error handling
 	return `Bearer ${accessToken}`
 }
-  
+
 const getBaseHeaders = () => {
 	return {
 		'Content-Type': 'application/json',
@@ -21,18 +21,16 @@ const getBaseHeaders = () => {
 }
 const baseHeaders = getBaseHeaders();
 
-export const postData = async (backend_api: string, data?: string) => {
+export const postData = async (backend_api: string, data?: object) => {
 	try {
 		const response = await instance.post(
 			backend_api,
 			data,
 			{
-					headers: baseHeaders
+				headers: baseHeaders
 			}
 		);
-
-	return response;
-
+		return response;
 	} catch (error) {
 		console.error('Error posting data:', error);
 	}
