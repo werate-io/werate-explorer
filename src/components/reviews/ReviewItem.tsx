@@ -1,91 +1,195 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { UIReview } from '@/types/review';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
 import { Box } from '@/components/ui/Box';
-import ShowMoreText from '@/components/ui/ShowMoreText';
+import { Button } from '@/components/ui/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/Dialog';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/Carousel';
+import { Star, Check, Loader2 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 interface ReviewItemProps {
   review: UIReview;
 }
 
-const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
-  const renderStars = (starRatings: number) => {
-    const totalStars = 5;
-    const validStarRatings = Math.max(0, Math.min(totalStars, starRatings)); // Ensure starRatings is between 0 and totalStars
-    const fullStars = Math.floor(validStarRatings);
-    const emptyStars = totalStars - fullStars;
+export function ReviewItem({ review }: ReviewItemProps) {
+  const [isVerified, setIsVerified] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
+  const [isMinted, setIsMinted] = useState(false);
 
+  function renderStars(starRatings: number) {
+    const totalStars = 5;
+    const validStarRatings = Math.max(0, Math.min(totalStars, starRatings));
     return (
-      <div className="flex items-center text-yellow-600 space-x-1 sm:space-x-2 md:space-x-3">
-        {Array(fullStars)
-          .fill('★')
-          .map((star, index) => (
-            <span key={`full-${index}`} className="text-xs sm:text-sm md:text-base">
-              ★
-            </span>
-          ))}
-        {Array(emptyStars)
-          .fill('☆')
-          .map((star, index) => (
-            <span key={`empty-${index}`} className="text-xs sm:text-sm md:text-base text-gray-400">
-              ☆
-            </span>
-          ))}
+      <div className="flex items-center space-x-1">
+        {[...Array(totalStars)].map((_, index) => (
+          <Star
+            key={index}
+            className={`w-4 h-4 ${
+              index < validStarRatings ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+            }`}
+          />
+        ))}
       </div>
     );
-  };
-  return (
-    <li key={review.id}>
-      <Card className="p-3 sm:p-4 md:p-6 bg-[#EFE5FF] rounded-lg shadow-lg">
-        <CardHeader className="p-2">
-          <Flex gap="3" align="center" justify="between" className="flex-col md:flex-row">
-            {/* Avatar and Venue Information */}
-            <Flex gap="2" align="center" className="flex-col md:flex-row">
-              <Avatar>
-                <AvatarImage src={review.photos[0]} alt={review.venueLocation.name} />
-                <AvatarFallback>
-                  {review.venueLocation.name && (
-                    <>
-                      {review.venueLocation.name.charAt(0)}
-                      {review.venueLocation.name.split(' ')[1]?.charAt(0)}
-                    </>
-                  )}
-                </AvatarFallback>
-              </Avatar>
-              <Box className="text-center md:text-left mt-2 sm:mt-0 p-2">
-                <CardTitle className="text-sm sm:text-sm md:text-md lg:text-lg">
-                  {review.venueLocation.name}
-                </CardTitle>
-                <CardDescription>
-                  {`${review.venueLocation.type}, ${review.venueLocation.country}`}
-                </CardDescription>
-              </Box>
-            </Flex>
+  }
 
-            {/* Rating and Timestamp */}
-            <div className="flex flex-col items-center md:items-start mt-2 md:mt-0">
-              <div className="flex items-center">{renderStars(review.starRatings)}</div>
-              <div className="flex h-5 items-center space-x-2 md:space-x-4 text-xs md:text-sm">
-                <p className="text-xs md:text-sm text-muted-foreground">{review.timestamp}</p>
-              </div>
-            </div>
-          </Flex>
-        </CardHeader>
-        <CardContent className="p-2">
-          <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2">
-            <ShowMoreText
-              text={review.description}
-              maxLength={100}
-              className="inline"
-              style={{ display: 'inline' }}
-            />
-          </p>
-        </CardContent>
-      </Card>
-    </li>
+  async function handleVerify() {
+    setIsVerifying(true);
+    // Simulate verification process
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsVerified(true);
+    setIsVerifying(false);
+  }
+
+  async function handleMintNFT() {
+    setIsMinting(true);
+    try {
+      // TODO: Implement actual minting logic here
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating minting process
+      setIsMinted(true);
+    } catch (error) {
+      console.error('Minting failed:', error);
+      // TODO: Handle error (e.g., show error message to user)
+    } finally {
+      setIsMinting(false);
+    }
+  }
+
+  const ReviewSummary = () => (
+    <Flex gap="3" align="center" justify="between" className="flex-col md:flex-row">
+      <Flex gap="2" align="center" className="flex-col md:flex-row">
+        <Avatar>
+          <AvatarImage src={review.photos[0]} alt={review.venueLocation.name} />
+          <AvatarFallback>
+            {review.venueLocation.name && (
+              <>
+                {review.venueLocation.name.charAt(0)}
+                {review.venueLocation.name.split(' ')[1]?.charAt(0)}
+              </>
+            )}
+          </AvatarFallback>
+        </Avatar>
+        <Box className="text-center md:text-left mt-2 sm:mt-0 p-2">
+          <CardTitle className="text-sm sm:text-sm md:text-md lg:text-lg">
+            {review.venueLocation.name}
+          </CardTitle>
+          <CardDescription>
+            {`${review.venueLocation.type}, ${review.venueLocation.country}`}
+          </CardDescription>
+        </Box>
+      </Flex>
+
+      <div className="flex flex-col items-center md:items-start mt-2 md:mt-0">
+        {renderStars(review.starRatings)}
+        <p className="text-xs md:text-sm text-muted-foreground">{review.timestamp}</p>
+      </div>
+    </Flex>
   );
-};
+
+  const ReviewSkeleton = () => (
+    <div className="space-y-4">
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-2/3" />
+      <div className="space-y-2">
+        <Skeleton className="h-[200px] w-full" />
+        <div className="flex justify-between">
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+        </div>
+      </div>
+    </div>
+  );
+
+  const FullReviewContent = () => (
+    <>
+      {isVerifying && <ReviewSkeleton />}
+      {!isVerified && !isVerifying && (
+        <Button onClick={handleVerify} className="w-full mt-4">
+          Verify Review
+        </Button>
+      )}
+      {isVerified && (
+        <>
+          <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2">
+            {review.description}
+          </p>
+          <Carousel className="w-full max-w-xs mx-auto mt-4">
+            <CarouselContent>
+              {review.photos.map((src, index) => (
+                <CarouselItem key={index}>
+                  <div className="p-1">
+                    <img
+                      src={src}
+                      alt={`${review.venueLocation.name} photo ${index + 1}`}
+                      className="w-full h-48 object-cover rounded-md"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+          {!isMinted && (
+            <Button onClick={handleMintNFT} className="w-full mt-4" disabled={isMinting}>
+              {isMinting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Minting...
+                </>
+              ) : (
+                'Mint as NFT'
+              )}
+            </Button>
+          )}
+          {isMinted && (
+            <div className="flex items-center justify-center w-full mt-4 p-2 bg-green-100 text-green-700 rounded-md">
+              <Check className="mr-2" />
+              Successfully minted as NFT
+            </div>
+          )}
+        </>
+      )}
+    </>
+  );
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Card className="p-3 sm:p-4 md:p-6 bg-[#EFE5FF] rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+          <CardHeader className="p-2">
+            <ReviewSummary />
+          </CardHeader>
+        </Card>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Review Details</DialogTitle>
+        </DialogHeader>
+        <ReviewSummary />
+        <FullReviewContent />
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export default ReviewItem;

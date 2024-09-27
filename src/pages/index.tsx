@@ -1,9 +1,11 @@
 'use client';
-import React from 'react';
-import LeftSidebar from '@/components/LeftSidebar';
+import React, { useState } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
-import Navbar from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar';
+import AppWalletProvider from '@/components/AppWalletProvider';
+import MobileNavBar from '@/components/MobileNavBar';
 
 const LazyMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
@@ -11,18 +13,38 @@ const LazyMap = dynamic(() => import('@/components/Map'), {
 });
 
 export default function Home() {
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const toggleWallet = () => console.log('Toggle wallet');
+
   return (
-    <main className="flex h-screen w-screen overflow-hidden">
-      <div className="flex relative top-0 left-0 h-full z-10">
-        <LeftSidebar />
-      </div>
-      <div className="flex flex-col flex-grow w-auto">
-        <Navbar />
-        <LazyMap />
-      </div>
-      <div className="flex relative top-0 right-0 z-10">
-        <RightSidebar />
-      </div>
-    </main>
+    <AppWalletProvider>
+      <main className="relative h-screen w-screen overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <LazyMap />
+        </div>
+        {!isMobile && (
+          <div className="absolute inset-0 z-10 pointer-events-none flex">
+            <Sidebar isOpen={isLeftSidebarOpen} setIsOpen={setIsLeftSidebarOpen} side="left" />
+            <div className="flex-grow" />
+            <RightSidebar
+              isOpen={isRightSidebarOpen}
+              setIsOpen={setIsRightSidebarOpen}
+              side="right"
+            />
+          </div>
+        )}
+        {isMobile && (
+          <MobileNavBar
+            isLeftSidebarOpen={isLeftSidebarOpen}
+            isRightSidebarOpen={isRightSidebarOpen}
+            setIsLeftSidebarOpen={setIsLeftSidebarOpen}
+            setIsRightSidebarOpen={setIsRightSidebarOpen}
+            toggleWallet={toggleWallet}
+          />
+        )}
+      </main>
+    </AppWalletProvider>
   );
 }

@@ -6,6 +6,13 @@ import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
 import { postData } from '../services/werate-api';
 
+interface WalletLinkResponse {
+  data: {
+    success: boolean;
+    message?: string;
+  };
+}
+
 const SolanaWallet = () => {
   const { publicKey, connected, signMessage, disconnect } = useWallet();
   const [isSolanaAuthenticated, setIsSolanaAuthenticated] = useState(false);
@@ -43,7 +50,7 @@ const SolanaWallet = () => {
         signature: bs58.encode(signature),
         publicKey: publicKey.toString()
       });
-      const response = await postData('/api/v1/wallets/link', data);
+      const response = await postData<WalletLinkResponse>('/api/v1/wallets/link', data);
 
       if (response && response.data.success) {
         alert('Wallet is connected to your profile!');
@@ -54,7 +61,8 @@ const SolanaWallet = () => {
     } catch (error) {
       setAttemptedSign(false);
       disconnect();
-      alert(`Failed to sign the message. Please try again. Error msg:${error}`);
+      console.error('Failed to sign the message:', error);
+      alert('Failed to sign the message. Please try again.');
     }
   };
 

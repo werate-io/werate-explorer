@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.idea
 # testing
 /coverage
 
@@ -29,3 +29,5 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 .env
+
+.cursorrules

@@ -1,7 +1,8 @@
 import { useQuery } from 'react-query';
 import { getPlaceById } from '@/services/placeService';
-import { Place } from '@/types/place';
+import type { Place } from '@/types/place';
+import type { ActionResponse } from '@/types/actions';
 
 export function usePlace(placeId: string) {
-  return useQuery<Place>(['place', placeId], () => getPlaceById(placeId));
+  return useQuery<ActionResponse<Place>>(['place', placeId], () => getPlaceById(placeId));
 }
