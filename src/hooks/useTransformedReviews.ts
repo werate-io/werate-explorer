@@ -1,30 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useReviews } from '@/hooks/useReviews';
 import { getPlaceById } from '@/services/placeService';
 import { Review, UIReview } from '@/types/review';
 import { Place } from '@/types/place';
 
-export const useTransformedReviews = (currentPage: number, take: number) => {
+export const useTransformedReviews = (skip: number, take: number) => {
   const [reviews, setReviews] = useState<UIReview[]>([]);
   const [totalReviews, setTotalReviews] = useState(0);
-  const { data: resp, isLoading, error } = useReviews(currentPage, take);
+  const { data: resp, isLoading, error } = useReviews(skip, take);
 
-  useEffect(() => {
-    if (isLoading) {
-      setReviews([]);
-    } else if (resp) {
-      setTotalReviews(resp.totalElements);
-      transformReviews(resp.content);
-    }
-  }, [resp, isLoading, currentPage, take]);
-
-  const transformReviews = async (reviewsData: Review[]) => {
+  const transformReviews = useCallback(async (reviewsData: Review[]) => {
     const transformedReviews: UIReview[] = await Promise.all(
       reviewsData.map(async (review) => {
         let placeData: Place | null = null;
         if (review.placeId) {
-          const response = await getPlaceById(review.placeId);
-          placeData = response.data || null;
+          placeData = await getPlaceById(review.placeId);
         }
 
         return {
@@ -66,7 +56,14 @@ export const useTransformedReviews = (currentPage: number, take: number) => {
     );
 
     setReviews(transformedReviews);
-  };
+  }, []);
+
+  useEffect(() => {
+    if (resp) {
+      setTotalReviews(resp.total_elements);
+      transformReviews(resp.content);
+    }
+  }, [resp, transformReviews]);
 
   return { reviews, totalReviews, isLoading, error };
 };

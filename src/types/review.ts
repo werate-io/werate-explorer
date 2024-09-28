@@ -32,5 +32,5 @@ export interface UIReview {
 
 export interface ReviewsResponse {
   content: Review[];
-  totalElements: number;
+  total_elements: number;
 }

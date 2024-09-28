@@ -21,7 +21,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/Carousel';
-import { Star, Check, Loader2 } from 'lucide-react';
+import { Check, Loader2, StarIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 interface ReviewItemProps {
@@ -37,13 +37,22 @@ export function ReviewItem({ review }: ReviewItemProps) {
   function renderStars(starRatings: number) {
     const totalStars = 5;
     const validStarRatings = Math.max(0, Math.min(totalStars, starRatings));
+    const fullStars = Math.floor(validStarRatings);
+    const hasHalfStar = validStarRatings % 1 >= 0.5;
+
     return (
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center space-x-0.5">
         {[...Array(totalStars)].map((_, index) => (
-          <Star
+          <StarIcon
             key={index}
+            color='#6e1fed'
+            size={16}
             className={`w-4 h-4 ${
-              index < validStarRatings ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+              index < fullStars
+                ? 'text-[#6e1fed] fill-[#6e1fed]'
+                : index === fullStars && hasHalfStar
+                ? 'text-purple-400 fill-purple-400 half-star'
+                : 'text-purple-400'
             }`}
           />
         ))}
@@ -132,6 +141,7 @@ export function ReviewItem({ review }: ReviewItemProps) {
           <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2">
             {review.description}
           </p>
+          {review.photos.length > 0 && (
           <Carousel className="w-full max-w-xs mx-auto mt-4">
             <CarouselContent>
               {review.photos.map((src, index) => (
@@ -149,6 +159,7 @@ export function ReviewItem({ review }: ReviewItemProps) {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
+          )}
           {!isMinted && (
             <Button onClick={handleMintNFT} className="w-full mt-4" disabled={isMinting}>
               {isMinting ? (
