@@ -23,17 +23,17 @@ export function StatCard({ title, value, change, icon: Icon }: StatCardProps) {
   return (
     <Card className="w-full">
       <CardContent className="p-4">
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-center items-center mb-2">
           <div className="flex items-center">
-            {Icon && <Icon className="h-5 w-5 mr-2 text-gray-500" />}
-            <h3 className="text-sm font-medium text-gray-500">{title}</h3>
+          {Icon && <Icon className="h-5 w-5 mr-2 text-primary" />}
+            <h3 className="text-sm font-medium text-primary">{title}</h3>
           </div>
-          <ChevronRightIcon className="h-4 w-4 text-gray-400" />
+          <ChevronRightIcon className="h-4 w-4 text-primary" />
         </div>
-        <div className="flex justify-between items-end">
-          <div>
-            <p className="text-2xl font-bold">{value.toLocaleString()}</p>
-            <div className="flex items-center mt-1">
+        <div className="flex justify-center items-end">
+          <div >
+            <p className="text-center text-2xl font-bold">{value.toLocaleString()}</p>
+            {/* <div className="flex items-center mt-1">
               <div className={`p-1 rounded ${isPositive ? 'bg-green-100' : 'bg-red-100'} mr-1`}>
                 {isPositive ? (
                   <ArrowUpIcon className="h-3 w-3 text-green-600" />
@@ -44,7 +44,7 @@ export function StatCard({ title, value, change, icon: Icon }: StatCardProps) {
               <span className={`text-sm ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
                 {changeAbs}
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
       </CardContent>
