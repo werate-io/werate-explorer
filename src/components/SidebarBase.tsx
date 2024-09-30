@@ -39,14 +39,16 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
       }`}
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
-      initial="open">
+      initial="open"
+    >
       <motion.div
         className={`absolute top-1/2 ${
           isOpen ? (side === 'left' ? '-right-4' : '-left-4') : '0'
         } transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}>
+        whileTap={{ scale: 0.9 }}
+      >
         {isOpen ? (
           side === 'left' ? (
             <ChevronLeftIcon className="w-6 h-6 text-primary" />
@@ -60,7 +62,8 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
       <motion.div
         variants={contentVariants}
         className="p-4 h-full overflow-y-auto"
-        animate={isOpen ? 'open' : 'closed'}>
+        animate={isOpen ? 'open' : 'closed'}
+      >
         {React.Children.map(children, (child) =>
           React.isValidElement<TimelineFilterProps>(child)
             ? React.cloneElement(child, {

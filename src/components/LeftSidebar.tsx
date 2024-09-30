@@ -130,7 +130,8 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
               <div key={entry.name} className="flex items-center">
                 <div
                   className="w-3 h-3 mr-1 rounded-full"
-                  style={{ backgroundColor: COLORS[index] }}></div>
+                  style={{ backgroundColor: COLORS[index] }}
+                ></div>
                 <span>
                   {entry.name}: {entry.percentage}%
                 </span>
@@ -155,7 +156,8 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
                 outerRadius={60}
                 fill="#8884d8"
                 paddingAngle={5}
-                dataKey="value">
+                dataKey="value"
+              >
                 {continentData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
@@ -176,7 +178,8 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
             <BarChart
               data={ratingCategoriesData}
               layout="vertical"
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
               <XAxis type="number" domain={[0, 5]} />
               <YAxis dataKey="name" type="category" />
               <Tooltip />

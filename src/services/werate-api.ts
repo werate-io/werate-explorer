@@ -47,4 +47,3 @@ export const getData = async <T>(
     throw error;
   }
 };
-

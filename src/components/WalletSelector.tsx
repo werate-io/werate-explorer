@@ -29,7 +29,8 @@ export default function WalletSelector({ isOpen, setIsOpen }: WalletSelectorProp
               disconnect();
               setIsOpen(false);
             }}
-            className="text-xs md:text-sm">
+            className="text-xs md:text-sm"
+          >
             Disconnect
           </Button>
         </div>
