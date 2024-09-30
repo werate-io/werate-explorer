@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/Dialog';
+} from '@/components/ui/DialogShad';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Label } from '@/components/ui/Label';
 import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/PopoverShad';
 import { checkMfa, login, register } from '@/services/auth';
 
 export default function Navbar() {
