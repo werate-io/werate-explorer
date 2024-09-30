@@ -32,7 +32,7 @@ export function StatCard({ title, value, change, icon: Icon }: StatCardProps) {
         </div>
         <div className="flex justify-center items-end">
           <div >
-            <p className="text-center text-2xl font-bold">{value.toLocaleString()}</p>
+            <p className="text-center text-2xl font-bold">{value}</p>
             {/* <div className="flex items-center mt-1">
               <div className={`p-1 rounded ${isPositive ? 'bg-green-100' : 'bg-red-100'} mr-1`}>
                 {isPositive ? (
@@ -52,12 +52,18 @@ export function StatCard({ title, value, change, icon: Icon }: StatCardProps) {
   );
 }
 
-export default function StatsSection() {
+interface StatsSectionProps {
+  totalReviews: number;
+  totalUsers: number;
+  totalContinents: number;
+}
+
+export default function StatsSection({ totalReviews, totalUsers, totalContinents }: StatsSectionProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <StatCard title="Reviews" value={697738} change={1118} icon={StarIcon} />
-      <StatCard title="WeRaters" value={58704} change={-203} icon={UsersIcon} />
-      <StatCard title="Countries" value={195} change={2} icon={GlobeIcon} />
+      <StatCard title="Reviews" value={totalReviews} change={1118} icon={StarIcon} />
+      <StatCard title="WeRaters" value={totalUsers} change={-203} icon={UsersIcon} />
+      <StatCard title="Countries" value={totalContinents} change={2} icon={GlobeIcon} />
     </div>
   );
 }

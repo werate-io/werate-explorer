@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SidebarBase from './SidebarBase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
@@ -27,13 +27,9 @@ import {
 } from 'recharts';
 import {
   COLORS,
-  continentData,
-  phoneUsageData,
-  ratingCategoriesData,
-  reviewTimelineData,
   TimelineFilter
 } from '@/lib/constants';
-
+import { useOverallReviewStatistics } from '@/hooks/useOverallReviewStatistics';
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -41,24 +37,68 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
-  const [timelineFilter, setTimelineFilter] = React.useState<TimelineFilter>('1D');
+  const [totalReviews, setTotalReviews] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalContinents, setTotalContinents] = useState(0);
+  const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1D');
+  const [reviewTimelineData, setReviewTimelineData] = useState<Array<{ date: TimelineFilter; count: number }>>([]);
+  const [phoneUsageData, setPhoneUsageData] = useState<Array<{ os: string; count: number }>>([]);
+  const [continentData, setContinentData] = useState<Array<{ continent: string; count: number }>>([]);
+  const [ratingCategoriesData, setRatingCategoriesData] = useState<Array<{ rating: number; count: number }>>([]);
+  const { data, isLoading } = useOverallReviewStatistics();
+
+  useEffect(() => {
+    if (data && !isLoading) {
+      setTotalReviews(data.totalReviews);
+      setTotalUsers(data.totalUniqueUsers);
+      setTotalContinents(data.totalUniqueCountries);
+      setReviewTimelineData(data.timeline);
+      setPhoneUsageData(data.phoneUsageData);
+      setContinentData(data.continentData);
+      setRatingCategoriesData(data.ratingCategoriesData);
+    }
+  }, [data, isLoading]);
 
   return (
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
       <SidebarContent
+        totalReviews={totalReviews}
+        totalUsers={totalUsers}
+        totalContinents={totalContinents}
         timelineFilter={timelineFilter}
         setTimelineFilter={(filter: TimelineFilter) => setTimelineFilter(filter)}
+        reviewTimelineData={reviewTimelineData}
+        phoneUsageData={phoneUsageData}
+        continentData={continentData}
+        ratingCategoriesData={ratingCategoriesData}
       />
     </SidebarBase>
   );
 }
 
 interface SidebarContentProps {
+  totalReviews: number;
+  totalUsers: number;
+  totalContinents: number;
   timelineFilter: TimelineFilter;
   setTimelineFilter: (filter: TimelineFilter) => void;
+  reviewTimelineData: any[];
+  phoneUsageData: any[];
+  continentData: any[];
+  ratingCategoriesData: any[];
 }
 
-function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentProps) {
+function SidebarContent({
+  totalReviews,
+  totalUsers,
+  totalContinents,
+  timelineFilter,
+  setTimelineFilter,
+  reviewTimelineData,
+  phoneUsageData,
+  continentData,
+  ratingCategoriesData
+}: SidebarContentProps) {
   return (
     <div className="space-y-4">
       <Card className="bg-primary text-white border-none">
@@ -103,7 +143,11 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
 
       <Card className="mb-4 bg-slate-50 border-none">
         <CardContent>
-          <StatsSection />
+          <StatsSection 
+            totalReviews={totalReviews} 
+            totalUsers={totalUsers} 
+            totalContinents={totalContinents} 
+          />
         </CardContent>
       </Card>
 

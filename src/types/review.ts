@@ -1,3 +1,5 @@
+import { TimelineFilter } from "@/lib/constants";
+
 export interface Review {
   id: string;
   placeId: string;
@@ -33,4 +35,26 @@ export interface UIReview {
 export interface ReviewsResponse {
   content: Review[];
   total_elements: number;
+}
+
+export interface OverallReviewStatisticsResponse {
+  totalReviews: number;
+  totalUniqueUsers: number;
+  totalUniqueCountries: number;
+  timeline: {
+    date: TimelineFilter;
+    count: number;
+  }[];
+  phoneUsageData: {
+    os: string;
+    count: number;
+  }[];
+  continentData: {
+    continent: string;
+    count: number;
+  }[];
+  ratingCategoriesData: {
+    rating: number;
+    count: number;
+  }[];
 }
