@@ -1,4 +1,4 @@
-import { TimelineFilter } from "@/lib/constants";
+import { TimelineFilter } from '@/lib/constants';
 
 export interface Review {
   id: string;
@@ -25,6 +25,8 @@ export interface UIReview {
   venueLocation: {
     name: string;
     country: string;
+    locality: string;
+    region: string;
     type: string;
     lat: number;
     long: number;
@@ -34,6 +36,7 @@ export interface UIReview {
 
 export interface ReviewsResponse {
   content: Review[];
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   total_elements: number;
 }
 
@@ -46,15 +49,19 @@ export interface OverallReviewStatisticsResponse {
     count: number;
   }[];
   phoneUsageData: {
-    os: string;
-    count: number;
+    name: string;
+    percentage: number;
   }[];
-  continentData: {
-    continent: string;
+  countryData: {
+    country: string;
     count: number;
   }[];
   ratingCategoriesData: {
-    rating: number;
-    count: number;
+    name: string;
+    median: number;
+    q1: number;
+    q3: number;
+    min: number;
+    max: number;
   }[];
 }

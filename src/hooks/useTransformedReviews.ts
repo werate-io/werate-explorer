@@ -15,6 +15,7 @@ export const useTransformedReviews = (skip: number, take: number) => {
         let placeData: Place | null = null;
         if (review.placeId) {
           placeData = await getPlaceById(review.placeId);
+          console.log(placeData);
         }
 
         return {
@@ -33,12 +34,9 @@ export const useTransformedReviews = (skip: number, take: number) => {
           venueLocation: placeData
             ? {
                 name: placeData.details.name,
-                country: (() => {
-                  const lastSpaceIndex = placeData.details.address.lastIndexOf(' ');
-                  return lastSpaceIndex !== -1
-                    ? placeData.details.address.substring(lastSpaceIndex + 1).trim()
-                    : '';
-                })(),
+                country: placeData.details.location.country,
+                locality: placeData.details.location.locality,
+                region: placeData.details.location.region,
                 type: placeData.details.category,
                 lat: placeData.details.geocodes.main.latitude,
                 long: placeData.details.geocodes.main.longitude

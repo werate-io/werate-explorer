@@ -21,7 +21,7 @@ const ReviewsList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const skip = useMemo(() => (currentPage - 1) * TAKE, [currentPage]);
-  
+
   const { reviews, totalReviews, isLoading, error } = useTransformedReviews(skip, TAKE);
 
   const totalPages = useMemo(() => Math.ceil(totalReviews / TAKE), [totalReviews]);
@@ -71,11 +71,11 @@ const ReviewsList: React.FC = () => {
         </div>
       )}
       {publicKey ? (
-        <ReviewContent 
-          reviews={reviews} 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          handlePageChange={handlePageChange} 
+        <ReviewContent
+          reviews={reviews}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
         />
       ) : (
         <div className="flex items-center justify-center w-full">
@@ -93,15 +93,22 @@ interface ReviewContentProps {
   handlePageChange: (page: number) => void;
 }
 
-const ReviewContent: React.FC<ReviewContentProps> = ({ reviews, currentPage, totalPages, handlePageChange }) => (
-  <div className='w-full'>
+const ReviewContent: React.FC<ReviewContentProps> = ({
+  reviews,
+  currentPage,
+  totalPages,
+  handlePageChange
+}) => (
+  <div className="w-full">
     <ul className="space-y-4 sm:space-y-6 md:space-y-8 flex-grow">
-      {reviews.map((review) => <ReviewItem key={review.id} review={review} />)}
+      {reviews.map((review) => (
+        <ReviewItem key={review.id} review={review} />
+      ))}
     </ul>
-    <PaginationControls 
-      currentPage={currentPage} 
-      totalPages={totalPages} 
-      handlePageChange={handlePageChange} 
+    <PaginationControls
+      currentPage={currentPage}
+      totalPages={totalPages}
+      handlePageChange={handlePageChange}
     />
   </div>
 );
@@ -112,7 +119,11 @@ interface PaginationControlsProps {
   handlePageChange: (page: number) => void;
 }
 
-const PaginationControls: React.FC<PaginationControlsProps> = ({ currentPage, totalPages, handlePageChange }) => (
+const PaginationControls: React.FC<PaginationControlsProps> = ({
+  currentPage,
+  totalPages,
+  handlePageChange
+}) => (
   <div className="flex w-full items-center justify-center mt-4 sm:mt-6">
     <Pagination>
       <PaginationContent>

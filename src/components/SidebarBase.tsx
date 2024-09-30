@@ -21,7 +21,7 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1W');
 
   const sidebarVariants = {
-    open: { width: '450px', opacity: 1 },
+    open: { width: '100%', opacity: 1 },
     closed: { width: '40px', opacity: 1 }
   };
 
@@ -36,14 +36,14 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
     <motion.div
       className={`h-full bg-white/80 backdrop-blur-sm text-slate-800 shadow-lg relative pointer-events-auto ${
         side === 'left' ? 'left-0' : 'right-0'
-      }`}
+      } max-w-[450px] w-full`}
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
       initial="open">
       <motion.div
         className={`absolute top-1/2 ${
           isOpen ? (side === 'left' ? '-right-4' : '-left-4') : '0'
-        } transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer`}
+        } transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer hidden md:block`}
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}>
