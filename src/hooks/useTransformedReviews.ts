@@ -15,7 +15,6 @@ export const useTransformedReviews = (skip: number, take: number) => {
         let placeData: Place | null = null;
         if (review.placeId) {
           placeData = await getPlaceById(review.placeId);
-          console.log(placeData);
         }
 
         return {
@@ -45,6 +44,8 @@ export const useTransformedReviews = (skip: number, take: number) => {
                 name: 'Unknown',
                 country: 'Unknown',
                 type: 'Unknown',
+                locality: 'Unknown',
+                region: 'Unknown',
                 lat: 0,
                 long: 0
               },
