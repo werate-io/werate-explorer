@@ -49,8 +49,7 @@ export default function MobileNavBar({
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 md:hidden z-50">
         <button
           onClick={() => setIsLeftSidebarOpen(!isLeftSidebarOpen)}
-          className={`p-2 ${isLeftSidebarOpen ? 'text-primary' : 'text-gray-600'}`}
-        >
+          className={`p-2 ${isLeftSidebarOpen ? 'text-primary' : 'text-gray-600'}`}>
           <BarChart2 className="w-6 h-6" />
         </button>
         <button onClick={toggleWallet} className="p-2">
@@ -58,8 +57,7 @@ export default function MobileNavBar({
         </button>
         <button
           onClick={() => setIsRightSidebarOpen(!isRightSidebarOpen)}
-          className={`p-2 ${isRightSidebarOpen ? 'text-primary' : 'text-gray-600'}`}
-        >
+          className={`p-2 ${isRightSidebarOpen ? 'text-primary' : 'text-gray-600'}`}>
           <UserCircle className="w-6 h-6" />
         </button>
       </div>

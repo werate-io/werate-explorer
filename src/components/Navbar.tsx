@@ -167,8 +167,7 @@ export default function Navbar() {
                   )}
                   <Button
                     type="submit"
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                  >
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                     Verify
                   </Button>
                 </form>
@@ -177,14 +176,12 @@ export default function Navbar() {
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger
                       value="login"
-                      className={`${activeTab === 'login' ? '!bg-primary !text-white' : ''}`}
-                    >
+                      className={`${activeTab === 'login' ? '!bg-primary !text-white' : ''}`}>
                       Login
                     </TabsTrigger>
                     <TabsTrigger
                       value="register"
-                      className={`${activeTab === 'register' ? '!bg-primary !text-white' : ''}`}
-                    >
+                      className={`${activeTab === 'register' ? '!bg-primary !text-white' : ''}`}>
                       Register
                     </TabsTrigger>
                   </TabsList>
@@ -218,8 +215,7 @@ export default function Navbar() {
                       )}
                       <Button
                         type="submit"
-                        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                      >
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                         Login
                       </Button>
                     </form>
@@ -254,8 +250,7 @@ export default function Navbar() {
                       )}
                       <Button
                         type="submit"
-                        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                      >
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                         Register
                       </Button>
                     </form>

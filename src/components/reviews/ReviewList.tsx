@@ -150,8 +150,7 @@ function ReviewsList() {
                       e.preventDefault();
                       handlePageChange(index + 1);
                     }}
-                    className={currentPage === index + 1 ? 'bg-primary text-white' : ''}
-                  >
+                    className={currentPage === index + 1 ? 'bg-primary text-white' : ''}>
                     {index + 1}
                   </PaginationLink>
                 </PaginationItem>

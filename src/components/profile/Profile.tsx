@@ -33,8 +33,7 @@ export default function ProfileWithStats() {
           <CardTitle className="text-white text-2xl font-bold">Profile</CardTitle>
           <Button
             className="flex items-center gap-2 bg-purple-600 hover:bg-purple-800 text-white p-2 rounded"
-            onClick={disconnect}
-          >
+            onClick={disconnect}>
             <Wallet className="h-5 w-5" />
             Disconnect
           </Button>

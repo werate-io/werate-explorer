@@ -267,8 +267,7 @@ const ReviewsList: React.FC = () => {
                       <PaginationLink
                         href="#"
                         onClick={() => handlePageChange(index + 1)}
-                        className={currentPage === index + 1 ? 'bg-primary text-white' : ''}
-                      >
+                        className={currentPage === index + 1 ? 'bg-primary text-white' : ''}>
                         {index + 1}
                       </PaginationLink>
                     </PaginationItem>
