@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:lts AS base
 
 # Step 1. Rebuild the source code only when needed
 FROM base AS builder
@@ -30,7 +30,7 @@ RUN yarn build
 # Note: It is not necessary to add an intermediate step that does a full copy of `node_modules` here
 
 # Step 2. Production image, copy all the files and run next
-FROM base AS runner
+FROM node:lts-alpine AS runner
 
 WORKDIR /app
 

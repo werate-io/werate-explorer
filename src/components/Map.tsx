@@ -1,5 +1,5 @@
 // Map.tsx
-"use client";
+'use client';
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression, LatLngTuple } from "leaflet";

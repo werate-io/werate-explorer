@@ -1,12 +1,8 @@
-import apiClient from './apiClient';
+import { ActionResponse } from '@/types/actions';
 import { Place } from '@/types/place';
+import { getData } from './werate-api';
 
-export async function getPlaceById(placeId: string): Promise<Place> {
-  try {
-    const response = await apiClient.get(`/places/${placeId}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching place with ID ${placeId}:`, error);
-    throw new Error('Failed to fetch place data. Please try again later.');
-  }
+export async function getPlaceById(placeId: string): Promise<ActionResponse<Place>> {
+  const place = await getData<Place>(`/places/${placeId}`);
+  return { data: place } as ActionResponse<Place>;
 }

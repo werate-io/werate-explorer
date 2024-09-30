@@ -13,7 +13,7 @@ export const useTransformedReviews = (currentPage: number, take: number) => {
     if (isLoading) {
       setReviews([]);
     } else if (resp) {
-      setTotalReviews(resp.total_elements);
+      setTotalReviews(resp.totalElements);
       transformReviews(resp.content);
     }
   }, [resp, isLoading, currentPage, take]);
@@ -23,7 +23,8 @@ export const useTransformedReviews = (currentPage: number, take: number) => {
       reviewsData.map(async (review) => {
         let placeData: Place | null = null;
         if (review.placeId) {
-          placeData = await getPlaceById(review.placeId);
+          const response = await getPlaceById(review.placeId);
+          placeData = response.data || null;
         }
 
         return {

@@ -1,9 +1,17 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useState, useEffect } from "react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { decodeUTF8 } from "tweetnacl-util";
+import React from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useState, useEffect } from 'react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
-import { postData } from "../services/werate-api";
+import { postData } from '../services/werate-api';
+
+interface WalletLinkResponse {
+  data: {
+    success: boolean;
+    message?: string;
+  };
+}
 
 const SolanaWallet = () => {
   const { publicKey, connected, signMessage, disconnect, connect } = useWallet();
@@ -40,9 +48,9 @@ const SolanaWallet = () => {
       const data = JSON.stringify({
         message,
         signature: bs58.encode(signature),
-        publicKey: publicKey.toString(),
+        publicKey: publicKey.toString()
       });
-      const response = await postData('/api/v1/wallets/link', data);
+      const response = await postData<WalletLinkResponse>('/api/v1/wallets/link', data);
 
       if (response && response.data.success) {
         alert('Wallet is connected to your profile!');
@@ -51,16 +59,17 @@ const SolanaWallet = () => {
         alert(response?.data?.message || 'An error occurred');
       }
     } catch (error) {
-        setAttemptedSign(false);
-        disconnect();
-        alert('Failed to sign the message. Please try again.');
+      setAttemptedSign(false);
+      disconnect();
+      console.error('Failed to sign the message:', error);
+      alert('Failed to sign the message. Please try again.');
     }
   };
 
   return (
     <>
       {isSolanaAuthenticated && (
-        <div style={{ position: "absolute", top: 5, right: 5, zIndex: 1000 }}>
+        <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1000 }}>
           <WalletMultiButton />
         </div>
       )}
