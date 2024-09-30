@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // You should replace this with your actual Mapbox access token
-mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+mapboxgl.accessToken = process.env.MAPBOX_KEY || ''; // Provide a default value
 
 export default function MapboxMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
