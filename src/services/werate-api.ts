@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
-dotenv.config({ path: '.env' });
 
 const instance = axios.create({
   baseURL: 'https://api.werate.io'
