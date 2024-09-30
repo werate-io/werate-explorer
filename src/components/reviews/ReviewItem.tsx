@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/Dialog';
+} from '@/components/ui/DialogShad';
 import {
   Carousel,
   CarouselContent,
