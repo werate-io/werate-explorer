@@ -7,7 +7,6 @@ import SolanaWallet from "./solana-wallet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import {MintButton} from '../services/ReviewMint';
 
 interface MapProps {
   posix?: LatLngExpression | LatLngTuple;
@@ -29,8 +28,6 @@ const Map = (Map: MapProps) => {
       scrollWheelZoom={false}
       style={{ height: "100%", width: "100%" }}
     >
-      <SolanaWallet />
-      <MintButton></MintButton>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

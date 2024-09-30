@@ -32,7 +32,8 @@ const mockReviews: UIReview[] = [
       lat: 40.7128,
       long: -74.006
     },
-    device: 'iPhone 12'
+    device: 'iPhone 12',
+    hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a'
   },
   {
     id: '2',
@@ -51,7 +52,8 @@ const mockReviews: UIReview[] = [
       lat: 40.7128,
       long: -74.006
     },
-    device: 'iPhone 12'
+    device: 'iPhone 12',
+    hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a'
   }
   // ... Add more mock reviews here
 ];

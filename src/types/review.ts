@@ -28,6 +28,7 @@ export interface UIReview {
     long: number;
   };
   device: string;
+  hash: string;
 }
 
 export interface ReviewsResponse {

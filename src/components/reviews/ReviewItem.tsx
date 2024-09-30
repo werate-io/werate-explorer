@@ -23,6 +23,8 @@ import {
 } from '@/components/ui/Carousel';
 import { Star, Check, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { reviewMint } from '../../services/ReviewMint';
 
 interface ReviewItemProps {
   review: UIReview;
@@ -33,6 +35,7 @@ export function ReviewItem({ review }: ReviewItemProps) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isMinted, setIsMinted] = useState(false);
+  const wallet = useWallet();
 
   function renderStars(starRatings: number) {
     const totalStars = 5;
@@ -61,15 +64,11 @@ export function ReviewItem({ review }: ReviewItemProps) {
 
   async function handleMintNFT() {
     setIsMinting(true);
-    try {
-      // TODO: Implement actual minting logic here
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating minting process
+    const mint_result = await reviewMint(review.id, review.hash, wallet);
+    if (mint_result) {
       setIsMinted(true);
-    } catch (error) {
-      console.error('Minting failed:', error);
-      // TODO: Handle error (e.g., show error message to user)
-    } finally {
-      setIsMinting(false);
+    } else {
+      alert('Minting failed');
     }
   }
 

@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 
 const instance = axios.create({
-  baseURL: 'https://api.werate.io'
+  baseURL: 'http://localhost:8080'
 });
 
 const getBearerToken = (): string => {
@@ -15,7 +15,7 @@ const getBearerToken = (): string => {
 
 const getBaseHeaders = (): Record<string, string> => ({
   'Content-Type': 'application/json',
-  Authorization: getBearerToken()
+//   Authorization: getBearerToken()
 });
 
 const baseHeaders = getBaseHeaders();
@@ -40,7 +40,7 @@ export const getData = async <T>(
       params
     });
 
-    return response.data;
+    return response.data as T;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;
