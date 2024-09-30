@@ -2,18 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Label } from '@/components/ui/label';
+} from '@/components/ui/Dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { Label } from '@/components/ui/Label';
 import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
 import { checkMfa, login, register } from '@/services/auth';
 
 export default function Navbar() {
