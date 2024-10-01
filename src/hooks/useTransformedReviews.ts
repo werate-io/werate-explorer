@@ -60,7 +60,9 @@ export const useTransformedReviews = (currentPage: number, take: number) => {
                 lat: 0,
                 long: 0
               },
-          device: review.avatarId
+          device: review.avatarId,
+          hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
+          arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
         };
       })
     );
