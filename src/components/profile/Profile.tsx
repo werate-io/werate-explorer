@@ -6,13 +6,13 @@ import { MapPinIcon, StarIcon, GlobeIcon } from 'lucide-react';
 import { WalletIcon, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { WalletMultiButton } from '../ui/wallet-adapter-react-ui';
 import { postWalletLink } from '../../services/walletService';
 import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
 
 export default function ProfileWithStats() {
-  const { publicKey, connected, signMessage, disconnect } = useWallet();
+  const { publicKey, connected, connecting, signMessage, disconnect } = useWallet();
 
   useEffect(() => {
     if (connected && publicKey && signMessage) {
@@ -25,7 +25,7 @@ export default function ProfileWithStats() {
       if (!publicKey) throw new Error('Wallet not connected!');
       if (!signMessage) throw new Error('Wallet does not support message signing!');
 
-      const message = 'werate';
+      const message = 'Hackathon-WeRate';
       const signature = await signMessage(decodeUTF8(message));
 
       const data = {
@@ -56,7 +56,9 @@ export default function ProfileWithStats() {
 
           <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-800 text-white font-bold py-2 px-4 rounded text-sm flex items-center gap-2">
             <WalletIcon className="h-5 w-5" />
-            <span className="ml-2">Connect Wallet</span>
+            {
+              !connecting ? <span className="ml-2">Connect Wallet</span> : <span className="ml-2">Connectinig ...</span>
+            }
           </WalletMultiButton>
         </CardHeader>
       </Card>
