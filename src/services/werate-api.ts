@@ -7,16 +7,16 @@ const instance = axios.create({
   baseURL: 'https://api.werate.io'
 });
 
-const getBearerToken = (): string => {
-  const accessToken = localStorage.getItem('token');
-  // TODO add error handling
-  return `Bearer ${accessToken}`;
-};
+// const getBearerToken = (): string => {
+//   const accessToken = localStorage.getItem('token');
+//   // TODO add error handling
+//   return `Bearer ${accessToken}`;
+// };
 
 const getBaseHeaders = (): Record<string, string> => ({
   /* eslint-disable */
     'Content-Type': 'application/json',
-    Authorization: getBearerToken()
+    // Authorization: getBearerToken()
 	 /* eslint-enable */
 });
 
