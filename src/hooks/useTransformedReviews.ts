@@ -62,7 +62,9 @@ export const useTransformedReviews = (currentPage: number, take: number) => {
               },
           device: review.avatarId,
           hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
+          /* eslint-disable */
           arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
+          /* eslint-enable */
         };
       })
     );
