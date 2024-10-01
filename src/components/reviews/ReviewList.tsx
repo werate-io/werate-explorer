@@ -35,7 +35,9 @@ const mockReviews: UIReview[] = [
     },
     device: 'iPhone 12',
     hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
+    /* eslint-disable */
     arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
+    /* eslint-enable */
   },
   {
     id: '2',
@@ -56,13 +58,15 @@ const mockReviews: UIReview[] = [
     },
     device: 'iPhone 12',
     hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
+    /* eslint-disable */
     arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
+    /* eslint-enable */
   }
   // ... Add more mock reviews here
 ];
-
+/* eslint-disable */
 const verifyReviews: VerifyReview = {
-  text: "This place is absolutely beautiful! The scenery is breathtaking",
+  text: 'This place is absolutely beautiful! The scenery is breathtaking',
   created_at: new Date(),
   location_rating: 4,
   vibe_rating: 4,
@@ -72,26 +76,26 @@ const verifyReviews: VerifyReview = {
   overall_rating: 4,
   cleanliness_rating: 4
 };
-
+/* eslint-enable */
 const placeDetails: PlaceDetails = {
-  placeId: "123",
-  name: "famous",
+  placeId: '123',
+  name: 'famous',
   geocodes: {
-      main: {
-          latitude: 45,
-          longitude: 50
-      }
+    main: {
+      latitude: 45,
+      longitude: 50
+    }
   },
-  types: ['a','b','c'],
+  types: ['a', 'b', 'c'],
   category: PlaceCategory.DRINK,
-  photos: ['a123','b123','c123'],
+  photos: ['a123', 'b123', 'c123'],
   address: 'abcdefg',
   location: {
     address: 'aaa',
     country: 'bbb',
     locality: 'ccc',
     postcode: 'ddd',
-    region: 'eee',
+    region: 'eee'
   },
   telephone: '+1 321-348-7118',
   website: 'https://werate.io',
@@ -109,11 +113,9 @@ const placeDetails: PlaceDetails = {
         day: 20,
         open: 'ddd'
       }
-    ],
+    ]
   }
 };
-
-
 
 function ReviewSkeleton() {
   return (
@@ -182,7 +184,14 @@ function ReviewsList() {
                   <ReviewSkeleton />
                 </li>
               ))
-          : paginatedReviews.map((review) => <ReviewItem key={review.id} review={review} verifyReview={verifyReviews} placeDetails={placeDetails} />)}
+          : paginatedReviews.map((review) => (
+              <ReviewItem
+                key={review.id}
+                review={review}
+                verifyReview={verifyReviews}
+                placeDetails={placeDetails}
+              />
+            ))}
       </ul>
       <div className="flex w-full items-center justify-center mt-4 sm:mt-6">
         <Pagination>

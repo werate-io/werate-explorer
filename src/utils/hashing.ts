@@ -1,13 +1,19 @@
-import {Review} from '../schemas/ReviewSchema';
-import {createHash} from 'crypto';
-import {PlaceDetails} from '../schemas/PlaceDetailsSchema';
-import {ObfuscatedReview} from '../schemas/ObfuscatedReviewSchema';
+import { Review } from '../schemas/ReviewSchema';
+import { createHash } from 'crypto';
+import { PlaceDetails } from '../schemas/PlaceDetailsSchema';
+import { ObfuscatedReview } from '../schemas/ObfuscatedReviewSchema';
 
 const hashData = (...args: string[]) => {
   return createHash('sha256').update(args.filter(Boolean).join('')).digest('hex');
 };
 
-export const obfuscateReview = (review: Review, userId: string, images: string[], placeDetails: PlaceDetails): ObfuscatedReview => {
+export const obfuscateReview = (
+  review: Review,
+  userId: string,
+  images: string[],
+  placeDetails: PlaceDetails
+): ObfuscatedReview => {
+  /* eslint-disable */
   return {
     userId,
     text: review.text,
@@ -22,11 +28,17 @@ export const obfuscateReview = (review: Review, userId: string, images: string[]
     imagesHash: hashData(...images),
     latitude: placeDetails.geocodes.main.latitude,
     longitude: placeDetails.geocodes.main.longitude,
-    country: placeDetails.location?.country,
+    country: placeDetails.location?.country
   };
+  /* eslint-enable */
 };
 
-export const hashReview = (review: Review, userId: string, images: string[], placeDetails: PlaceDetails): string => {
+export const hashReview = (
+  review: Review,
+  userId: string,
+  images: string[],
+  placeDetails: PlaceDetails
+): string => {
   const obfuscatedReview = obfuscateReview(review, userId, images, placeDetails);
 
   const userHash = hashData(obfuscatedReview.userId);
@@ -43,7 +55,11 @@ export const hashReview = (review: Review, userId: string, images: string[], pla
   );
 
   const imagesHash = obfuscatedReview.imagesHash;
-  const placeHash = hashData(obfuscatedReview.latitude.toString(), obfuscatedReview.longitude.toString(), obfuscatedReview.country ?? '');
+  const placeHash = hashData(
+    obfuscatedReview.latitude.toString(),
+    obfuscatedReview.longitude.toString(),
+    obfuscatedReview.country ?? ''
+  );
 
   return hashData(userHash, reviewHash, imagesHash, placeHash);
 };

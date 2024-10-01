@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/Dialog';
+} from '@/components/ui/DialogShad';
 import {
   Carousel,
   CarouselContent,
@@ -60,7 +60,13 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
 
   async function handleVerify() {
     setIsVerifying(true);
-    const verify_result = await reviewVerify(verifyReview, review.userId, review.photos, placeDetails, review.arweave_tx_id);
+    const verify_result = await reviewVerify(
+      verifyReview,
+      review.userId,
+      review.photos,
+      placeDetails,
+      review.arweave_tx_id
+    );
     if (verify_result) {
       setIsVerified(true);
       setIsVerifying(false);

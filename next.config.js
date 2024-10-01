@@ -3,8 +3,8 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/api/v1/:path*',
-        destination: 'https://mobile.werate.io/api/v1/:path*' // Proxy to Backend
+        source: '/api/:path*',
+        destination: 'https://api.werate.io/:path*' // Proxy to Backend
       }
     ];
   }
