@@ -56,9 +56,11 @@ export default function ProfileWithStats() {
 
           <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-800 text-white font-bold py-2 px-4 rounded text-sm flex items-center gap-2">
             <WalletIcon className="h-5 w-5" />
-            {
-              !connecting ? <span className="ml-2">Connect Wallet</span> : <span className="ml-2">Connectinig ...</span>
-            }
+            {!connecting ? (
+              <span className="ml-2">Connect Wallet</span>
+            ) : (
+              <span className="ml-2">Connectinig ...</span>
+            )}
           </WalletMultiButton>
         </CardHeader>
       </Card>
