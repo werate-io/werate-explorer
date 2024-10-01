@@ -24,8 +24,7 @@ export const reviewVerify = async (review: Review, userId: string, images: strin
             return false;
         }
     } catch (error) {
-        console.error('Failed to get transaction from ArWeave', error);
-        return null;
+        return false;
     }
     
 };

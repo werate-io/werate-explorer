@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UIReview } from '@/types/review';
+import { UIReview, VerifyReview } from '@/types/review';
+import { PlaceDetails } from '@/types/place';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
@@ -25,12 +26,15 @@ import { Star, Check, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { reviewMint } from '../../services/ReviewMint';
+import { reviewVerify } from '../../services/ReviewVerify';
 
 interface ReviewItemProps {
   review: UIReview;
+  verifyReview: VerifyReview;
+  placeDetails: PlaceDetails;
 }
 
-export function ReviewItem({ review }: ReviewItemProps) {
+export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemProps) {
   const [isVerified, setIsVerified] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
@@ -56,10 +60,13 @@ export function ReviewItem({ review }: ReviewItemProps) {
 
   async function handleVerify() {
     setIsVerifying(true);
-    // Simulate verification process
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsVerified(true);
-    setIsVerifying(false);
+    const verify_result = await reviewVerify(verifyReview, review.userId, review.photos, placeDetails, review.arweave_tx_id);
+    if (verify_result) {
+      setIsVerified(true);
+      setIsVerifying(false);
+    } else {
+      alert('Verify failed');
+    }
   }
 
   async function handleMintNFT() {
