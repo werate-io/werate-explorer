@@ -150,7 +150,13 @@ function SidebarContent({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={100}>
-            <LineChart data={reviewTimelineData[timelineFilter]}>
+            <LineChart
+              data={
+                reviewTimelineData.find((item) => item.date === timelineFilter)?.count
+                  ? [reviewTimelineData.find((item) => item.date === timelineFilter)!.count]
+                  : []
+              }>
+              {' '}
               <XAxis dataKey="date" stroke="#8B5CF6" />
               <YAxis stroke="#8B5CF6" />
               <Tooltip />
