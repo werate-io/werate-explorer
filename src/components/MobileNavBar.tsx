@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { BarChart2, UserCircle, X } from 'lucide-react';
-import Sidebar from './Sidebar';
+import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
 
 interface MobileNavBarProps {
@@ -29,7 +29,7 @@ export default function MobileNavBar({
                 <button onClick={() => setIsLeftSidebarOpen(false)} className="mb-4">
                   <X className="w-6 h-6" />
                 </button>
-                <Sidebar isOpen={true} setIsOpen={() => {}} side="left" />
+                <LeftSidebar isOpen={true} setIsOpen={() => {}} side="left" />
               </div>
             </div>
           )}

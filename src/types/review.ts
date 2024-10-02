@@ -65,3 +65,5 @@ export interface OverallReviewStatisticsResponse {
     max: number;
   }[];
 }
+export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
+export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;

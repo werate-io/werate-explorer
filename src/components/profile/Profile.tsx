@@ -35,7 +35,7 @@ export default function ProfileWithStats() {
         <>
         <Card className="w-full bg-primary p-4 rounded-lg shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between gap-4 p-4">
-          <CardTitle className="text-white text-2xl font-bold">Profile</CardTitle>
+          <CardTitle className="text-white text-lg md:text-xl font-bold">Profile</CardTitle>
           <Button
             className="flex items-center gap-2 bg-purple-600 hover:bg-purple-800 text-white p-2 rounded"
             onClick={disconnect}>
@@ -46,7 +46,7 @@ export default function ProfileWithStats() {
         <CardHeader className="flex flex-row items-center justify-between gap-4 p-4">
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12 bg-slate-50">
-              <AvatarImage src="https://robohash.org/mail@ashallendesign.co.uk" alt="User avatar" />
+              <AvatarImage src={profile?.favoriteAvatarId} alt="User avatar" />
               <AvatarFallback>
                 {profile?.nickname?.slice(0, 2).toUpperCase()}
               </AvatarFallback>

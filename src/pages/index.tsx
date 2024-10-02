@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
-import Sidebar from '@/components/Sidebar';
+import LeftSidebar from '@/components/LeftSidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
 
@@ -43,7 +43,7 @@ export default function Home() {
         </div>
         {!isMobile && (
           <div className="absolute inset-0 z-10 pointer-events-none flex">
-            <Sidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
+            <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
             <div className="flex-grow" />
             <RightSidebar isOpen={isRightSidebarOpen} setIsOpen={toggleRightSidebar} side="right" />
           </div>

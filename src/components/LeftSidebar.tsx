@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SidebarBase from './SidebarBase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
@@ -27,13 +27,9 @@ import {
 } from 'recharts';
 import {
   COLORS,
-  continentData,
-  phoneUsageData,
-  ratingCategoriesData,
-  reviewTimelineData,
-  TimelineFilter
 } from '@/lib/constants';
-
+import { useOverallReviewStatistics } from '@/hooks/useOverallReviewStatistics';
+import { TimelineFilter } from '@/types/review';
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -41,12 +37,48 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
-  const [timelineFilter, setTimelineFilter] = React.useState<TimelineFilter>('1D');
+  const { data, isLoading } = useOverallReviewStatistics();
 
+  const [totalReviews, setTotalReviews] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalContinents, setTotalContinents] = useState(0);
+  const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1D');
+  const [reviewTimelineData, setReviewTimelineData] = useState<
+    Array<{ date: TimelineFilter; count: number }>
+  >([]);
+  const [phoneUsageData, setPhoneUsageData] = useState<Array<{ name: string; percentage: number }>>(
+    []
+  );
+  const [countryData, setCountryData] = useState<Array<{ country: string; count: number }>>([]);
+  const [ratingCategoriesData, setRatingCategoriesData] = useState<
+    Array<{ name: string; median: number; q1: number; q3: number; min: number; max: number }>
+  >([]);
+
+  useEffect(() => {
+    if (data && !isLoading && isOpen) {
+      setTotalReviews(data.totalReviews);
+      setTotalUsers(data.totalUniqueUsers);
+      setTotalContinents(data.totalUniqueCountries);
+      setReviewTimelineData(data.timeline);
+      setPhoneUsageData(data.phoneUsageData);
+      setCountryData(data.countryData);
+      setRatingCategoriesData(data.ratingCategoriesData.map(category => ({
+        ...category,
+        name: category.name.charAt(0).toUpperCase() + category.name.slice(1)
+      })));
+    }
+  }, [data, isLoading, isOpen]);
   return (
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
       <SidebarContent
         timelineFilter={timelineFilter}
+        totalReviews={totalReviews}
+        totalUsers={totalUsers}
+        totalContinents={totalContinents}
+        reviewTimelineData={reviewTimelineData}
+        phoneUsageData={phoneUsageData}
+        countryData={countryData}
+        ratingCategoriesData={ratingCategoriesData}
         setTimelineFilter={(filter: TimelineFilter) => setTimelineFilter(filter)}
       />
     </SidebarBase>
@@ -54,11 +86,28 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
 }
 
 interface SidebarContentProps {
+  totalReviews: number;
+  totalUsers: number;
+  totalContinents: number;
   timelineFilter: TimelineFilter;
   setTimelineFilter: (filter: TimelineFilter) => void;
+  reviewTimelineData: Array<{ date: TimelineFilter; count: number }>;
+  phoneUsageData: Array<{
+    percentage: number;
+    name: string;
+  }>;
+  countryData: Array<{ country: string; count: number }>;
+  ratingCategoriesData: Array<{
+    name: string;
+    median: number;
+    q1: number;
+    q3: number;
+    min: number;
+    max: number;
+  }>;
 }
 
-function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentProps) {
+function SidebarContent({ timelineFilter, setTimelineFilter, totalReviews, totalUsers, totalContinents, reviewTimelineData, phoneUsageData, countryData, ratingCategoriesData }: SidebarContentProps) {
   return (
     <div className="space-y-4">
       <Card className="bg-primary text-white border-none">
@@ -102,8 +151,12 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
       </Card>
 
       <Card className="mb-4 bg-slate-50 border-none">
-        <CardContent>
-          <StatsSection />
+        <CardContent className="p-6">
+          <StatsSection
+            totalReviews={totalReviews}
+            totalUsers={totalUsers}
+            totalContinents={totalContinents}
+          />
         </CardContent>
       </Card>
 
@@ -148,7 +201,7 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
-                data={continentData}
+                data={countryData}
                 cx="50%"
                 cy="50%"
                 innerRadius={30}
@@ -156,7 +209,7 @@ function SidebarContent({ timelineFilter, setTimelineFilter }: SidebarContentPro
                 fill="#8884d8"
                 paddingAngle={5}
                 dataKey="value">
-                {continentData.map((entry, index) => (
+                {countryData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
