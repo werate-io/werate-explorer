@@ -1,15 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
 import Sidebar from '@/components/Sidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
+import dynamic from 'next/dynamic';
 
-const LazyMap = dynamic(() => import('@/components/Map'), {
-  ssr: false,
-  loading: () => <p>Loading map...</p>
+const Map = dynamic(() => import('@/components/MapboxMap'), {
+  ssr: false
 });
 
 export default function Home() {
@@ -22,7 +21,7 @@ export default function Home() {
     <AppWalletProvider>
       <main className="relative h-screen w-screen overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <LazyMap />
+          <Map />
         </div>
         {!isMobile && (
           <div className="absolute inset-0 z-10 pointer-events-none flex">
