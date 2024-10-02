@@ -1,11 +1,26 @@
-import { TimelineFilter } from '@/lib/constants';
-
 export interface Review {
   id: string;
   placeId: string;
+  placeCategory: string | null;
   reviewAuthorNickname: string | null;
   reviewAuthorWisdom: string | null;
   rating: number;
+  categoryRatings: {
+    overall: number;
+    location: number;
+    vibe: number;
+    price: number;
+    quality: number;
+    cleanliness: number;
+    service: number;
+  }[];
+  metadata: {
+    latitude: number;
+    longitude: number;
+    region: string;
+    country: string;
+    device: string;
+  };
   text: string;
   avatarId: string;
   likeCount: number;
