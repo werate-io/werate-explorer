@@ -6,6 +6,7 @@ import RightSidebar from '@/components/RightSidebar';
 import LeftSidebar from '@/components/LeftSidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
+import Navbar from '@/components/Navbar';
 
 const LazyMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
@@ -44,7 +45,11 @@ export default function Home() {
         {!isMobile && (
           <div className="absolute inset-0 z-10 pointer-events-none flex">
             <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
-            <div className="flex-grow" />
+
+            <div className="flex-grow flex flex-col pointer-events-auto z-20">
+              <Navbar />
+            </div>
+
             <RightSidebar isOpen={isRightSidebarOpen} setIsOpen={toggleRightSidebar} side="right" />
           </div>
         )}
