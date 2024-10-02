@@ -150,8 +150,7 @@ function SidebarContent({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={100}>
-            <LineChart
-              data={reviewTimelineData}>
+            <LineChart data={reviewTimelineData}>
               {' '}
               <XAxis dataKey="date" stroke="#8B5CF6" />
               <YAxis stroke="#8B5CF6" />
