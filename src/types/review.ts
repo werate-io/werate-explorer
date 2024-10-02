@@ -1,9 +1,26 @@
 export interface Review {
   id: string;
   placeId: string;
+  placeCategory: string | null;
   reviewAuthorNickname: string | null;
   reviewAuthorWisdom: string | null;
   rating: number;
+  categoryRatings: {
+    overall: number;
+    location: number;
+    vibe: number;
+    price: number;
+    quality: number;
+    cleanliness: number;
+    service: number;
+  }[];
+  metadata: {
+    latitude: number;
+    longitude: number;
+    region: string;
+    country: string;
+    device: string;
+  };
   text: string;
   avatarId: string;
   likeCount: number;
@@ -23,6 +40,8 @@ export interface UIReview {
   venueLocation: {
     name: string;
     country: string;
+    locality: string;
+    region: string;
     type: string;
     lat: number;
     long: number;
@@ -32,7 +51,8 @@ export interface UIReview {
 
 export interface ReviewsResponse {
   content: Review[];
-  totalElements: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  total_elements: number;
 }
 
 // src/reviews.ts
@@ -85,3 +105,30 @@ export const MapReviews: MapReview[] = [
     rating: 3
   }
 ];
+export interface OverallReviewStatisticsResponse {
+  totalReviews: number;
+  totalUniqueUsers: number;
+  totalUniqueCountries: number;
+  timeline: {
+    date: TimelineFilter;
+    count: number;
+  }[];
+  phoneUsageData: {
+    name: string;
+    percentage: number;
+  }[];
+  countryData: {
+    country: string;
+    count: number;
+  }[];
+  ratingCategoriesData: {
+    name: string;
+    median: number;
+    q1: number;
+    q3: number;
+    min: number;
+    max: number;
+  }[];
+}
+export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
+export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;

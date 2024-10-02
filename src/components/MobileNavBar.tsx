@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { BarChart2, UserCircle, Wallet, X } from 'lucide-react';
-import Sidebar from './Sidebar';
+import { BarChart2, UserCircle, X } from 'lucide-react';
+import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
 
 interface MobileNavBarProps {
@@ -17,8 +17,7 @@ export default function MobileNavBar({
   isLeftSidebarOpen,
   isRightSidebarOpen,
   setIsLeftSidebarOpen,
-  setIsRightSidebarOpen,
-  toggleWallet
+  setIsRightSidebarOpen
 }: MobileNavBarProps) {
   return (
     <>
@@ -26,17 +25,17 @@ export default function MobileNavBar({
         <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 md:hidden overflow-hidden">
           {isLeftSidebarOpen && (
             <div className="absolute inset-y-0 left-0 w-full sm:w-3/4 md:w-1/2 bg-white shadow-lg transition-transform duration-300 ease-in-out transform translate-x-0">
-              <div className="p-4">
+              <div className="p-4 h-full overflow-y-auto">
                 <button onClick={() => setIsLeftSidebarOpen(false)} className="mb-4">
                   <X className="w-6 h-6" />
                 </button>
-                <Sidebar isOpen={true} setIsOpen={() => {}} side="left" />
+                <LeftSidebar isOpen={true} setIsOpen={() => {}} side="left" />
               </div>
             </div>
           )}
           {isRightSidebarOpen && (
             <div className="absolute inset-y-0 right-0 w-full sm:w-3/4 md:w-1/2 bg-white shadow-lg transition-transform duration-300 ease-in-out transform translate-x-0">
-              <div className="p-4">
+              <div className="p-4 h-full overflow-y-auto">
                 <button onClick={() => setIsRightSidebarOpen(false)} className="mb-4">
                   <X className="w-6 h-6" />
                 </button>
@@ -51,9 +50,6 @@ export default function MobileNavBar({
           onClick={() => setIsLeftSidebarOpen(!isLeftSidebarOpen)}
           className={`p-2 ${isLeftSidebarOpen ? 'text-primary' : 'text-gray-600'}`}>
           <BarChart2 className="w-6 h-6" />
-        </button>
-        <button onClick={toggleWallet} className="p-2">
-          <Wallet className="w-6 h-6 text-gray-600" />
         </button>
         <button
           onClick={() => setIsRightSidebarOpen(!isRightSidebarOpen)}

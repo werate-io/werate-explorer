@@ -12,6 +12,12 @@ export interface Place {
     name: string;
     address: string;
     telephone: string;
+    location: {
+      address: string;
+      country: string;
+      locality: string;
+      region: string;
+    };
     geocodes: {
       main: {
         latitude: number;
