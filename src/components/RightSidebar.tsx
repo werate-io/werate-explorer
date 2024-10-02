@@ -14,16 +14,10 @@ interface RightSidebarProps {
 export default function RightSidebar({ isOpen, setIsOpen, side }: RightSidebarProps) {
   return (
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
-      <RightSidebarContent />
+      <div className="space-y-4">
+        <ProfileWithStats />
+        <ReviewsList />
+      </div>
     </SidebarBase>
-  );
-}
-
-function RightSidebarContent() {
-  return (
-    <div className="space-y-4">
-      <ProfileWithStats />
-      <ReviewsList />
-    </div>
   );
 }

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeftIcon, ChevronRightIcon, BarChart, UserCircle } from 'lucide-react';
-import { TimelineFilter } from '@/lib/constants';
+import { TimelineFilter } from '@/types/review';
 
 interface SidebarBaseProps {
   isOpen: boolean;
@@ -21,8 +21,8 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1W');
 
   const sidebarVariants = {
-    open: { width: '450px', opacity: 1 },
-    closed: { width: '40px', opacity: 1 }
+    open: { width: '100%', opacity: 1 },
+    closed: { width: '25px', opacity: 1 }
   };
 
   const contentVariants = {
@@ -36,25 +36,25 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
     <motion.div
       className={`h-full bg-white/80 backdrop-blur-sm text-slate-800 shadow-lg relative pointer-events-auto ${
         side === 'left' ? 'left-0' : 'right-0'
-      }`}
+      } max-w-[450px] w-full`}
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
-      initial="open">
+      initial="closed">
       <motion.div
         className={`absolute top-1/2 ${
-          isOpen ? (side === 'left' ? '-right-4' : '-left-4') : '0'
-        } transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer`}
+          side === 'left' ? '-right-3' : '-left-3'
+        } transform -translate-y-1/2 z-50 bg-white rounded-full p-1 cursor-pointer hidden md:block`}
         onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}>
-        {isOpen ? (
-          side === 'left' ? (
-            <ChevronLeftIcon className="w-6 h-6 text-primary" />
-          ) : (
-            <ChevronRightIcon className="w-6 h-6 text-primary" />
-          )
-        ) : (
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}>
+        {!isOpen ? (
           <SidebarIcon className="w-6 h-6 text-primary" />
+        ) : side === 'left' ? (
+          <ChevronLeftIcon className="w-6 h-6 text-primary" />
+        ) : (
+          <ChevronRightIcon className="w-6 h-6 text-primary" />
         )}
       </motion.div>
       <motion.div
