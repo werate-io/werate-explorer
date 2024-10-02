@@ -10,7 +10,6 @@ import { WalletMultiButton } from '../ui/wallet-adapter-react-ui';
 import { postWalletLink } from '../../services/walletService';
 import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
-
 import { useProfile } from '@/hooks/useProfile';
 import ProfileSkeleton from '@/components/skeletons/ProfileSkeleton';
 export default function ProfileWithStats() {
