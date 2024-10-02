@@ -51,12 +51,10 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
         transition={{ delay: 0.2 }}>
         {!isOpen ? (
           <SidebarIcon className="w-6 h-6 text-primary" />
+        ) : side === 'left' ? (
+          <ChevronLeftIcon className="w-6 h-6 text-primary" />
         ) : (
-          side === 'left' ? (
-            <ChevronLeftIcon className="w-6 h-6 text-primary" />
-          ) : (
-            <ChevronRightIcon className="w-6 h-6 text-primary" />
-          )
+          <ChevronRightIcon className="w-6 h-6 text-primary" />
         )}
       </motion.div>
       <motion.div

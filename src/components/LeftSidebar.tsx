@@ -25,9 +25,7 @@ import {
   BarChart,
   Bar
 } from 'recharts';
-import {
-  COLORS,
-} from '@/lib/constants';
+import { COLORS } from '@/lib/constants';
 import { useOverallReviewStatistics } from '@/hooks/useOverallReviewStatistics';
 import { TimelineFilter } from '@/types/review';
 interface SidebarProps {
@@ -62,10 +60,12 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
       setReviewTimelineData(data.timeline);
       setPhoneUsageData(data.phoneUsageData);
       setCountryData(data.countryData);
-      setRatingCategoriesData(data.ratingCategoriesData.map(category => ({
-        ...category,
-        name: category.name.charAt(0).toUpperCase() + category.name.slice(1)
-      })));
+      setRatingCategoriesData(
+        data.ratingCategoriesData.map((category) => ({
+          ...category,
+          name: category.name.charAt(0).toUpperCase() + category.name.slice(1)
+        }))
+      );
     }
   }, [data, isLoading, isOpen]);
   return (
@@ -107,7 +107,17 @@ interface SidebarContentProps {
   }>;
 }
 
-function SidebarContent({ timelineFilter, setTimelineFilter, totalReviews, totalUsers, totalContinents, reviewTimelineData, phoneUsageData, countryData, ratingCategoriesData }: SidebarContentProps) {
+function SidebarContent({
+  timelineFilter,
+  setTimelineFilter,
+  totalReviews,
+  totalUsers,
+  totalContinents,
+  reviewTimelineData,
+  phoneUsageData,
+  countryData,
+  ratingCategoriesData
+}: SidebarContentProps) {
   return (
     <div className="space-y-4">
       <Card className="bg-primary text-white border-none">

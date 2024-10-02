@@ -15,6 +15,7 @@ import ReviewSkeleton from '@/components/skeletons/ReviewSkeleton';
 import { TAKE } from '@/lib/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Loader2 } from 'lucide-react';
+import { UIReview } from '@/types/review';
 
 const ReviewsList: React.FC = () => {
   const { publicKey } = useWallet();
@@ -87,7 +88,7 @@ const ReviewsList: React.FC = () => {
 };
 
 interface ReviewContentProps {
-  reviews: any[];
+  reviews: UIReview[];
   currentPage: number;
   totalPages: number;
   handlePageChange: (page: number) => void;
