@@ -34,13 +34,13 @@ export const login = async (email: string, password: string) => {
       setCookie(TOKEN_COOKIE_NAME, data.accessToken, {
         maxAge: 60 * 60 * 24 * 7, // Cookie expiration (1 week, customize as needed)
         path: '/', // Make cookie available across the whole app
-        secure: process.env.NODE_ENV === 'production' // Set secure in production
+        secure: true // Set secure in production
       });
       setCookie('email', email, {
         // Add email to cookies
         maxAge: 60 * 60 * 24 * 7, // 1 week
         path: '/',
-        secure: process.env.NODE_ENV === 'production'
+        secure: true
       });
     }
 
