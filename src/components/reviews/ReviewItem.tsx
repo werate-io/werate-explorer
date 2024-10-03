@@ -22,7 +22,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/Carousel';
-import { Star, Check, Loader2 } from 'lucide-react';
+import { Check, Loader2, StarIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { reviewMint } from '../../services/ReviewMint';
@@ -44,13 +44,22 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
   function renderStars(starRatings: number) {
     const totalStars = 5;
     const validStarRatings = Math.max(0, Math.min(totalStars, starRatings));
+    const fullStars = Math.floor(validStarRatings);
+    const hasHalfStar = validStarRatings % 1 >= 0.5;
+
     return (
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center space-x-0.5">
         {[...Array(totalStars)].map((_, index) => (
-          <Star
+          <StarIcon
             key={index}
+            color="#6e1fed"
+            size={16}
             className={`w-4 h-4 ${
-              index < validStarRatings ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+              index < fullStars
+                ? 'text-[#6e1fed] fill-[#6e1fed]'
+                : index === fullStars && hasHalfStar
+                  ? 'text-purple-400 fill-purple-400 half-star'
+                  : 'text-purple-400'
             }`}
           />
         ))}
@@ -86,8 +95,8 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
   }
 
   const ReviewSummary = () => (
-    <Flex gap="3" align="center" justify="between" className="flex-col md:flex-row">
-      <Flex gap="2" align="center" className="flex-col md:flex-row">
+    <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
+      <Flex gap="2" align="center" className="flex-col sm:flex-row">
         <Avatar>
           <AvatarImage src={review.photos[0]} alt={review.venueLocation.name} />
           <AvatarFallback>
@@ -99,19 +108,19 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
             )}
           </AvatarFallback>
         </Avatar>
-        <Box className="text-center md:text-left mt-2 sm:mt-0 p-2">
-          <CardTitle className="text-sm sm:text-sm md:text-md lg:text-lg">
+        <Box className="text-center sm:text-left mt-2 sm:mt-0">
+          <CardTitle className="text-sm sm:text-base md:text-lg">
             {review.venueLocation.name}
           </CardTitle>
-          <CardDescription>
-            {`${review.venueLocation.type}, ${review.venueLocation.country}`}
+          <CardDescription className="text-xs sm:text-sm">
+            {`${review.venueLocation.type}, ${review.venueLocation.locality} - ${review.venueLocation.country}`}
           </CardDescription>
         </Box>
       </Flex>
 
-      <div className="flex flex-col items-center md:items-start mt-2 md:mt-0">
+      <div className="flex flex-col items-center sm:items-end mt-2 sm:mt-0">
         {renderStars(review.starRatings)}
-        <p className="text-xs md:text-sm text-muted-foreground">{review.timestamp}</p>
+        <p className="text-xs sm:text-sm text-muted-foreground">{review.timestamp}</p>
       </div>
     </Flex>
   );
@@ -141,26 +150,28 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
       )}
       {isVerified && (
         <>
-          <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2">
+          <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2 break-words whitespace-normal overflow-wrap-anywhere">
             {review.description}
           </p>
-          <Carousel className="w-full max-w-xs mx-auto mt-4">
-            <CarouselContent>
-              {review.photos.map((src, index) => (
-                <CarouselItem key={index}>
-                  <div className="p-1">
-                    <img
-                      src={src}
-                      alt={`${review.venueLocation.name} photo ${index + 1}`}
-                      className="w-full h-48 object-cover rounded-md"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          {review.photos.length > 0 && (
+            <Carousel className="w-full max-w-xs mx-auto mt-4">
+              <CarouselContent>
+                {review.photos.map((src, index) => (
+                  <CarouselItem key={index}>
+                    <div className="p-1">
+                      <img
+                        src={src}
+                        alt={`${review.venueLocation.name} photo ${index + 1}`}
+                        className="w-full h-48 object-cover rounded-md"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
           {!isMinted && (
             <Button onClick={handleMintNFT} className="w-full mt-4" disabled={isMinting}>
               {isMinting ? (
@@ -187,21 +198,23 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="p-3 sm:p-4 md:p-6 bg-[#EFE5FF] rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+        <Card className="p-3 sm:p-4 bg-[#EFE5FF] rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
           <CardHeader className="p-2">
             <ReviewSummary />
           </CardHeader>
         </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[80vh] w-[90vw] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Review Details</DialogTitle>
         </DialogHeader>
-        <ReviewSummary />
-        <FullReviewContent />
+        <div className="flex-grow overflow-y-auto">
+          <ReviewSummary />
+          <FullReviewContent />
+        </div>
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default ReviewItem;

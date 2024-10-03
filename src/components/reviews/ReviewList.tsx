@@ -117,65 +117,39 @@ const placeDetails: PlaceDetails = {
   }
 };
 
-function ReviewSkeleton() {
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center space-x-4">
-        <Skeleton className="h-12 w-12 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-2/3" />
-    </div>
-  );
-}
-
-function ReviewsList() {
+const ReviewsList: React.FC = () => {
   const { publicKey } = useWallet();
-  const take = constants.TAKE;
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const skip = useMemo(() => (currentPage - 1) * TAKE, [currentPage]);
 
-  const totalReviews = mockReviews.length;
-  const totalPages = Math.ceil(totalReviews / take);
+  const { reviews, totalReviews, isLoading, error } = useTransformedReviews(skip, TAKE);
 
-  const paginatedReviews = useMemo(() => {
-    const startIndex = (currentPage - 1) * take;
-    return mockReviews.slice(startIndex, startIndex + take);
-  }, [currentPage]);
+  const totalPages = useMemo(() => Math.ceil(totalReviews / TAKE), [totalReviews]);
 
-  const handlePageChange = useCallback(
-    (page: number) => {
-      if (page >= 1 && page <= totalPages) {
-        setIsLoading(true);
-        setCurrentPage(page);
-        // Simulate loading delay
-        setTimeout(() => setIsLoading(false), 1000);
-      }
-    },
-    [totalPages]
-  );
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [totalReviews]);
 
-  // Simulate initial loading
-  React.useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1000);
+  const handlePageChange = useCallback((page: number) => {
+    setLoading(true);
+    setCurrentPage(page);
   }, []);
 
-  if (!publicKey) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full space-y-6">
-        <p className="text-xl font-semibold text-center">Connect your wallet to view reviews</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (!isLoading) {
+      setLoading(false);
+    }
+  }, [reviews, isLoading]);
 
-  return (
-    <div>
+  if (isLoading) {
+    return (
       <ul className="space-y-4 sm:space-y-6 md:space-y-8 flex-grow">
+        {Array.from({ length: TAKE }, (_, index) => (
+          <li key={index}>
+            <ReviewSkeleton />
+          </li>
+        ))}
         {isLoading
           ? Array(take)
               .fill(0)
@@ -193,53 +167,123 @@ function ReviewsList() {
               />
             ))}
       </ul>
-      <div className="flex w-full items-center justify-center mt-4 sm:mt-6">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage > 1) {
-                    handlePageChange(currentPage - 1);
-                  }
-                }}
-                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-            {Array(totalPages)
-              .fill('')
-              .map((_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(index + 1);
-                    }}
-                    className={currentPage === index + 1 ? 'bg-primary text-white' : ''}>
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage < totalPages) {
-                    handlePageChange(currentPage + 1);
-                  }
-                }}
-                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+    );
+  }
+
+  if (error) return <div>Error: {(error as Error).message}</div>;
+
+  if (!reviews || reviews.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full space-y-6">
+        <p className="text-xl font-semibold text-center">No reviews available</p>
       </div>
+    );
+  }
+
+  return (
+    <div className="h-full flex relative">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">
+          <Loader2 className="animate-spin text-primary" size={36} />
+        </div>
+      )}
+      {publicKey ? (
+        <ReviewContent
+          reviews={reviews}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
+      ) : (
+        <div className="flex items-center justify-center w-full">
+          <p className="text-xl font-semibold text-center">Connect your wallet to view reviews</p>
+        </div>
+      )}
     </div>
   );
+};
+
+interface ReviewContentProps {
+  reviews: UIReview[];
+  currentPage: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
 }
+
+const ReviewContent: React.FC<ReviewContentProps> = ({
+  reviews,
+  currentPage,
+  totalPages,
+  handlePageChange
+}) => (
+  <div className="w-full">
+    <ul className="space-y-4 sm:space-y-6 md:space-y-8 flex-grow">
+      {reviews.map((review) => (
+        <ReviewItem key={review.id} review={review} />
+      ))}
+    </ul>
+    <PaginationControls
+      currentPage={currentPage}
+      totalPages={totalPages}
+      handlePageChange={handlePageChange}
+    />
+  </div>
+);
+
+interface PaginationControlsProps {
+  currentPage: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
+}
+
+const PaginationControls: React.FC<PaginationControlsProps> = ({
+  currentPage,
+  totalPages,
+  handlePageChange
+}) => (
+  <div className="flex w-full items-center justify-center mt-4 sm:mt-6">
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage > 1) {
+                handlePageChange(currentPage - 1);
+              }
+            }}
+            className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+          />
+        </PaginationItem>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <PaginationItem key={index}>
+            <PaginationLink
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(index + 1);
+              }}
+              className={currentPage === index + 1 ? 'bg-primary text-white' : ''}>
+              {index + 1}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage < totalPages) {
+                handlePageChange(currentPage + 1);
+              }
+            }}
+            className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  </div>
+);
 
 export default ReviewsList;

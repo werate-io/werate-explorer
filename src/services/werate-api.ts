@@ -8,16 +8,14 @@ const instance = axios.create({
 });
 
 // const getBearerToken = (): string => {
-//   const accessToken = localStorage.getItem('token');
+//   const accessToken = getCookie('authToken'); // Use cookies instead of localStorage
 //   // TODO add error handling
 //   return `Bearer ${accessToken}`;
 // };
 
 const getBaseHeaders = (): Record<string, string> => ({
-  /* eslint-disable */
-    'Content-Type': 'application/json',
-    // Authorization: getBearerToken()
-	 /* eslint-enable */
+  'Content-Type': 'application/json'
+  // Authorization: getBearerToken()
 });
 
 const baseHeaders = getBaseHeaders();

@@ -1,9 +1,26 @@
 export interface Review {
   id: string;
   placeId: string;
+  placeCategory: string | null;
   reviewAuthorNickname: string | null;
   reviewAuthorWisdom: string | null;
   rating: number;
+  categoryRatings: {
+    overall: number;
+    location: number;
+    vibe: number;
+    price: number;
+    quality: number;
+    cleanliness: number;
+    service: number;
+  }[];
+  metadata: {
+    latitude: number;
+    longitude: number;
+    region: string;
+    country: string;
+    device: string;
+  };
   text: string;
   avatarId: string;
   likeCount: number;
@@ -23,34 +40,45 @@ export interface UIReview {
   venueLocation: {
     name: string;
     country: string;
+    locality: string;
+    region: string;
     type: string;
     lat: number;
     long: number;
   };
   device: string;
-  hash: string;
-  /* eslint-disable */
-  arweave_tx_id: string;
-  /* eslint-enable */
 }
 
 export interface ReviewsResponse {
   content: Review[];
-  totalElements: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  total_elements: number;
 }
 
-import { z } from 'zod';
-/* eslint-disable */
-export const reviewSchema = z.object({
-  text: z.string().min(10),
-  created_at: z.date(),
-  location_rating: z.number().int().min(0).max(5),
-  vibe_rating: z.number().int().min(0).max(5),
-  price_rating: z.number().int().min(0).max(5),
-  quality_rating: z.number().int().min(0).max(5),
-  service_rating: z.number().int().min(0).max(5),
-  overall_rating: z.number().int().min(0).max(5),
-  cleanliness_rating: z.number().int().min(0).max(5)
-});
-/* eslint-enable */
-export type VerifyReview = z.infer<typeof reviewSchema>;
+export interface OverallReviewStatisticsResponse {
+  totalReviews: number;
+  totalUniqueUsers: number;
+  totalUniqueCountries: number;
+  timeline: {
+    date: TimelineFilter;
+    count: number;
+  }[];
+  phoneUsageData: {
+    name: string;
+    percentage: number;
+  }[];
+  countryData: {
+    country: string;
+    count: number;
+  }[];
+  ratingCategoriesData: {
+    name: string;
+    median: number;
+    q1: number;
+    q3: number;
+    min: number;
+    max: number;
+  }[];
+}
+export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
+export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;

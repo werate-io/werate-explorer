@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
-import Sidebar from '@/components/Sidebar';
+import LeftSidebar from '@/components/LeftSidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
+import Navbar from '@/components/Navbar';
 
 const LazyMap = dynamic(() => import('@/components/Map'), {
   ssr: false,
@@ -13,10 +14,27 @@ const LazyMap = dynamic(() => import('@/components/Map'), {
 });
 
 export default function Home() {
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const toggleWallet = () => console.log('Toggle wallet');
+
+  const toggleLeftSidebar = () => {
+    setIsLeftSidebarOpen(!isLeftSidebarOpen);
+    if (!isLeftSidebarOpen) {
+      setIsRightSidebarOpen(false);
+    }
+  };
+
+  const toggleRightSidebar = () => {
+    setIsRightSidebarOpen(!isRightSidebarOpen);
+    if (!isRightSidebarOpen) {
+      setIsLeftSidebarOpen(false);
+    }
+  };
+
+  const toggleWallet = () => {
+    // Implement wallet toggle logic here
+  };
 
   return (
     <AppWalletProvider>
@@ -26,21 +44,21 @@ export default function Home() {
         </div>
         {!isMobile && (
           <div className="absolute inset-0 z-10 pointer-events-none flex">
-            <Sidebar isOpen={isLeftSidebarOpen} setIsOpen={setIsLeftSidebarOpen} side="left" />
-            <div className="flex-grow" />
-            <RightSidebar
-              isOpen={isRightSidebarOpen}
-              setIsOpen={setIsRightSidebarOpen}
-              side="right"
-            />
+            <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
+
+            <div className="flex-grow flex flex-col pointer-events-auto z-20">
+              <Navbar />
+            </div>
+
+            <RightSidebar isOpen={isRightSidebarOpen} setIsOpen={toggleRightSidebar} side="right" />
           </div>
         )}
         {isMobile && (
           <MobileNavBar
             isLeftSidebarOpen={isLeftSidebarOpen}
             isRightSidebarOpen={isRightSidebarOpen}
-            setIsLeftSidebarOpen={setIsLeftSidebarOpen}
-            setIsRightSidebarOpen={setIsRightSidebarOpen}
+            setIsLeftSidebarOpen={toggleLeftSidebar}
+            setIsRightSidebarOpen={toggleRightSidebar}
             toggleWallet={toggleWallet}
           />
         )}
