@@ -35,8 +35,8 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
-  const { data, isLoading } = useOverallReviewStatistics();
-
+  const { data: resp, isLoading } = useOverallReviewStatistics();
+  
   const [totalReviews, setTotalReviews] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalContinents, setTotalContinents] = useState(0);
@@ -53,21 +53,21 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
   >([]);
 
   useEffect(() => {
-    if (data && !isLoading && isOpen) {
-      setTotalReviews(data.totalReviews);
-      setTotalUsers(data.totalUniqueUsers);
-      setTotalContinents(data.totalUniqueCountries);
-      setReviewTimelineData(data.timeline);
-      setPhoneUsageData(data.phoneUsageData);
-      setCountryData(data.countryData);
+    if (resp && !isLoading && isOpen) {
+      setTotalReviews(resp.totalReviews);
+      setTotalUsers(resp.totalUniqueUsers);
+      setTotalContinents(resp.totalUniqueCountries);
+      setReviewTimelineData(resp.timeline);
+      setPhoneUsageData(resp.phoneUsageData);
+      setCountryData(resp.countryData);
       setRatingCategoriesData(
-        data.ratingCategoriesData.map((category) => ({
+        resp.ratingCategoriesData?.map((category) => ({
           ...category,
           name: category.name.charAt(0).toUpperCase() + category.name.slice(1)
         }))
       );
     }
-  }, [data, isLoading, isOpen]);
+  }, [resp, isLoading, isOpen]);
   return (
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
       <SidebarContent
@@ -177,9 +177,10 @@ function SidebarContent({
         </CardHeader>
         <CardContent>
           <div className="w-full h-6 flex rounded-full overflow-hidden">
-            {phoneUsageData.map((entry, index) => (
-              <div
-                key={entry.name}
+            {phoneUsageData &&
+              phoneUsageData?.map((entry, index) => (
+                <div
+                  key={entry.name}
                 style={{
                   width: `${entry.percentage}%`,
                   backgroundColor: COLORS[index]
@@ -190,9 +191,10 @@ function SidebarContent({
             ))}
           </div>
           <div className="flex justify-between mt-2 text-xs">
-            {phoneUsageData.map((entry, index) => (
-              <div key={entry.name} className="flex items-center">
-                <div
+            {phoneUsageData &&
+              phoneUsageData?.map((entry, index) => (
+                <div key={entry.name} className="flex items-center">
+                  <div
                   className="w-3 h-3 mr-1 rounded-full"
                   style={{ backgroundColor: COLORS[index] }}></div>
                 <span>
@@ -220,9 +222,10 @@ function SidebarContent({
                 fill="#8884d8"
                 paddingAngle={5}
                 dataKey="value">
-                {countryData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
+                {countryData &&
+                  countryData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
               </Pie>
               <Tooltip />
               <Legend />

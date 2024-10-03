@@ -29,7 +29,7 @@ export interface Review {
   photoUrls: string[];
   hash: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  arweave_tx_id: string;
+  arweave_txn_id: string;
 }
 
 export interface UIReview {
@@ -63,7 +63,7 @@ export interface UIReview {
   device: string;
   hash: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  arweave_tx_id: string;
+  arweave_txn_id: string;
 }
 
 export interface ReviewsResponse {

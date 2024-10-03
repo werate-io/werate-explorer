@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { setCookie, deleteCookie } from 'cookies-next'; // Add cookies-next package to handle cookies
 
-const API_BASE_URL = 'https://api.werate.io/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 const TOKEN_COOKIE_NAME = 'authToken'; // Define the token cookie name
 
 // Registration function
 export const register = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/v1/register`,
+      `${API_BASE_URL}/api/v1/register`,
       { email, password },
       { headers: { 'Content-Type': 'application/json' } }
     );
@@ -22,7 +22,7 @@ export const register = async (email: string, password: string) => {
 export const login = async (email: string, password: string) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/v2/login`,
+      `${API_BASE_URL}/api/v2/login`,
       { email, password },
       { headers: { 'Content-Type': 'application/json' } }
     );
@@ -54,7 +54,7 @@ export const login = async (email: string, password: string) => {
 export const checkMfa = async (preAuthToken: string, mfaCode: string) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/v1/check-mfa`,
+      `${API_BASE_URL}/api/v1/check-mfa`,
       { code: mfaCode },
       {
         headers: {
