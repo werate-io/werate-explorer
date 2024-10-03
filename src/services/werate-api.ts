@@ -5,7 +5,7 @@ import { getCookie } from 'cookies-next';
 dotenv.config({ path: '.env' });
 
 const instance = axios.create({
-  baseURL: 'https://api.werate.io'
+  baseURL: process.env.NEXT_PUBLIC_API_URL
 });
 
 const getBearerToken = (): string => {
@@ -21,12 +21,12 @@ const getBaseHeaders = (): Record<string, string> => ({
 
 const baseHeaders = getBaseHeaders();
 
-export const postData = async <T>(backendApi: string, data?: object): Promise<T> => {
+export const postData = async <T>(backendApi: string, data?: unknown): Promise<T> => {
   try {
     const response = await instance.post(backendApi, data, {
       headers: baseHeaders
     });
-    return response as T;
+    return response.data as T;
   } catch (error) {
     console.error('Error posting data:', error);
     throw new Error('Failed to post data');
@@ -40,10 +40,10 @@ export const getData = async <T>(
   try {
     const response = await instance.get<T>(backendApi, {
       headers: baseHeaders,
-      params
+      params: params
     });
 
-    return response as T;
+    return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;
