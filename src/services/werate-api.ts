@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as dotenv from 'dotenv';
+import { getCookie } from 'cookies-next';
 
 dotenv.config({ path: '.env' });
 
@@ -7,15 +8,15 @@ const instance = axios.create({
   baseURL: 'http://localhost:8080'
 });
 
-// const getBearerToken = (): string => {
-//   const accessToken = getCookie('authToken'); // Use cookies instead of localStorage
-//   // TODO add error handling
-//   return `Bearer ${accessToken}`;
-// };
+const getBearerToken = (): string => {
+  const accessToken = getCookie('authToken'); // Use cookies instead of localStorage
+  // TODO add error handling
+  return `Bearer ${accessToken}`;
+};
 
 const getBaseHeaders = (): Record<string, string> => ({
-  'Content-Type': 'application/json'
-  // Authorization: getBearerToken()
+  'Content-Type': 'application/json',
+  Authorization: getBearerToken()
 });
 
 const baseHeaders = getBaseHeaders();
