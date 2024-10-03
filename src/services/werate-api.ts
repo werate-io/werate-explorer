@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as dotenv from 'dotenv';
+import { getCookie } from 'cookies-next';
 
 dotenv.config({ path: '.env' });
 
@@ -7,17 +8,15 @@ const instance = axios.create({
   baseURL: 'https://api.werate.io'
 });
 
-// const getBearerToken = (): string => {
-//   const accessToken = localStorage.getItem('token');
-//   // TODO add error handling
-//   return `Bearer ${accessToken}`;
-// };
+const getBearerToken = (): string => {
+  const accessToken = getCookie('authToken'); // Use cookies instead of localStorage
+  // TODO add error handling
+  return `Bearer ${accessToken}`;
+};
 
 const getBaseHeaders = (): Record<string, string> => ({
-  /* eslint-disable */
-    'Content-Type': 'application/json',
-    // Authorization: getBearerToken()
-	 /* eslint-enable */
+  'Content-Type': 'application/json',
+  Authorization: getBearerToken()
 });
 
 const baseHeaders = getBaseHeaders();

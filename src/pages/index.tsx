@@ -5,6 +5,7 @@ import RightSidebar from '@/components/RightSidebar';
 import LeftSidebar from '@/components/LeftSidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
+
 import dynamic from 'next/dynamic';
 
 const Map = dynamic(() => import('@/components/MapboxMap'), {
@@ -14,6 +15,7 @@ const Map = dynamic(() => import('@/components/MapboxMap'), {
 export default function Home() {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const [, setDataBounds] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const toggleLeftSidebar = () => {
@@ -37,13 +39,13 @@ export default function Home() {
   return (
     <AppWalletProvider>
       <main className="relative h-screen w-screen overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Map />
-        </div>
+        <div className="relative inset-0 z-10"></div>
         {!isMobile && (
-          <div className="absolute inset-0 z-10 pointer-events-none flex">
+          <div className="absolute inset-0 pointer-events-none flex z-10">
             <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
-            <div className="flex-grow" />
+            <div className="flex-grow flex flex-col pointer-events-auto z-10">
+              <Map setDataBounds={setDataBounds} reviews={[]} highlightedId={null} />
+            </div>
             <RightSidebar isOpen={isRightSidebarOpen} setIsOpen={toggleRightSidebar} side="right" />
           </div>
         )}

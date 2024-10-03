@@ -14,7 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Label } from '@/components/ui/Label';
 import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/PopoverShad';
-import { checkMfa, login, register } from '@/services/auth';
+import { checkMfa, login, register, logout } from '@/services/auth'; // Import logout function
+import { getCookie, deleteCookie } from 'cookies-next'; // Import cookie functions
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,10 +30,10 @@ export default function Navbar() {
   const [userInitials, setUserInitials] = useState('');
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('email');
+    const storedEmail = getCookie('email');
     if (storedEmail) {
       setIsLoggedIn(true);
-      setUserInitials(getInitials(storedEmail));
+      setUserInitials(getInitials(String(storedEmail)));
     }
   }, []);
 
@@ -55,7 +56,7 @@ export default function Navbar() {
           setPreAuthToken(data.preAuthToken);
           setNeedsMfa(true);
         } else if (data.accessToken) {
-          handleSuccessfulLogin(email);
+          handleSuccessfulLogin();
         } else {
           setError(data.error || 'Login failed');
         }
@@ -72,7 +73,7 @@ export default function Navbar() {
     try {
       const data = await checkMfa(preAuthToken, mfaCode);
       if (data.accessToken) {
-        handleSuccessfulLogin(email);
+        handleSuccessfulLogin();
       } else {
         setError(data.error || 'MFA verification failed');
       }
@@ -81,16 +82,20 @@ export default function Navbar() {
     }
   };
 
-  const handleSuccessfulLogin = (email: string) => {
-    localStorage.setItem('email', email);
+  const handleSuccessfulLogin = () => {
+    const storedEmail = getCookie('email');
     setIsLoggedIn(true);
-    setUserInitials(getInitials(email));
+    setUserInitials(getInitials(String(storedEmail)));
     setIsOpen(false);
+    setNeedsMfa(false);
+    setEmail('');
+    setPassword('');
+    setMfaCode('');
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    logout(); // Remove the token cookie
+    deleteCookie('email'); // Remove the email cookie
     setIsLoggedIn(false);
     setUserInitials('');
   };
@@ -105,14 +110,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 bg-white text-white p-4 flex justify-between items-center z-50">
-      <div className="flex-1">
-        <Input
-          type="search"
-          placeholder="Search for venue, location, bohemian, date?"
-          className="max-w-sm bg-gray-800 text-white placeholder-gray-400 border-gray-700"
-        />
-      </div>
+    <div className="w-[400px] relative top-0 left-0 right-0 bg-tran text-white p-4 flex justify-end items-end z-10">
+      <div className="flex-1"></div>
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
           <>
@@ -261,6 +260,6 @@ export default function Navbar() {
           </Dialog>
         )}
       </div>
-    </nav>
+    </div>
   );
 }

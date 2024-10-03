@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import ReactMapGL, { Marker, MapRef, ViewState } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useLocalState } from '@/hooks/useLocalStorage'; // Assuming this is implemented for local state persistence
 import { SearchBox } from '@/components/map/SearchBox'; // Assuming the search functionality is implemented
-import { MapReview, MapReviews } from '@/types/review'; // Mock reviews data type
+import { MapReview, Review } from '@/types/review'; // Mock reviews data type
 import { MapPinCheckIcon, XIcon } from 'lucide-react';
 import { PopupContent } from './map/PopupContent';
 import { Dialog, DialogContent, DialogHeader } from './ui/DialogShad';
+import { useReviewStore } from '@/zustand/store';
+import Navbar from './Navbar'; // Assuming Navbar has login button
 
 interface IProps {
   setDataBounds: (bounds: string) => void;
@@ -15,7 +17,7 @@ interface IProps {
 }
 
 export default function Map({ setDataBounds, highlightedId }: IProps) {
-  const [selected, setSelected] = useState<MapReview | null>(null);
+  const { selectedReview, setSelectedReview, totalReviews } = useReviewStore();
   const mapRef = useRef<MapRef | null>(null); // Ref for the map instance
   const [viewState, setViewState] = useLocalState<ViewState>('viewState', {
     latitude: 50.8503, // Brussels default
@@ -41,70 +43,68 @@ export default function Map({ setDataBounds, highlightedId }: IProps) {
   };
 
   return (
-    <div className="text-black relative">
+    <div className="text-black relative w-full">
       <ReactMapGL
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)} // onMove handles viewState changes
         onMoveEnd={handleMoveEnd} // Replacing deprecated onInteractionStateChange
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         ref={mapRef}
-        style={{ width: '100%', height: '120vh' }} // Custom map sizing
+        style={{ width: '100%', height: '120vh', zIndex: 40 }} // Custom map sizing
         minZoom={5}
         maxZoom={15}
         mapStyle="mapbox://styles/mapbox/dark-v11">
-        {/* Search Box for searching addresses */}
-        <div className="absolute top-0 w-full z-10 p-4">
-          <SearchBox
-            defaultValue=""
-            onSelectAddress={(_address, latitude, longitude) => {
-              if (latitude && longitude) {
-                setViewState((old) => ({
-                  ...old,
-                  latitude,
-                  longitude,
-                  zoom: 12
-                }));
-                handleMoveEnd(); // Trigger bounds update after selection
-              }
-            }}
-          />
+        {/* Navbar with login button */}
+        <div className="absolute top-0 right-0 w-full z-20 flex justify-between items-center p-4">
+          <div className="flex justify-center w-full">
+            <SearchBox
+              defaultValue=""
+              onSelectAddress={(_address, latitude, longitude) => {
+                if (latitude && longitude) {
+                  setViewState((old) => ({
+                    ...old,
+                    latitude,
+                    longitude,
+                    zoom: 12
+                  }));
+                }
+              }}
+            />
+          </div>
+          {/* Login/Account button */}
+          <Navbar />
         </div>
 
         {/* Map Markers for reviews */}
-        {MapReviews.map((review) => (
+        {totalReviews.map((review: Review) => (
           <Marker
             key={review.id}
-            latitude={review.latitude}
-            longitude={review.longitude}
+            latitude={review.metadata.latitude}
+            longitude={review.metadata.longitude}
             className={highlightedId === review.id ? 'marker-active' : ''}>
             <button
               style={{ width: '30px', height: '30px', fontSize: '30px' }}
               type="button"
-              onClick={() => setSelected(review)}>
-              <MapPinCheckIcon className="text-red-600" />
+              onClick={() => setSelectedReview(review)}>
+              <MapPinCheckIcon className="text-blue-600" />
             </button>
           </Marker>
         ))}
 
         {/* Popup for selected review */}
-        {selected && (
-          <Dialog
-            open={!!selected}
-            onOpenChange={() => setSelected(null)}
-            closeOnOverlayClick={false}>
+        {selectedReview && (
+          <Dialog open={!!selectedReview} onOpenChange={() => setSelectedReview(undefined)}>
             <DialogContent className="bg-gradient-to-br from-primary to-white">
               <DialogHeader className="flex justify-end items-end">
-                <button
-                  className="text-white bg-transparent hover:text-red-500 transition-colors"
-                  onClick={() => setSelected(null)}>
+                <button className="text-white bg-transparent hover:text-red-500 transition-colors">
                   <XIcon className="h-6 w-6 self-end" />
                 </button>
               </DialogHeader>
               <PopupContent
-                title={`${selected.country.toUpperCase()} Review`}
-                content={selected.content}
-                rating={selected.rating}
-                onClick={() => console.log('Details clicked')}
+                title={selectedReview?.placeCategory?.toUpperCase()}
+                content={selectedReview?.text}
+                rating={selectedReview.rating}
+                onClick={() => setSelectedReview(selectedReview)} // Pass review to store
               />
             </DialogContent>
           </Dialog>
