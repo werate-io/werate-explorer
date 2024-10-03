@@ -29,9 +29,6 @@ export const obfuscateReview = (review: UIReview): ObfuscatedReview => {
 
 export const hashReview = (
   review: UIReview
-  // userId: string,
-  // images: string[],
-  // placeDetails: PlaceDetails
 ): string => {
   const obfuscatedReview = obfuscateReview(review);
 
