@@ -27,9 +27,7 @@ export const obfuscateReview = (review: UIReview): ObfuscatedReview => {
   /* eslint-enable */
 };
 
-export const hashReview = (
-  review: UIReview
-): string => {
+export const hashReview = (review: UIReview): string => {
   const obfuscatedReview = obfuscateReview(review);
 
   const userHash = hashData(obfuscatedReview.userId);

@@ -206,6 +206,6 @@ export function ReviewItem({ review }: ReviewItemProps) {
       </DialogContent>
     </Dialog>
   );
-};
+}
 
 export default ReviewItem;
