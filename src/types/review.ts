@@ -1,6 +1,7 @@
 export interface Review {
   id: string;
   placeId: string;
+  playerId: string;
   placeCategory: string | null;
   reviewAuthorNickname: string | null;
   reviewAuthorWisdom: string | null;
@@ -13,7 +14,7 @@ export interface Review {
     quality: number;
     cleanliness: number;
     service: number;
-  }[];
+  };
   metadata: {
     latitude: number;
     longitude: number;
@@ -26,10 +27,14 @@ export interface Review {
   likeCount: number;
   createdAt: string;
   photoUrls: string[];
+  hash: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  arweave_tx_id: string;
 }
 
 export interface UIReview {
   id: string;
+  placeId: string;
   description: string;
   starRatings: number;
   photos: string[];
@@ -37,6 +42,15 @@ export interface UIReview {
   biometricsHash: string;
   userId: string;
   bohemianId: string;
+  categoryRatings: {
+    overall: number;
+    location: number;
+    vibe: number;
+    price: number;
+    quality: number;
+    cleanliness: number;
+    service: number;
+  };
   venueLocation: {
     name: string;
     country: string;
@@ -47,12 +61,43 @@ export interface UIReview {
     long: number;
   };
   device: string;
+  hash: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  arweave_tx_id: string;
 }
 
 export interface ReviewsResponse {
   content: Review[];
   // eslint-disable-next-line @typescript-eslint/naming-convention
   total_elements: number;
+}
+export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
+export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;
+
+export interface OverallReviewStatisticsResponse {
+  totalReviews: number;
+  totalUniqueUsers: number;
+  totalUniqueCountries: number;
+  timeline: {
+    date: TimelineFilter;
+    count: number;
+  }[];
+  phoneUsageData: {
+    name: string;
+    percentage: number;
+  }[];
+  countryData: {
+    country: string;
+    count: number;
+  }[];
+  ratingCategoriesData: {
+    name: string;
+    median: number;
+    q1: number;
+    q3: number;
+    min: number;
+    max: number;
+  }[];
 }
 
 // src/reviews.ts
@@ -105,30 +150,3 @@ export const MapReviews: MapReview[] = [
     rating: 3
   }
 ];
-export interface OverallReviewStatisticsResponse {
-  totalReviews: number;
-  totalUniqueUsers: number;
-  totalUniqueCountries: number;
-  timeline: {
-    date: TimelineFilter;
-    count: number;
-  }[];
-  phoneUsageData: {
-    name: string;
-    percentage: number;
-  }[];
-  countryData: {
-    country: string;
-    count: number;
-  }[];
-  ratingCategoriesData: {
-    name: string;
-    median: number;
-    q1: number;
-    q3: number;
-    min: number;
-    max: number;
-  }[];
-}
-export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
-export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;

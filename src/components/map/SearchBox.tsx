@@ -1,5 +1,6 @@
 // src/components/searchBox.tsx
 import React, { useState } from 'react';
+import { Input } from '../ui/Input';
 
 interface SearchBoxProps {
   defaultValue: string;
@@ -36,20 +37,20 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddr
   };
 
   return (
-    <div className="relative w-full">
-      <input
+    <div className="relative w-[600px] flex self-center z-10">
+      <Input
         type="text"
         value={inputValue}
         onChange={(e) => handleSearch(e.target.value)}
         placeholder="Search for an address"
-        className="p-2 border border-gray-300 w-full rounded"
+        className="bg-black/50 shadow-lg rounded-sm text-slate-300 placeholder:text-slate-300 border-t-0 border-r-0 border-l-0"
       />
       {suggestions.length > 0 && (
-        <ul className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 rounded z-10">
+        <ul className="absolute left-0 right-0 text-slate-300 border border-gray-300 mt-10 bg-black/50 rounded z-10">
           {suggestions.map((place) => (
             <li
               key={place.address}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
+              className="p-2 hover:bg-slate-800 cursor-pointer"
               onClick={() => handleSelect(place)}>
               {place.address}
             </li>

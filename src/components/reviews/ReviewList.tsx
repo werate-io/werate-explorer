@@ -21,6 +21,7 @@ const ReviewsList: React.FC = () => {
   const { publicKey } = useWallet();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
   const skip = useMemo(() => (currentPage - 1) * TAKE, [currentPage]);
 
   const { reviews, totalReviews, isLoading, error } = useTransformedReviews(skip, TAKE);

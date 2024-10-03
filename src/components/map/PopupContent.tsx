@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button'; // Import your shadcn Button co
 import React from 'react';
 
 interface PopupContentProps {
-  title: string;
+  title: string | null | undefined;
   content: string;
   rating: number;
   onClick?: () => void;
