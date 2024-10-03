@@ -1,6 +1,5 @@
 import { hashReview } from '../utils/hashing';
-import { Review } from '../schemas/ReviewSchema';
-import { PlaceDetails } from '../schemas/PlaceDetailsSchema';
+import { UIReview } from '../types/review';
 import { getTransaction } from 'arweavekit/transaction';
 
 export interface GetTransactionProps {
@@ -8,29 +7,22 @@ export interface GetTransactionProps {
   environment: 'local' | 'mainnet';
 }
 
-export const reviewVerify = async (
-  review: Review,
-  userId: string,
-  images: string[],
-  placeDetails: PlaceDetails,
-  arweave_tx_id: string
-) => {
-  const reviewHash = hashReview(review, userId, images, placeDetails);
+export const reviewVerify = async (review: UIReview) => {
+  const reviewHash = hashReview(review);
   const params: GetTransactionProps = {
-    transactionId: arweave_tx_id,
+    transactionId: review.arweave_tx_id,
     environment: 'mainnet'
   };
 
   try {
     const data = await getTransaction(params);
-
     if (data.transaction.hash == reviewHash) {
       return true;
     } else {
       return false;
     }
   } catch (error) {
-    return false;
     console.log(error);
+    return false;
   }
 };

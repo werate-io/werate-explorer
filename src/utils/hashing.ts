@@ -1,45 +1,39 @@
-import { Review } from '../schemas/ReviewSchema';
+import { UIReview } from '../types/review';
 import { createHash } from 'crypto';
-import { PlaceDetails } from '../schemas/PlaceDetailsSchema';
 import { ObfuscatedReview } from '../schemas/ObfuscatedReviewSchema';
 
 const hashData = (...args: string[]) => {
   return createHash('sha256').update(args.filter(Boolean).join('')).digest('hex');
 };
 
-export const obfuscateReview = (
-  review: Review,
-  userId: string,
-  images: string[],
-  placeDetails: PlaceDetails
-): ObfuscatedReview => {
+export const obfuscateReview = (review: UIReview): ObfuscatedReview => {
   /* eslint-disable */
   return {
-    userId,
-    text: review.text,
-    created_at: review.created_at,
-    location_rating: review.location_rating,
-    vibe_rating: review.vibe_rating,
-    price_rating: review.price_rating,
-    quality_rating: review.quality_rating,
-    service_rating: review.service_rating,
-    overall_rating: review.overall_rating,
-    cleanliness_rating: review.cleanliness_rating,
-    imagesHash: hashData(...images),
-    latitude: placeDetails.geocodes.main.latitude,
-    longitude: placeDetails.geocodes.main.longitude,
-    country: placeDetails.location?.country
+    userId: review.userId,
+    text: review.description,
+    created_at: new Date(review.timestamp),
+    location_rating: review.categoryRatings.location,
+    vibe_rating: review.categoryRatings.vibe,
+    price_rating: review.categoryRatings.price,
+    quality_rating: review.categoryRatings.quality,
+    service_rating: review.categoryRatings.service,
+    overall_rating: review.categoryRatings.overall,
+    cleanliness_rating: review.categoryRatings.cleanliness,
+    imagesHash: hashData(...review.photos),
+    latitude: review.venueLocation.lat,
+    longitude: review.venueLocation.long,
+    country: review.venueLocation.country
   };
   /* eslint-enable */
 };
 
 export const hashReview = (
-  review: Review,
-  userId: string,
-  images: string[],
-  placeDetails: PlaceDetails
+  review: UIReview
+  // userId: string,
+  // images: string[],
+  // placeDetails: PlaceDetails
 ): string => {
-  const obfuscatedReview = obfuscateReview(review, userId, images, placeDetails);
+  const obfuscatedReview = obfuscateReview(review);
 
   const userHash = hashData(obfuscatedReview.userId);
   const reviewHash = hashData(

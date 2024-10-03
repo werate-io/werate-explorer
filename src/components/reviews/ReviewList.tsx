@@ -1,5 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
+'use client';
+
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { useTransformedReviews } from '@/hooks/useTransformedReviews';
 import ReviewItem from '@/components/reviews/ReviewItem';
 import {
   Pagination,
@@ -9,113 +11,11 @@ import {
   PaginationPrevious,
   PaginationNext
 } from '@/components/ui/Pagination';
-import { UIReview, VerifyReview } from '@/types/review';
-import { PlaceDetails, PlaceCategory } from '@/types/place';
-import * as constants from '@/lib/constants';
-import { Skeleton } from '@/components/ui/Skeleton';
-
-// Mock data
-const mockReviews: UIReview[] = [
-  {
-    id: '1',
-    description:
-      'This place is absolutely beautiful! The scenery is breathtaking, the facilities are well-maintained, and there are plenty of activities for visitors of all ages. The park staff is friendly and helpful, always ready to assist with any questions or concerns. I particularly enjoyed the hiking trails, which offer stunning views of the surrounding landscape. The picnic areas are clean and well-equipped, making it perfect for a family day out. The park also hosts various events throughout the year, adding to its charm and appeal. Overall, I highly recommend visiting this park for a refreshing and enjoyable outdoor experience',
-    starRatings: 4,
-    photos: ['https://picsum.photos/200', 'https://picsum.photos/201'],
-    timestamp: 'Oct 1, 2024',
-    biometricsHash: 'abc123',
-    userId: 'user1',
-    bohemianId: 'bohemian1',
-    venueLocation: {
-      name: 'Cool Cafe',
-      country: 'USA',
-      type: 'Cafe',
-      lat: 40.7128,
-      long: -74.006
-    },
-    device: 'iPhone 12',
-    hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
-    /* eslint-disable */
-    arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
-    /* eslint-enable */
-  },
-  {
-    id: '2',
-    description:
-      'This place is absolutely beautiful! The scenery is breathtaking, the facilities are well-maintained, and there are plenty of activities for visitors of all ages. The park staff is friendly and helpful, always ready to assist with any questions or concerns. I particularly enjoyed the hiking trails, which offer stunning views of the surrounding landscape. The picnic areas are clean and well-equipped, making it perfect for a family day out. The park also hosts various events throughout the year, adding to its charm and appeal. Overall, I highly recommend visiting this park for a refreshing and enjoyable outdoor experience',
-    starRatings: 3,
-    photos: ['https://picsum.photos/200', 'https://picsum.photos/200'],
-    timestamp: 'Oct 1, 2024',
-    biometricsHash: 'abc123',
-    userId: 'user1',
-    bohemianId: 'bohemian1',
-    venueLocation: {
-      name: 'Cool Cafe',
-      country: 'USA',
-      type: 'Cafe',
-      lat: 40.7128,
-      long: -74.006
-    },
-    device: 'iPhone 12',
-    hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
-    /* eslint-disable */
-    arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
-    /* eslint-enable */
-  }
-  // ... Add more mock reviews here
-];
-/* eslint-disable */
-const verifyReviews: VerifyReview = {
-  text: 'This place is absolutely beautiful! The scenery is breathtaking',
-  created_at: new Date(),
-  location_rating: 4,
-  vibe_rating: 4,
-  price_rating: 4,
-  quality_rating: 4,
-  service_rating: 4,
-  overall_rating: 4,
-  cleanliness_rating: 4
-};
-/* eslint-enable */
-const placeDetails: PlaceDetails = {
-  placeId: '123',
-  name: 'famous',
-  geocodes: {
-    main: {
-      latitude: 45,
-      longitude: 50
-    }
-  },
-  types: ['a', 'b', 'c'],
-  category: PlaceCategory.DRINK,
-  photos: ['a123', 'b123', 'c123'],
-  address: 'abcdefg',
-  location: {
-    address: 'aaa',
-    country: 'bbb',
-    locality: 'ccc',
-    postcode: 'ddd',
-    region: 'eee'
-  },
-  telephone: '+1 321-348-7118',
-  website: 'https://werate.io',
-  openingHours: {
-    display: 'abcdefgh',
-    openNow: true,
-    regular: [
-      {
-        close: 'aaa',
-        day: 10,
-        open: 'bbb'
-      },
-      {
-        close: 'ccc',
-        day: 20,
-        open: 'ddd'
-      }
-    ]
-  }
-};
+import ReviewSkeleton from '@/components/skeletons/ReviewSkeleton';
+import { TAKE } from '@/lib/constants';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Loader2 } from 'lucide-react';
+import { UIReview } from '@/types/review';
 
 const ReviewsList: React.FC = () => {
   const { publicKey } = useWallet();
@@ -150,22 +50,6 @@ const ReviewsList: React.FC = () => {
             <ReviewSkeleton />
           </li>
         ))}
-        {isLoading
-          ? Array(take)
-              .fill(0)
-              .map((_, index) => (
-                <li key={index}>
-                  <ReviewSkeleton />
-                </li>
-              ))
-          : paginatedReviews.map((review) => (
-              <ReviewItem
-                key={review.id}
-                review={review}
-                verifyReview={verifyReviews}
-                placeDetails={placeDetails}
-              />
-            ))}
       </ul>
     );
   }

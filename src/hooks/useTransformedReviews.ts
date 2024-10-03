@@ -19,6 +19,8 @@ export const useTransformedReviews = (skip: number, take: number) => {
 
         return {
           id: review.id,
+          userId: review.playerId,
+          placeId: review.placeId,
           description: review.text,
           starRatings: review.rating || 0,
           photos: review.photoUrls,
@@ -28,8 +30,8 @@ export const useTransformedReviews = (skip: number, take: number) => {
             day: 'numeric'
           }),
           biometricsHash: '',
-          userId: review.reviewAuthorNickname || '',
           bohemianId: '',
+          categoryRatings: review.categoryRatings,
           venueLocation: placeData
             ? {
                 name: placeData.details.name,

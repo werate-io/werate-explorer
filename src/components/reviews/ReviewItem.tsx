@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UIReview, VerifyReview } from '@/types/review';
-import { PlaceDetails } from '@/types/place';
+import { UIReview } from '@/types/review';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
@@ -30,11 +29,9 @@ import { reviewVerify } from '../../services/ReviewVerify';
 
 interface ReviewItemProps {
   review: UIReview;
-  verifyReview: VerifyReview;
-  placeDetails: PlaceDetails;
 }
 
-export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemProps) {
+export function ReviewItem({ review }: ReviewItemProps) {
   const [isVerified, setIsVerified] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
@@ -69,13 +66,7 @@ export function ReviewItem({ review, verifyReview, placeDetails }: ReviewItemPro
 
   async function handleVerify() {
     setIsVerifying(true);
-    const verify_result = await reviewVerify(
-      verifyReview,
-      review.userId,
-      review.photos,
-      placeDetails,
-      review.arweave_tx_id
-    );
+    const verify_result = await reviewVerify(review);
     if (verify_result) {
       setIsVerified(true);
       setIsVerifying(false);
