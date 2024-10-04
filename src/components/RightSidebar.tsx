@@ -9,13 +9,14 @@ interface RightSidebarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   side: 'left' | 'right';
+  handleLogout: () => void;
 }
 
-export default function RightSidebar({ isOpen, setIsOpen, side }: RightSidebarProps) {
+export default function RightSidebar({ isOpen, setIsOpen, side, handleLogout }: RightSidebarProps) {
   return (
     <SidebarBase isOpen={isOpen} setIsOpen={setIsOpen} side={side}>
       <div className="space-y-4">
-        <ProfileWithStats />
+        <ProfileWithStats handleLogout={handleLogout} />
         <ReviewsList />
       </div>
     </SidebarBase>

@@ -39,7 +39,7 @@ export default function MobileNavBar({
       setIsLoggedIn(true);
       setUserInitials(getInitials(String(storedEmail)));
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const getInitials = (name: string) => {
     return name

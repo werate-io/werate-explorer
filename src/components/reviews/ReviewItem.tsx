@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Review } from '@/types/review';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/Card';
 import { Avatar } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
 import { Box } from '@/components/ui/Box';
@@ -20,7 +20,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { MapPin } from 'lucide-react';
 import { useReviewStore } from '@/zustand/store';
 import 'leaflet/dist/leaflet.css';
-
+import { AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 interface ReviewItemProps {
   review: Review;
 }
@@ -30,16 +30,20 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   const mapRef = useRef<L.Map | null>(null); // Ensure mapRef is initialized
 
   const handleMapPinClick = () => {
-    setSelectedReview(review as unknown as Review);
     if (mapRef.current) {
       const map = mapRef.current;
-      map.flyTo([review.metadata.latitude, review.metadata.longitude], 15, {
-        animate: true,
-        duration: 1.5
-      });
+      map.flyTo(
+        [review.metadata.latitude, review.metadata.longitude],
+        15,
+        {
+          animate: true,
+          duration: 12000,
+        }
+      );
     } else {
       console.error('Map reference is not set.'); // Log error if mapRef is null
     }
+    setSelectedReview(review as unknown as Review);
   };
 
   const [isVerified, setIsVerified] = useState(false);
@@ -105,9 +109,10 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     <>
       <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
         <Flex gap="2" align="center" className="flex-col sm:flex-row">
-          <Avatar className="w-12 h-12 bg-purple-500 text-white">
-            <span className=" text-white text-xl font-semibold">{review.metadata.name}</span>
-          </Avatar>
+          <Avatar className="w-12 h-12 bg-slate-500">
+          <AvatarImage src={review.images[0]} alt="User avatar" />
+            <AvatarFallback>{review?.metadata.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+           </Avatar>
           <Box className="text-center sm:text-left mt-2 sm:mt-0">
             <CardTitle className="text-sm sm:text-base md:text-lg">
               {review.metadata.name}
@@ -131,30 +136,6 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
           </p>
         </div>
       </Flex>
-      <div>
-        <div className="mt-4 flex justify-between">
-          {' '}
-          {/* Existing parent div */}
-          <div>
-            {' '}
-            {/* Added parent div for buttons */}
-            <Button
-              variant="outline"
-              className="flex items-center"
-              onClick={() => handleMapPinClick()}>
-              <MapPin className="w-4 h-4 mr-2" />
-              View on Map
-            </Button>
-          </div>{' '}
-          {/* Closing parent div for View on Map */}
-          <div>
-            {' '}
-            {/* Added parent div for Verify button */}
-            <Button onClick={() => handleVerifyClick()}>Verify</Button>
-          </div>{' '}
-          {/* Closing parent div for Verify */}
-        </div>
-      </div>
     </>
   );
 
@@ -232,13 +213,22 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     <>
       <Card
         className="p-3 sm:p-4 bg-purple-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
-        onClick={() => setSelectedReview(review)}>
+        >
         <CardHeader className="p-2">
-          <ReviewSummary />
+          <ReviewSummary />  
         </CardHeader>
+        <CardFooter className="flex justify-between p-2">
+          <Button
+            variant="outline"
+            className="flex items-center"
+            onClick={() => handleMapPinClick()}>
+            <MapPin className="w-4 h-4 mr-2" />
+            View on Map
+          </Button>
+          <Button onClick={() => handleVerifyClick()}>Verify</Button>
+        </CardFooter>
       </Card>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        {' '}
         {/* Update Dialog component */}
         <DialogContent className="sm:max-w-[425px] max-h-[80vh] w-[90vw] overflow-hidden flex flex-col">
           <DialogHeader>

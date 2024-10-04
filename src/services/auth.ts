@@ -2,19 +2,20 @@ import axios from 'axios';
 import { setCookie, deleteCookie } from 'cookies-next'; // Add cookies-next package to handle cookies
 import { getUserId } from './userService'; // Import the getUserProfile function
 import { useUserStore } from '@/zustand/store'; // Import the user store
-
+import { postData } from './werate-api';
+import { LoginResponse } from '@/types/user';
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 const TOKEN_COOKIE_NAME = 'authToken'; // Define the token cookie name
 
 // Registration function
 export const register = async (email: string, password: string) => {
   try {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/v1/register`,
-      { email, password },
-      { headers: { 'Content-Type': 'application/json' } }
+    console.log('Registering user:', email, password);
+    const response = await postData<LoginResponse>(
+      `/api/v1/register`,
+      { email, password }
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error during registration:', error);
   }
@@ -23,16 +24,9 @@ export const register = async (email: string, password: string) => {
 // Login function (now storing token in cookies)
 export const login = async (email: string, password: string) => {
   try {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/v2/login`,
-      { email, password },
-      { headers: { 'Content-Type': 'application/json' } }
-    );
-
-    const data = response.data;
-
-    if (data.accessToken) {
-      setCookie(TOKEN_COOKIE_NAME, data.accessToken, {
+    const response = await postData<LoginResponse>(`/api/v2/login`, { email, password });
+    if (response.accessToken) {
+      setCookie(TOKEN_COOKIE_NAME, response.accessToken, {
         maxAge: 60 * 60 * 24 * 7, // Cookie expiration (1 week, customize as needed)
         path: '/', // Make cookie available across the whole app
         secure: true // Set secure in production
@@ -42,9 +36,8 @@ export const login = async (email: string, password: string) => {
       const profile = await getUserId();
       const setProfile = useUserStore.getState().setProfile; // Get the setProfile function
       setProfile(profile); // Store the profile in Zustand
-
-      return data;
     }
+    return response;
   } catch (error) {
     console.error('Error during login:', error);
   }
@@ -54,7 +47,7 @@ export const login = async (email: string, password: string) => {
 export const checkMfa = async (preAuthToken: string, mfaCode: string) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/api/v1/check-mfa`,
+      `/api/v1/check-mfa`,
       { code: mfaCode },
       {
         headers: {

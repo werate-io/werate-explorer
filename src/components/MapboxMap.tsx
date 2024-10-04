@@ -172,9 +172,9 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
               <SelectValue placeholder="Type of venue" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="restaurant">Restaurant</SelectItem>
-              <SelectItem value="bar">Bar</SelectItem>
-              <SelectItem value="cafe">Cafe</SelectItem>
+              <SelectItem value="RESTAURANT">Restaurant</SelectItem>
+              <SelectItem value="DRINK">Bar</SelectItem>
+              <SelectItem value="OTHER">Cafe</SelectItem>
             </SelectContent>
           </Select>
           <Select

@@ -19,3 +19,7 @@ export interface ProfileMe {
   countryCode: string;
   birthday: string;
 }
+
+export interface LoginResponse {
+  accessToken: string;
+}

@@ -110,21 +110,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 bg-white text-white p-4 flex justify-between items-center z-50">
-      {/* Left section - Name */}
-      <div className="flex-1">
-        <span className="text-gray-800 font-semibold">WeRate Explorer</span>
-      </div>
-
-      {/* Middle section - Search */}
-      <div className="flex-1 flex justify-center">
-        <Input
-          type="search"
-          placeholder="Search for venue, location, bohemian, date?"
-          className="max-w-sm bg-gray-800 text-white placeholder-gray-400 border-gray-700"
-        />
-      </div>
-
+    <nav className="relative top-0 left-0 right-0 text-white p-4 flex justify-between items-center z-50">
       {/* Right section - Login/User Info */}
       <div className="flex-1 flex justify-end">
         {isLoggedIn ? (
