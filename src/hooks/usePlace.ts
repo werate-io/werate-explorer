@@ -9,5 +9,7 @@ export function usePlace(placeId: string) {
 }
 
 export function useReviewsByPlaceId(placeId: string) {
-  return useQuery<ReviewsResponse>(['reviewsByPlaceId', placeId], () => getReviewsByPlaceId(placeId));
+  return useQuery<ReviewsResponse>(['reviewsByPlaceId', placeId], () =>
+    getReviewsByPlaceId(placeId)
+  );
 }

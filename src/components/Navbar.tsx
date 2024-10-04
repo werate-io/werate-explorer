@@ -44,21 +44,22 @@ export default function Navbar() {
     try {
       if (activeTab === 'register') {
         const data = await register(email, password);
-        if (data.error) {
-          setError(data.error);
+        if (data && data?.error) {
+          // Check if data is defined
+          setError(data?.error);
         } else {
           setError('Registration successful. Please log in.');
           setActiveTab('login');
         }
       } else {
         const data = await login(email, password);
-        if (data.preAuthToken) {
-          setPreAuthToken(data.preAuthToken);
+        if (data?.preAuthToken) {
+          setPreAuthToken(data?.preAuthToken);
           setNeedsMfa(true);
-        } else if (data.accessToken) {
+        } else if (data?.accessToken) {
           handleSuccessfulLogin();
         } else {
-          setError(data.error || 'Login failed');
+          setError(data?.error || 'Login failed');
         }
       }
     } catch (err) {

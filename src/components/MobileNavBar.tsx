@@ -58,7 +58,8 @@ export default function MobileNavBar({
     try {
       if (activeTab === 'register') {
         const data = await register(email, password);
-        if (data.error) {
+        if (data && data.error) {
+          // Updated check for data
           setError(data.error);
         } else {
           setError('Registration successful. Please log in.');
@@ -66,10 +67,10 @@ export default function MobileNavBar({
         }
       } else {
         const data = await login(email, password);
-        if (data.accessToken) {
+        if (data?.accessToken) {
           handleSuccessfulLogin();
         } else {
-          setError(data.error || 'Login failed');
+          setError(data?.error || 'Login failed');
         }
       }
     } catch (err) {

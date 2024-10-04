@@ -23,16 +23,23 @@ export const mockReviews: Review[] = [
       longitude: -74.006,
       region: 'New York',
       country: 'USA',
-      device: 'iPhone 12'
+      device: 'iPhone 12',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Great food and cozy atmosphere!',
     avatarId: 'avatar1',
     likeCount: 120,
     createdAt: '2024-10-01',
-    photoUrls: ['url1', 'url2'],
+    images: ['url1', 'url2'],
     hash: 'hash1',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_1'
+    arweave_txn_id: 'arweave_tx_1',
+    bohemianId: '',
+    biometricsHash: ''
   },
   {
     id: 'rev2',
@@ -56,16 +63,23 @@ export const mockReviews: Review[] = [
       longitude: 2.3522,
       region: 'Île-de-France',
       country: 'France',
-      device: 'Pixel 6'
+      device: 'Pixel 6',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Nice coffee and ambiance.',
     avatarId: 'avatar2',
     likeCount: 90,
     createdAt: '2024-09-28',
-    photoUrls: ['url3', 'url4'],
+    images: ['url3', 'url4'],
     hash: 'hash2',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_2'
+    arweave_txn_id: 'arweave_tx_2',
+    bohemianId: '',
+    biometricsHash: ''
   },
   {
     id: 'rev3',
@@ -89,16 +103,23 @@ export const mockReviews: Review[] = [
       longitude: -0.1278,
       region: 'London',
       country: 'UK',
-      device: 'Samsung S21'
+      device: 'Samsung S21',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Good music, but drinks were overpriced.',
     avatarId: 'avatar3',
     likeCount: 75,
     createdAt: '2024-09-15',
-    photoUrls: ['url5', 'url6'],
+    images: ['url5', 'url6'],
     hash: 'hash3',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_3'
+    arweave_txn_id: 'arweave_tx_3',
+    bohemianId: '',
+    biometricsHash: ''
   },
   {
     id: 'rev4',
@@ -122,16 +143,23 @@ export const mockReviews: Review[] = [
       longitude: -118.2437,
       region: 'California',
       country: 'USA',
-      device: 'iPhone 13'
+      device: 'iPhone 13',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Amazing exhibits and well-maintained.',
     avatarId: 'avatar4',
     likeCount: 200,
     createdAt: '2024-08-22',
-    photoUrls: ['url7', 'url8'],
+    images: ['url7', 'url8'],
     hash: 'hash4',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_4'
+    arweave_txn_id: 'arweave_tx_4',
+    bohemianId: '',
+    biometricsHash: ''
   },
   {
     id: 'rev5',
@@ -155,18 +183,24 @@ export const mockReviews: Review[] = [
       longitude: 139.6917,
       region: 'Tokyo',
       country: 'Japan',
-      device: 'OnePlus 9'
+      device: 'OnePlus 9',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Beautiful park with stunning views!',
     avatarId: 'avatar5',
     likeCount: 150,
     createdAt: '2024-07-30',
-    photoUrls: ['url9', 'url10'],
+    images: ['url9', 'url10'],
     hash: 'hash5',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_5'
+    arweave_txn_id: 'arweave_tx_5',
+    bohemianId: '',
+    biometricsHash: ''
   },
-  // More reviews follow...
   {
     id: 'rev6',
     placeId: 'place6',
@@ -189,16 +223,23 @@ export const mockReviews: Review[] = [
       longitude: -122.4194,
       region: 'California',
       country: 'USA',
-      device: 'iPhone 12'
+      device: 'iPhone 12',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Sunny and relaxing beach spot!',
     avatarId: 'avatar6',
     likeCount: 130,
     createdAt: '2024-06-15',
-    photoUrls: ['url11', 'url12'],
+    images: ['url11', 'url12'],
     hash: 'hash6',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_6'
+    arweave_txn_id: 'arweave_tx_6',
+    bohemianId: '',
+    biometricsHash: ''
   },
   {
     id: 'rev7',
@@ -222,16 +263,23 @@ export const mockReviews: Review[] = [
       longitude: 55.296249,
       region: 'Dubai',
       country: 'UAE',
-      device: 'Google Pixel 6'
+      device: 'Google Pixel 6',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Comfortable stay, but could be better.',
     avatarId: 'avatar7',
     likeCount: 60,
     createdAt: '2024-09-10',
-    photoUrls: ['url13', 'url14'],
+    images: ['url13', 'url14'],
     hash: 'hash7',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_7'
+    arweave_txn_id: 'arweave_tx_7',
+    bohemianId: '',
+    biometricsHash: ''
   },
   {
     id: 'rev8',
@@ -255,15 +303,22 @@ export const mockReviews: Review[] = [
       longitude: 12.4964,
       region: 'Rome',
       country: 'Italy',
-      device: 'iPhone 11'
+      device: 'iPhone 11',
+      category: 'RESTAURANT',
+      formattedAddress: '',
+      locality: '',
+      name: 'TT',
+      postalCode: '560034'
     },
     text: 'Great shopping experience!',
     avatarId: 'avatar8',
     likeCount: 110,
     createdAt: '2024-08-05',
-    photoUrls: ['url15', 'url16'],
+    images: ['url15', 'url16'],
     hash: 'hash8',
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    arweave_tx_id: 'arweave_tx_8'
+    arweave_txn_id: 'arweave_tx_8',
+    bohemianId: '',
+    biometricsHash: ''
   }
 ];

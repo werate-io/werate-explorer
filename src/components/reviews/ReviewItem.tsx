@@ -32,14 +32,10 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   const handleMapPinClick = () => {
     if (mapRef.current) {
       const map = mapRef.current;
-      map.flyTo(
-        [review.metadata.latitude, review.metadata.longitude],
-        15,
-        {
-          animate: true,
-          duration: 12000,
-        }
-      );
+      map.flyTo([review.metadata.latitude, review.metadata.longitude], 15, {
+        animate: true,
+        duration: 12000
+      });
     } else {
       console.error('Map reference is not set.'); // Log error if mapRef is null
     }
@@ -110,9 +106,9 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
       <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
         <Flex gap="2" align="center" className="flex-col sm:flex-row">
           <Avatar className="w-12 h-12 bg-slate-500">
-          <AvatarImage src={review.images[0]} alt="User avatar" />
+            <AvatarImage src={review.images[0]} alt="User avatar" />
             <AvatarFallback>{review?.metadata.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
-           </Avatar>
+          </Avatar>
           <Box className="text-center sm:text-left mt-2 sm:mt-0">
             <CardTitle className="text-sm sm:text-base md:text-lg">
               {review.metadata.name}
@@ -211,11 +207,9 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
 
   return (
     <>
-      <Card
-        className="p-3 sm:p-4 bg-purple-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
-        >
+      <Card className="p-3 sm:p-4 bg-purple-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
         <CardHeader className="p-2">
-          <ReviewSummary />  
+          <ReviewSummary />
         </CardHeader>
         <CardFooter className="flex justify-between p-2">
           <Button

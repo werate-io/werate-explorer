@@ -3,18 +3,15 @@ import { setCookie, deleteCookie } from 'cookies-next'; // Add cookies-next pack
 import { getUserId } from './userService'; // Import the getUserProfile function
 import { useUserStore } from '@/zustand/store'; // Import the user store
 import { postData } from './werate-api';
-import { LoginResponse } from '@/types/user';
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+import { LoginResponse, RegisterResponse } from '@/types/user';
+
 const TOKEN_COOKIE_NAME = 'authToken'; // Define the token cookie name
 
 // Registration function
 export const register = async (email: string, password: string) => {
   try {
     console.log('Registering user:', email, password);
-    const response = await postData<LoginResponse>(
-      `/api/v1/register`,
-      { email, password }
-    );
+    const response = await postData<RegisterResponse>(`/api/v1/register`, { email, password });
     return response;
   } catch (error) {
     console.error('Error during registration:', error);

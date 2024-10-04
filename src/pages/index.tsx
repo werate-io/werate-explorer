@@ -46,7 +46,12 @@ export default function Home() {
             <div className="flex-grow flex flex-col pointer-events-auto z-10">
               <Map setDataBounds={setDataBounds} reviews={[]} highlightedId={null} />
             </div>
-            <RightSidebar isOpen={isRightSidebarOpen} setIsOpen={toggleRightSidebar} side="right" />
+            <RightSidebar
+              isOpen={isRightSidebarOpen}
+              setIsOpen={toggleRightSidebar}
+              side="right"
+              handleLogout={() => {}}
+            />
           </div>
         )}
         {isMobile && (

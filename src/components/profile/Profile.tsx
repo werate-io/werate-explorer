@@ -83,8 +83,7 @@ export default function ProfileWithStats({ handleLogout }: { handleLogout: () =>
                 onClick={() => {
                   disconnect();
                   handleLogout();
-                }}
-              >
+                }}>
                 <Wallet className="h-5 w-5" />
                 Disconnect
               </Button>

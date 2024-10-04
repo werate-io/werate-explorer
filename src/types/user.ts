@@ -21,5 +21,15 @@ export interface ProfileMe {
 }
 
 export interface LoginResponse {
-  accessToken: string;
+  accessToken?: string;
+  refreshToken?: string;
+  accessExpirationDate?: string;
+  refreshExpirationDate?: string;
+  preAuthToken?: string;
+  error?: string;
+}
+
+export interface RegisterResponse {
+  success?: boolean;
+  error?: string;
 }
