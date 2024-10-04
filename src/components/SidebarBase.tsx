@@ -13,12 +13,12 @@ interface SidebarBaseProps {
 }
 
 interface TimelineFilterProps {
-  timelineFilter: TimelineFilter;
-  setTimelineFilter: (filter: TimelineFilter) => void;
+  timelinefilter: TimelineFilter;
+  settimelinefilter: (filter: TimelineFilter) => void;
 }
 
 export default function SidebarBase({ isOpen, setIsOpen, side, children }: SidebarBaseProps) {
-  const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1W');
+  const [timelinefilter, settimelinefilter] = useState<TimelineFilter>('1W');
 
   const sidebarVariants = {
     open: { width: '100%', opacity: 1 },
@@ -62,10 +62,10 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
         className="p-4 h-full overflow-y-auto"
         animate={isOpen ? 'open' : 'closed'}>
         {React.Children.map(children, (child) =>
-          React.isValidElement<TimelineFilterProps>(child)
+          React.isValidElement<TimelineFilterProps>(child) && typeof child.type !== 'string'
             ? React.cloneElement(child, {
-                timelineFilter,
-                setTimelineFilter: (filter: TimelineFilter) => setTimelineFilter(filter)
+                timelinefilter,
+                settimelinefilter: (filter: TimelineFilter) => settimelinefilter(filter)
               })
             : child
         )}
