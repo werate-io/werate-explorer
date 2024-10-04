@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { BarChart2, LogIn, LogOut, Menu, Search, UserCircle2, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 import LeftSidebar from './LeftSidebar';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -23,8 +23,7 @@ export default function MobileNavBar({
   isLeftSidebarOpen,
   isRightSidebarOpen,
   setIsLeftSidebarOpen,
-  setIsRightSidebarOpen,
-  toggleWallet
+  setIsRightSidebarOpen
 }: MobileNavBarProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);

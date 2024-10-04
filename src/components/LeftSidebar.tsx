@@ -36,7 +36,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
   const { data: resp, isLoading } = useOverallReviewStatistics();
-  
+
   const [totalReviews, setTotalReviews] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalContinents, setTotalContinents] = useState(0);
@@ -181,27 +181,27 @@ function SidebarContent({
               phoneUsageData?.map((entry, index) => (
                 <div
                   key={entry.name}
-                style={{
-                  width: `${entry.percentage}%`,
-                  backgroundColor: COLORS[index]
-                }}
-                className="h-full"
-                title={`${entry.name}: ${entry.percentage}%`}
-              />
-            ))}
+                  style={{
+                    width: `${entry.percentage}%`,
+                    backgroundColor: COLORS[index]
+                  }}
+                  className="h-full"
+                  title={`${entry.name}: ${entry.percentage}%`}
+                />
+              ))}
           </div>
           <div className="flex justify-between mt-2 text-xs">
             {phoneUsageData &&
               phoneUsageData?.map((entry, index) => (
                 <div key={entry.name} className="flex items-center">
                   <div
-                  className="w-3 h-3 mr-1 rounded-full"
-                  style={{ backgroundColor: COLORS[index] }}></div>
-                <span>
-                  {entry.name}: {entry.percentage}%
-                </span>
-              </div>
-            ))}
+                    className="w-3 h-3 mr-1 rounded-full"
+                    style={{ backgroundColor: COLORS[index] }}></div>
+                  <span>
+                    {entry.name}: {entry.percentage}%
+                  </span>
+                </div>
+              ))}
           </div>
         </CardContent>
       </Card>

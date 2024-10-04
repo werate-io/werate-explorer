@@ -5,7 +5,8 @@ import { getCookie } from 'cookies-next';
 dotenv.config({ path: '.env' });
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL
+  // baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL
+  baseURL: 'https://api.werate.io/https://cors-anywhere.herokuapp.com/'
 });
 
 const getBearerToken = (): string => {

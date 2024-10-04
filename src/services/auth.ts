@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { setCookie, deleteCookie } from 'cookies-next'; // Add cookies-next package to handle cookies
+import { getUserId } from './userService'; // Import the getUserProfile function
+import { useUserStore } from '@/zustand/store'; // Import the user store
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 const TOKEN_COOKIE_NAME = 'authToken'; // Define the token cookie name
@@ -29,22 +31,20 @@ export const login = async (email: string, password: string) => {
 
     const data = response.data;
 
-    // Store the token in cookies instead of localStorage
     if (data.accessToken) {
       setCookie(TOKEN_COOKIE_NAME, data.accessToken, {
         maxAge: 60 * 60 * 24 * 7, // Cookie expiration (1 week, customize as needed)
         path: '/', // Make cookie available across the whole app
         secure: true // Set secure in production
       });
-      setCookie('email', email, {
-        // Add email to cookies
-        maxAge: 60 * 60 * 24 * 7, // 1 week
-        path: '/',
-        secure: true
-      });
-    }
 
-    return data;
+      // Fetch and store the user profile
+      const profile = await getUserId();
+      const setProfile = useUserStore.getState().setProfile; // Get the setProfile function
+      setProfile(profile); // Store the profile in Zustand
+
+      return data;
+    }
   } catch (error) {
     console.error('Error during login:', error);
   }

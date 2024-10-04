@@ -3,17 +3,11 @@
 import React, { useRef, useState } from 'react';
 import { Review } from '@/types/review';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
+import { Avatar } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
 import { Box } from '@/components/ui/Box';
 import { Button } from '@/components/ui/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/DialogShad';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/DialogShad';
 import {
   Carousel,
   CarouselContent,
@@ -21,7 +15,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/Carousel';
-import { Check, Loader2, Star, StarIcon } from 'lucide-react';
+import { Check, Loader2, StarIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { MapPin } from 'lucide-react';
 import { useReviewStore } from '@/zustand/store';
@@ -44,7 +38,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
         duration: 1.5
       });
     } else {
-      console.error("Map reference is not set."); // Log error if mapRef is null
+      console.error('Map reference is not set.'); // Log error if mapRef is null
     }
   };
 
@@ -80,7 +74,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     );
   }
 
-  async function handleVerify(review: Review) {
+  async function handleVerify() {
     setIsVerifying(true);
     // Simulate verification process
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -102,59 +96,65 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     }
   }
 
-  const handleVerifyClick = (review: Review) => {
-    handleVerify(review); // Call the verify function
+  const handleVerifyClick = () => {
+    handleVerify(); // Call the verify function
     setIsDialogOpen(true); // Open the dialog after verification
   };
 
   const ReviewSummary = () => (
     <>
-    <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
-      <Flex gap="2" align="center" className="flex-col sm:flex-row">
-        <Avatar className="w-12 h-12 bg-purple-500 text-white">
-          <span className=" text-white text-xl font-semibold">{review.metadata.name}</span>
-        </Avatar>
-        <Box className="text-center sm:text-left mt-2 sm:mt-0">
-          <CardTitle className="text-sm sm:text-base md:text-lg">{review.metadata.name}</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">
-            <div className="flex items-center text-sm text-gray-500">
-              {review.metadata.category}, {review.metadata.region}, {review.metadata.country}
-            </div>{' '}
-          </CardDescription>
-         
-        </Box>
-      </Flex>
+      <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
+        <Flex gap="2" align="center" className="flex-col sm:flex-row">
+          <Avatar className="w-12 h-12 bg-purple-500 text-white">
+            <span className=" text-white text-xl font-semibold">{review.metadata.name}</span>
+          </Avatar>
+          <Box className="text-center sm:text-left mt-2 sm:mt-0">
+            <CardTitle className="text-sm sm:text-base md:text-lg">
+              {review.metadata.name}
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
+              <div className="flex items-center text-sm text-gray-500">
+                {review.metadata.category}, {review.metadata.region}, {review.metadata.country}
+              </div>{' '}
+            </CardDescription>
+          </Box>
+        </Flex>
 
-      <div className="flex flex-col items-center sm:items-end mt-2 sm:mt-0">
-        {renderStars(review.rating)}
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          {new Date(review.createdAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        </p>
-      </div>
-    </Flex>
-    <div>
-        <div className="mt-4 flex justify-between"> {/* Existing parent div */}
-            <div> {/* Added parent div for buttons */}
-                <Button
-                 variant="outline"
-                 className="flex items-center"
-                 onClick={() => handleMapPinClick()}
-               >
-                 <MapPin className="w-4 h-4 mr-2" />
-                 View on Map
-               </Button>
-            </div> {/* Closing parent div for View on Map */}
-            <div> {/* Added parent div for Verify button */}
-                <Button onClick={() => handleVerifyClick(review)}>
-                    Verify
-                </Button>
-            </div> {/* Closing parent div for Verify */}
+        <div className="flex flex-col items-center sm:items-end mt-2 sm:mt-0">
+          {renderStars(review.rating)}
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            {new Date(review.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })}
+          </p>
         </div>
-    </div>
+      </Flex>
+      <div>
+        <div className="mt-4 flex justify-between">
+          {' '}
+          {/* Existing parent div */}
+          <div>
+            {' '}
+            {/* Added parent div for buttons */}
+            <Button
+              variant="outline"
+              className="flex items-center"
+              onClick={() => handleMapPinClick()}>
+              <MapPin className="w-4 h-4 mr-2" />
+              View on Map
+            </Button>
+          </div>{' '}
+          {/* Closing parent div for View on Map */}
+          <div>
+            {' '}
+            {/* Added parent div for Verify button */}
+            <Button onClick={() => handleVerifyClick()}>Verify</Button>
+          </div>{' '}
+          {/* Closing parent div for Verify */}
+        </div>
+      </div>
     </>
   );
 
@@ -177,7 +177,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     <>
       {isVerifying && <ReviewSkeleton />}
       {!isVerified && !isVerifying && (
-        <Button onClick={handleVerify} className="w-full mt-4">
+        <Button onClick={() => handleVerify()} className="w-full mt-4">
           Verify Review
         </Button>
       )}
@@ -230,12 +230,16 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
 
   return (
     <>
-      <Card className="p-3 sm:p-4 bg-purple-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+      <Card
+        className="p-3 sm:p-4 bg-purple-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+        onClick={() => setSelectedReview(review)}>
         <CardHeader className="p-2">
           <ReviewSummary />
         </CardHeader>
       </Card>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}> {/* Update Dialog component */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        {' '}
+        {/* Update Dialog component */}
         <DialogContent className="sm:max-w-[425px] max-h-[80vh] w-[90vw] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>Review Details</DialogTitle>

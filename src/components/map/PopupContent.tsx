@@ -1,31 +1,10 @@
 'use client';
 import React from 'react'; // Ensure React is imported
 import { useState } from 'react';
-import {
-  X,
-  Star,
-  Navigation,
-  Bookmark,
-  MapPin,
-  Share2,
-  Clock,
-  ChevronDown,
-  Icon,
-  MessageSquare,
-  Box,
-  MoreVertical
-} from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardDescription
-} from '@/components/ui/Card';
+import { Star, MapPin, Clock, MessageSquare, Loader } from 'lucide-react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import { LucideIcon } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -34,9 +13,6 @@ import {
   CarouselNext
 } from '@/components/ui/Carousel';
 import { usePlace, useReviewsByPlaceId } from '@/hooks/usePlace';
-import ReviewItem from '@/components/reviews/ReviewItem';
-import { useTransformedReviews } from '@/hooks/useUserReviews';
-import { Flex } from '../ui/Flex';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -61,10 +37,18 @@ const RatingStars = ({ rating }: { rating: number }) => (
 );
 // export default function PopupContent({ placeId, onClick }: { placeId: string; onClick: () => void }) {
 const PopupContent = ({ placeId }: { placeId: string }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen] = useState(true);
   const { data: placeData, isLoading: isPlaceDataLoading } = usePlace(placeId);
   const { data: reviewsByPlaceId, isLoading: isReviewsByPlaceIdLoading } =
     useReviewsByPlaceId(placeId);
+  // New loading state check
+  if (isPlaceDataLoading || isReviewsByPlaceIdLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader /> {/* Replace with your spinner component */}
+      </div>
+    );
+  }
   if (!isOpen) return null;
 
   return (
@@ -91,15 +75,14 @@ const PopupContent = ({ placeId }: { placeId: string }) => {
               <CarouselNext />
             </Carousel>
           )}
-        
 
-          <Button
+          {/*  <Button
             variant="ghost"
             size="icon"
             className="absolute top-2 right-2 bg-white rounded-full"
             onClick={() => setIsOpen(false)}>
             <X className="h-4 w-4" />
-          </Button>
+          </Button> */}
           <div className="absolute bottom-2 left-2 bg-gray-900 text-white px-2 py-1 rounded">
             {placeData?.details.photos.length === 1
               ? `${placeData?.details.photos.length} photo`
