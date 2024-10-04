@@ -5,19 +5,21 @@ import { useLocalState } from '@/hooks/useLocalStorage'; // Assuming this is imp
 import { SearchBox } from '@/components/map/SearchBox'; // Assuming the search functionality is implemented
 import { MapReview, Review } from '@/types/review'; // Mock reviews data type
 import { MapPinCheckIcon, XIcon } from 'lucide-react';
-import { PopupContent } from './map/PopupContent';
+import PopupContent from './map/PopupContent';
 import { Dialog, DialogContent, DialogHeader } from './ui/DialogShad';
 import { useReviewStore } from '@/zustand/store';
 import Navbar from './Navbar'; // Assuming Navbar has login button
-
+import { useOverallReviews } from '@/hooks/useOverallReviews';
 interface IProps {
   setDataBounds: (bounds: string) => void;
   reviews: MapReview[];
   highlightedId: string | null;
 }
 
-export default function Map({ setDataBounds, highlightedId }: IProps) {
-  const { selectedReview, setSelectedReview, totalReviews } = useReviewStore();
+// export default function Map({ setDataBounds, highlightedId }: IProps) {
+const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
+  const { data: totalReviews, isLoading } = useOverallReviews();
+  const { selectedReview, setSelectedReview } = useReviewStore();
   const mapRef = useRef<MapRef | null>(null); // Ref for the map instance
   const [viewState, setViewState] = useLocalState<ViewState>('viewState', {
     latitude: 50.8503, // Brussels default
@@ -43,7 +45,7 @@ export default function Map({ setDataBounds, highlightedId }: IProps) {
   };
 
   return (
-    <div className="text-black relative w-full">
+    // <div className="text-black w-full">
       <ReactMapGL
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)} // onMove handles viewState changes
@@ -76,7 +78,7 @@ export default function Map({ setDataBounds, highlightedId }: IProps) {
         </div>
 
         {/* Map Markers for reviews */}
-        {totalReviews.map((review: Review) => (
+        {!isLoading && totalReviews && totalReviews.map((review: Review) => (
           <Marker
             key={review.id}
             latitude={review.metadata.latitude}
@@ -95,21 +97,16 @@ export default function Map({ setDataBounds, highlightedId }: IProps) {
         {selectedReview && (
           <Dialog open={!!selectedReview} onOpenChange={() => setSelectedReview(undefined)}>
             <DialogContent className="bg-gradient-to-br from-primary to-white">
-              <DialogHeader className="flex justify-end items-end">
-                <button className="text-white bg-transparent hover:text-red-500 transition-colors">
-                  <XIcon className="h-6 w-6 self-end" />
-                </button>
-              </DialogHeader>
-              <PopupContent
-                title={selectedReview?.placeCategory?.toUpperCase()}
-                content={selectedReview?.text}
-                rating={selectedReview.rating}
+              <PopupContent 
+                placeId={selectedReview.placeId}
                 onClick={() => setSelectedReview(selectedReview)} // Pass review to store
               />
-            </DialogContent>
-          </Dialog>
+             </DialogContent>
+           </Dialog>
         )}
       </ReactMapGL>
-    </div>
+    // </div>
   );
 }
+
+export default Map;

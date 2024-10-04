@@ -1,13 +1,15 @@
 // src/components/searchBox.tsx
 import React, { useState } from 'react';
 import { Input } from '../ui/Input';
+import { ReviewAddress } from '@/types/review';
+import { useOverallReviews } from '@/hooks/useOverallReviews';
 
 interface SearchBoxProps {
   defaultValue: string;
   onSelectAddress: (address: string, latitude: number, longitude: number) => void;
 }
 
-const mockAddresses = [
+const mockAddresses: ReviewAddress[] = [
   { address: 'Brussels Central, 1000 Brussels', latitude: 50.8503, longitude: 4.3517 },
   { address: 'Parc de Bruxelles, 1000 Brussels', latitude: 50.8452, longitude: 4.3571 },
   { address: 'Royal Museums of Fine Arts', latitude: 50.8549, longitude: 4.3756 },
@@ -15,6 +17,16 @@ const mockAddresses = [
 ];
 
 export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddress }) => {
+  // TODO: should be searchabale for all places
+  const { data:reviews, isLoading } = useOverallReviews();
+
+  const mockAddresses: ReviewAddress[] = reviews?.map((review) => ({
+    address: `${review.metadata.country}, ${review.metadata.region}`,
+    latitude: review.metadata.latitude,
+    longitude: review.metadata.longitude
+  })) || [];
+
+  // console.log(mockAddresses);
   const [inputValue, setInputValue] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState<typeof mockAddresses>([]);
 

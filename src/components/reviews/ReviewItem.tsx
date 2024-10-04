@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { UIReview } from '@/types/review';
+import React, { useRef, useState } from 'react';
+import { Review } from '@/types/review';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
@@ -21,18 +21,38 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/Carousel';
-import { Check, Loader2, StarIcon } from 'lucide-react';
+import { Check, Loader2, Star, StarIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { MapPin } from 'lucide-react';
+import { useReviewStore } from '@/zustand/store';
+import 'leaflet/dist/leaflet.css';
 
 interface ReviewItemProps {
-  review: UIReview;
+  review: Review;
 }
 
 const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
+  const { setSelectedReview } = useReviewStore();
+  const mapRef = useRef<L.Map | null>(null); // Ensure mapRef is initialized
+
+  const handleMapPinClick = () => {
+    setSelectedReview(review as unknown as Review);
+    if (mapRef.current) {
+      const map = mapRef.current;
+      map.flyTo([review.metadata.latitude, review.metadata.longitude], 15, {
+        animate: true,
+        duration: 1.5
+      });
+    } else {
+      console.error("Map reference is not set."); // Log error if mapRef is null
+    }
+  };
+
   const [isVerified, setIsVerified] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isMinted, setIsMinted] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Add state for dialog
 
   function renderStars(starRatings: number) {
     const totalStars = 5;
@@ -60,7 +80,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     );
   }
 
-  async function handleVerify() {
+  async function handleVerify(review: Review) {
     setIsVerifying(true);
     // Simulate verification process
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -82,35 +102,60 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     }
   }
 
+  const handleVerifyClick = (review: Review) => {
+    handleVerify(review); // Call the verify function
+    setIsDialogOpen(true); // Open the dialog after verification
+  };
+
   const ReviewSummary = () => (
+    <>
     <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
       <Flex gap="2" align="center" className="flex-col sm:flex-row">
-        <Avatar>
-          <AvatarImage src={review.photos[0]} alt={review.venueLocation.name} />
-          <AvatarFallback>
-            {review.venueLocation.name && (
-              <>
-                {review.venueLocation.name.charAt(0)}
-                {review.venueLocation.name.split(' ')[1]?.charAt(0)}
-              </>
-            )}
-          </AvatarFallback>
+        <Avatar className="w-12 h-12 bg-purple-500 text-white">
+          <span className=" text-white text-xl font-semibold">{review.metadata.name}</span>
         </Avatar>
         <Box className="text-center sm:text-left mt-2 sm:mt-0">
-          <CardTitle className="text-sm sm:text-base md:text-lg">
-            {review.venueLocation.name}
-          </CardTitle>
+          <CardTitle className="text-sm sm:text-base md:text-lg">{review.metadata.name}</CardTitle>
           <CardDescription className="text-xs sm:text-sm">
-            {`${review.venueLocation.type}, ${review.venueLocation.locality} - ${review.venueLocation.country}`}
+            <div className="flex items-center text-sm text-gray-500">
+              {review.metadata.category}, {review.metadata.region}, {review.metadata.country}
+            </div>{' '}
           </CardDescription>
+         
         </Box>
       </Flex>
 
       <div className="flex flex-col items-center sm:items-end mt-2 sm:mt-0">
-        {renderStars(review.starRatings)}
-        <p className="text-xs sm:text-sm text-muted-foreground">{review.timestamp}</p>
+        {renderStars(review.rating)}
+        <p className="text-xs sm:text-sm text-muted-foreground">
+          {new Date(review.createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          })}
+        </p>
       </div>
     </Flex>
+    <div>
+        <div className="mt-4 flex justify-between"> {/* Existing parent div */}
+            <div> {/* Added parent div for buttons */}
+                <Button
+                 variant="outline"
+                 className="flex items-center"
+                 onClick={() => handleMapPinClick()}
+               >
+                 <MapPin className="w-4 h-4 mr-2" />
+                 View on Map
+               </Button>
+            </div> {/* Closing parent div for View on Map */}
+            <div> {/* Added parent div for Verify button */}
+                <Button onClick={() => handleVerifyClick(review)}>
+                    Verify
+                </Button>
+            </div> {/* Closing parent div for Verify */}
+        </div>
+    </div>
+    </>
   );
 
   const ReviewSkeleton = () => (
@@ -139,17 +184,17 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
       {isVerified && (
         <>
           <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2 break-words whitespace-normal overflow-wrap-anywhere">
-            {review.description}
+            {review.text}
           </p>
-          {review.photos.length > 0 && (
+          {review.images.length > 0 && (
             <Carousel className="w-full max-w-xs mx-auto mt-4">
               <CarouselContent>
-                {review.photos.map((src, index) => (
+                {review.images.map((src, index) => (
                   <CarouselItem key={index}>
                     <div className="p-1">
                       <img
                         src={src}
-                        alt={`${review.venueLocation.name} photo ${index + 1}`}
+                        alt={`${review.metadata.name} photo ${index + 1}`}
                         className="w-full h-48 object-cover rounded-md"
                       />
                     </div>
@@ -184,24 +229,24 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   );
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Card className="p-3 sm:p-4 bg-[#EFE5FF] rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
-          <CardHeader className="p-2">
-            <ReviewSummary />
-          </CardHeader>
-        </Card>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-[80vh] w-[90vw] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle>Review Details</DialogTitle>
-        </DialogHeader>
-        <div className="flex-grow overflow-y-auto">
+    <>
+      <Card className="p-3 sm:p-4 bg-purple-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+        <CardHeader className="p-2">
           <ReviewSummary />
-          <FullReviewContent />
-        </div>
-      </DialogContent>
-    </Dialog>
+        </CardHeader>
+      </Card>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}> {/* Update Dialog component */}
+        <DialogContent className="sm:max-w-[425px] max-h-[80vh] w-[90vw] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Review Details</DialogTitle>
+          </DialogHeader>
+          <div className="flex-grow overflow-y-auto">
+            <ReviewSummary />
+            <FullReviewContent />
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

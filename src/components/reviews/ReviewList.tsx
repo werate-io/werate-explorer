@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useTransformedReviews } from '@/hooks/useTransformedReviews';
+import { useUserReviews } from '@/hooks/useUserReviews';
 import ReviewItem from '@/components/reviews/ReviewItem';
 import {
   Pagination,
@@ -15,7 +15,8 @@ import ReviewSkeleton from '@/components/skeletons/ReviewSkeleton';
 import { TAKE } from '@/lib/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Loader2 } from 'lucide-react';
-import { UIReview } from '@/types/review';
+import { Review } from '@/types/review';
+import { useReviewStore } from '@/zustand/store';
 
 const ReviewsList: React.FC = () => {
   const { publicKey } = useWallet();
@@ -24,7 +25,8 @@ const ReviewsList: React.FC = () => {
 
   const skip = useMemo(() => (currentPage - 1) * TAKE, [currentPage]);
 
-  const { reviews, totalReviews, isLoading, error } = useTransformedReviews(skip, TAKE);
+  const { reviews, totalReviews, isLoading, error } = useUserReviews(skip, TAKE);
+  const { selectedReview, setSelectedReview } = useReviewStore();
 
   const totalPages = useMemo(() => Math.ceil(totalReviews / TAKE), [totalReviews]);
 
@@ -89,7 +91,7 @@ const ReviewsList: React.FC = () => {
 };
 
 interface ReviewContentProps {
-  reviews: UIReview[];
+  reviews: Review[];
   currentPage: number;
   totalPages: number;
   handlePageChange: (page: number) => void;

@@ -16,51 +16,24 @@ export interface Review {
     service: number;
   };
   metadata: {
+    name: string;
+    category: string;
+    formattedAddress: string;
     latitude: number;
     longitude: number;
     region: string;
     country: string;
     device: string;
+    locality: string;
+    postalCode: string;
   };
+  bohemianId: string;
+  biometricsHash: string;
   text: string;
   avatarId: string;
   likeCount: number;
   createdAt: string;
-  photoUrls: string[];
-  hash: string;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  arweave_txn_id: string;
-}
-
-export interface UIReview {
-  id: string;
-  placeId: string;
-  description: string;
-  starRatings: number;
-  photos: string[];
-  timestamp: string;
-  biometricsHash: string;
-  userId: string;
-  bohemianId: string;
-  categoryRatings: {
-    overall: number;
-    location: number;
-    vibe: number;
-    price: number;
-    quality: number;
-    cleanliness: number;
-    service: number;
-  };
-  venueLocation: {
-    name: string;
-    country: string;
-    locality: string;
-    region: string;
-    type: string;
-    lat: number;
-    long: number;
-  };
-  device: string;
+  images: string[];
   hash: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   arweave_txn_id: string;
@@ -150,3 +123,9 @@ export const MapReviews: MapReview[] = [
     rating: 3
   }
 ];
+
+export interface ReviewAddress {
+  address: string;
+  latitude: number;
+  longitude: number;
+}

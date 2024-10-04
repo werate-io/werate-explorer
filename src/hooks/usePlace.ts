@@ -1,11 +1,13 @@
 import { useQuery } from 'react-query';
 import { getPlaceById } from '@/services/placeService';
 import type { Place } from '@/types/place';
-import type { ActionResponse } from '@/types/actions';
+import { ReviewsResponse } from '@/types/review';
 
+import { getReviewsByPlaceId } from '@/services/reviewService';
 export function usePlace(placeId: string) {
-  return useQuery<ActionResponse<Place>>(['place', placeId], async () => {
-    const place = await getPlaceById(placeId);
-    return { success: true, data: place };
-  });
+  return useQuery<Place>(['place', placeId], () => getPlaceById(placeId));
+}
+
+export function useReviewsByPlaceId(placeId: string) {
+  return useQuery<ReviewsResponse>(['reviewsByPlaceId', placeId], () => getReviewsByPlaceId(placeId));
 }

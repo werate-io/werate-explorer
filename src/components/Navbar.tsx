@@ -110,31 +110,43 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-[400px] relative top-0 left-0 right-0 bg-tran text-white p-4 flex justify-end items-end z-10">
-      <div className="flex-1"></div>
-      <div className="flex items-center space-x-4">
+    <nav className="relative top-0 left-0 right-0 bg-white text-white p-4 flex justify-between items-center z-50">
+      {/* Left section - Name */}
+      <div className="flex-1">
+        <span className="text-gray-800 font-semibold">WeRate Explorer</span>
+      </div>
+
+      {/* Middle section - Search */}
+      <div className="flex-1 flex justify-center">
+        <Input
+          type="search"
+          placeholder="Search for venue, location, bohemian, date?"
+          className="max-w-sm bg-gray-800 text-white placeholder-gray-400 border-gray-700"
+        />
+      </div>
+
+      {/* Right section - Login/User Info */}
+      <div className="flex-1 flex justify-end">
         {isLoggedIn ? (
-          <>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="bg-primary hover:bg-primary/55 text-white">
-                  {userInitials} <ChevronDown className="ml-2 h-4 w-4" />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="bg-primary hover:bg-primary/55 text-white">
+                {userInitials} <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-36 bg-gray-800 text-white border-gray-700">
+              <div className="grid gap-2">
+                <Button variant="ghost" className="w-full justify-start">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-36 bg-gray-800 text-white border-gray-700">
-                <div className="grid gap-2">
-                  <Button variant="ghost" className="w-full justify-start">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Settings
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </>
+                <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign out
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         ) : (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -260,6 +272,6 @@ export default function Navbar() {
           </Dialog>
         )}
       </div>
-    </div>
+    </nav>
   );
 }
