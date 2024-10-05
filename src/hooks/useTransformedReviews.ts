@@ -19,6 +19,8 @@ export const useTransformedReviews = (skip: number, take: number) => {
 
         return {
           id: review.id,
+          userId: review.playerId,
+          placeId: review.placeId,
           description: review.text,
           starRatings: review.rating || 0,
           photos: review.photoUrls,
@@ -28,8 +30,8 @@ export const useTransformedReviews = (skip: number, take: number) => {
             day: 'numeric'
           }),
           biometricsHash: '',
-          userId: review.reviewAuthorNickname || '',
           bohemianId: '',
+          categoryRatings: review.categoryRatings,
           venueLocation: placeData
             ? {
                 name: placeData.details.name,
@@ -49,7 +51,11 @@ export const useTransformedReviews = (skip: number, take: number) => {
                 lat: 0,
                 long: 0
               },
-          device: review.avatarId
+          device: review.avatarId,
+          hash: 'bb884942e73bec66b9e6e9954459d1e29dff5c6e4e9d76fa35df545683ac530a',
+          /* eslint-disable */
+          arweave_tx_id: 'BNttzDav3jHVnNiV7nYbQv-GY0HQ-4XXsdkE5K9ylHQ'
+          /* eslint-enable */
         };
       })
     );

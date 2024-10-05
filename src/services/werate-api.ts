@@ -5,7 +5,7 @@ import { getCookie } from 'cookies-next';
 dotenv.config({ path: '.env' });
 
 const instance = axios.create({
-  baseURL: 'https://api.werate.io'
+  baseURL: 'http://localhost:8080'
 });
 
 const getBearerToken = (): string => {
