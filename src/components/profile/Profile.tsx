@@ -2,8 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { StatCard } from '@/components/StatCard';
-import { MapPinIcon, StarIcon, GlobeIcon } from 'lucide-react';
-import { WalletIcon, Wallet } from 'lucide-react';
+import { MapPinIcon, StarIcon, GlobeIcon, WalletIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '../ui/wallet-adapter-react-ui';
@@ -15,9 +14,9 @@ import ProfileSkeleton from '@/components/skeletons/ProfileSkeleton';
 import { useAuth } from '@/context/AuthContext';
 
 export default function ProfileWithStats() {
-  const { signOut } = useAuth();
-  const { data: profile, isLoading } = useProfile();
+  const { isLoggedIn, signOut } = useAuth();
   const { publicKey, connected, connecting, signMessage, disconnect } = useWallet();
+  const { data: profile, isLoading } = useProfile();
 
   useEffect(() => {
     if (connected && publicKey && signMessage) {
@@ -53,7 +52,7 @@ export default function ProfileWithStats() {
     }
   }, [publicKey, signMessage]);
 
-  if (!publicKey) {
+  if (!isLoggedIn || !publicKey) {
     return (
       <Card className="w-full bg-primary p-4 rounded-lg shadow-lg">
         <CardHeader className="flex flex-col items-center justify-center gap-4 p-4">
@@ -64,7 +63,7 @@ export default function ProfileWithStats() {
             {!connecting ? (
               <span className="ml-2">Connect Wallet</span>
             ) : (
-              <span className="ml-2">Connectinig ...</span>
+              <span className="ml-2">Connecting ...</span>
             )}
           </WalletMultiButton>
         </CardHeader>
@@ -87,7 +86,7 @@ export default function ProfileWithStats() {
                   disconnect();
                   signOut();
                 }}>
-                <Wallet className="h-5 w-5" />
+                <WalletIcon className="h-5 w-5" />
                 Disconnect
               </Button>
             </CardHeader>

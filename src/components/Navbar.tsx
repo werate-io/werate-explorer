@@ -17,9 +17,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover
 import { useAuth } from '@/context/AuthContext';
 import { login, register, checkMfa } from '@/services/auth';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
-import { getCookie } from 'cookies-next';
+import { User, Wallet } from 'lucide-react';
+import { useWallet } from '@solana/wallet-adapter-react';
 export default function Navbar() {
   const { signOut, isLoggedIn, signIn } = useAuth();
+  const { disconnect } = useWallet();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
   const [email, setEmail] = useState('');
@@ -28,7 +30,6 @@ export default function Navbar() {
   const [error, setError] = useState('');
   const [needsMfa, setNeedsMfa] = useState(false);
   const [preAuthToken, setPreAuthToken] = useState('');
-  const [userInitials, setUserInitials] = useState('');
 
   useEffect(() => {
     if (error) {
@@ -39,6 +40,7 @@ export default function Navbar() {
       return () => clearTimeout(timer);
     }
   }, [error]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -51,8 +53,6 @@ export default function Navbar() {
         } else {
           setActiveTab('login');
           setIsOpen(false);
-          signIn(email, password);
-          setUserInitials(getInitials(email));
         }
       } else {
         const data = await login(email, password);
@@ -60,7 +60,7 @@ export default function Navbar() {
           setPreAuthToken(data?.preAuthToken);
           setNeedsMfa(true);
         } else if (data?.accessToken) {
-          handleSuccessfulLogin();
+          handleSuccessfulLogin(); // This will now update the logged-in state
         } else {
           setEmail('');
           setPassword('');
@@ -89,19 +89,16 @@ export default function Navbar() {
   };
 
   const handleSuccessfulLogin = () => {
-    const storedEmail = getCookie('email');
-    setUserInitials(getInitials(String(storedEmail)));
     setIsOpen(false);
     setNeedsMfa(false);
     setEmail('');
     setPassword('');
     setMfaCode('');
-    signIn(email, password);
+    signIn(email, password); // Ensure this updates the context state
   };
 
   const handleLogout = () => {
     signOut();
-    setUserInitials('');
     setEmail('');
     setPassword('');
     setMfaCode('');
@@ -112,15 +109,6 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((part) => part[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
   return (
     <nav className="relative top-0 left-0 right-0 text-white p-4 flex justify-between items-center z-50">
       {/* Right section - Login/User Info */}
@@ -129,7 +117,9 @@ export default function Navbar() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="bg-primary hover:bg-primary/55 text-white">
-                {userInitials} <ChevronDown className="ml-2 h-4 w-4" />
+                {/* I neeed icon of user */}
+                <User className="mr-2 h-4 w-4" />
+                <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-36 bg-gray-800 text-white border-gray-700">
@@ -141,6 +131,17 @@ export default function Navbar() {
                 <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Sign out
+                </Button>
+                {/* include disconnect wallet  */}
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => {
+                    disconnect();
+                    signOut();
+                  }}>
+                  <Wallet className="mr-2 h-4 w-4" />
+                  Disconnect
                 </Button>
               </div>
             </PopoverContent>

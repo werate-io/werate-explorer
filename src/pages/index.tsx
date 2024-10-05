@@ -7,7 +7,7 @@ import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
 import { useAuth } from '@/context/AuthContext';
 import dynamic from 'next/dynamic';
-
+import Navbar from '@/components/Navbar';
 const Map = dynamic(() => import('@/components/MapboxMap'), {
   ssr: false
 });
@@ -42,19 +42,24 @@ export default function Home() {
       <main className="relative h-screen w-screen overflow-hidden">
         <div className="relative inset-0 z-10"></div>
         {!isMobile && (
-          <div className="absolute inset-0 pointer-events-none flex z-10">
-            <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
-            <div className="flex-grow flex flex-col pointer-events-auto z-10">
+          <>
+            <Navbar />
+            <div className="absolute inset-0 pointer-events-none flex z-10">
+              <div className="pointer-events-auto z-50">
+                <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
+              </div>
               <Map setDataBounds={setDataBounds} reviews={[]} highlightedId={null} />
+              {isLoggedIn && (
+                <div className="pointer-events-auto z-40">
+                <RightSidebar
+                  isOpen={isRightSidebarOpen}
+                  setIsOpen={toggleRightSidebar}
+                  side="right"
+                />
+                </div>
+              )}
             </div>
-            {isLoggedIn && (
-              <RightSidebar
-                isOpen={isRightSidebarOpen}
-                setIsOpen={toggleRightSidebar}
-                side="right"
-              />
-            )}
-          </div>
+          </>
         )}
         {isMobile && (
           <MobileNavBar

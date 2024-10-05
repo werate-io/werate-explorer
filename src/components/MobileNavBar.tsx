@@ -12,6 +12,7 @@ import { getCookie } from 'cookies-next';
 import RightSidebar from './RightSidebar';
 import { useAuth } from '@/context/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
+import { UserIcon } from 'lucide-react';
 interface MobileNavBarProps {
   isLeftSidebarOpen: boolean;
   isRightSidebarOpen: boolean;
@@ -32,24 +33,7 @@ export default function MobileNavBar({
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('login');
-  const [userInitials, setUserInitials] = useState('');
 
-  useEffect(() => {
-    const storedEmail = getCookie('email');
-    if (storedEmail) {
-      setUserInitials(getInitials(String(storedEmail)));
-    }
-  }, [isLoggedIn]);
-
-  const getInitials = (name: string) => {
-    return name
-      .split('@')[0]
-      .split(' ')
-      .map((part) => part[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,7 +63,6 @@ export default function MobileNavBar({
 
   const handleSuccessfulLogin = () => {
     const storedEmail = getCookie('email');
-    setUserInitials(getInitials(String(storedEmail)));
     setShowLoginForm(false);
     setEmail('');
     setPassword('');
@@ -112,7 +95,7 @@ export default function MobileNavBar({
             size="sm"
             className="ml-2 bg-purple-600 text-white hover:bg-purple-700"
             onClick={() => setIsRightSidebarOpen(true)}>
-            {userInitials}
+            <UserIcon className="w-6 h-6" />
           </Button>
         ) : (
           <Button

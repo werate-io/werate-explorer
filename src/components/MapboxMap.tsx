@@ -9,7 +9,6 @@ import { MapPinCheckIcon } from 'lucide-react';
 import PopupContent from './map/PopupContent';
 import { Dialog, DialogContent } from './ui/DialogShad';
 import { useReviewStore, useUserStore } from '@/zustand/store';
-import Navbar from './Navbar';
 import { useOverallReviews } from '@/hooks/useOverallReviews';
 
 import {
@@ -137,7 +136,6 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
               }}
             />
           </div>
-          <Navbar />
         </div>
 
         {!isLoading &&

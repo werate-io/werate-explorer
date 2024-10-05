@@ -163,7 +163,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
           <p className="text-xs sm:text-base md:text-md lg:text-sm xl:text-base text-muted-foreground mt-2 break-words whitespace-normal overflow-wrap-anywhere">
             {review.text}
           </p>
-          {review.images.length > 0 && (
+          {review.metadata.images?.length > 0 && (
             <Carousel className="w-full max-w-xs mx-auto mt-4">
               <CarouselContent>
                 {review.images.map((src, index) => (

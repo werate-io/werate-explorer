@@ -26,6 +26,7 @@ export interface Review {
     device: string;
     locality: string;
     postalCode: string;
+    images: string[];
   };
   bohemianId: string;
   biometricsHash: string;
