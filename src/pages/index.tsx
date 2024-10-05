@@ -51,11 +51,11 @@ export default function Home() {
               <Map setDataBounds={setDataBounds} reviews={[]} highlightedId={null} />
               {isLoggedIn && (
                 <div className="pointer-events-auto z-40">
-                <RightSidebar
-                  isOpen={isRightSidebarOpen}
-                  setIsOpen={toggleRightSidebar}
-                  side="right"
-                />
+                  <RightSidebar
+                    isOpen={isRightSidebarOpen}
+                    setIsOpen={toggleRightSidebar}
+                    side="right"
+                  />
                 </div>
               )}
             </div>

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeftIcon, ChevronRightIcon, BarChart, UserCircle } from 'lucide-react';
 import { TimelineFilter } from '@/types/review';
-import { useAuth } from '@/context/AuthContext';
+
 interface SidebarBaseProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -18,7 +18,6 @@ interface TimelineFilterProps {
 }
 
 export default function SidebarBase({ isOpen, setIsOpen, side, children }: SidebarBaseProps) {
-  const { isLoggedIn } = useAuth();
   const [timelineFilter, setTimelineFilter] = useState<TimelineFilter>('1W');
 
   const sidebarVariants = {
@@ -27,8 +26,8 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
   };
 
   const contentVariants = {
-    open: { opacity: 1},
-    closed: { opacity: 0}
+    open: { opacity: 1 },
+    closed: { opacity: 0 }
   };
 
   const SidebarIcon = side === 'left' ? BarChart : UserCircle;

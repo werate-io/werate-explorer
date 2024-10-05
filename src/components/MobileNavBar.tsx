@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Menu, Search, X } from 'lucide-react';
 import LeftSidebar from './LeftSidebar';
 import { Button } from '@/components/ui/Button';
@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/Input';
 import { Sheet, SheetContent } from '@/components/ui/Sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { login, register } from '@/services/auth';
-import { getCookie } from 'cookies-next';
 import RightSidebar from './RightSidebar';
 import { useAuth } from '@/context/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
@@ -33,7 +32,6 @@ export default function MobileNavBar({
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('login');
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +60,6 @@ export default function MobileNavBar({
   };
 
   const handleSuccessfulLogin = () => {
-    const storedEmail = getCookie('email');
     setShowLoginForm(false);
     setEmail('');
     setPassword('');
