@@ -14,10 +14,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Label } from '@/components/ui/Label';
 import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/PopoverShad';
-import { checkMfa, login, register, logout } from '@/services/auth'; // Import logout function
-import { getCookie, deleteCookie } from 'cookies-next'; // Import cookie functions
-
+import { useAuth } from '@/context/AuthContext';
+import { login, register, checkMfa } from '@/services/auth';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
+import { getCookie } from 'cookies-next';
 export default function Navbar() {
+  const { signOut, isLoggedIn, signIn } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
   const [email, setEmail] = useState('');
@@ -26,17 +28,17 @@ export default function Navbar() {
   const [error, setError] = useState('');
   const [needsMfa, setNeedsMfa] = useState(false);
   const [preAuthToken, setPreAuthToken] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInitials, setUserInitials] = useState('');
 
   useEffect(() => {
-    const storedEmail = getCookie('email');
-    if (storedEmail) {
-      setIsLoggedIn(true);
-      setUserInitials(getInitials(String(storedEmail)));
-    }
-  }, []);
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
 
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -45,11 +47,12 @@ export default function Navbar() {
       if (activeTab === 'register') {
         const data = await register(email, password);
         if (data && data?.error) {
-          // Check if data is defined
-          setError(data?.error);
+          setError(data?.error?.message || 'Registration failed');
         } else {
-          setError('Registration successful. Please log in.');
           setActiveTab('login');
+          setIsOpen(false);
+          signIn(email, password);
+          setUserInitials(getInitials(email));
         }
       } else {
         const data = await login(email, password);
@@ -59,7 +62,9 @@ export default function Navbar() {
         } else if (data?.accessToken) {
           handleSuccessfulLogin();
         } else {
-          setError(data?.error || 'Login failed');
+          setEmail('');
+          setPassword('');
+          setError(data?.error?.message || 'Login failed');
         }
       }
     } catch (err) {
@@ -73,10 +78,10 @@ export default function Navbar() {
 
     try {
       const data = await checkMfa(preAuthToken, mfaCode);
-      if (data.accessToken) {
+      if (data) {
         handleSuccessfulLogin();
       } else {
-        setError(data.error || 'MFA verification failed');
+        setError('MFA verification failed');
       }
     } catch (err) {
       setError(`An error occurred: ${err instanceof Error ? err.message : 'Please try again.'}`);
@@ -85,20 +90,26 @@ export default function Navbar() {
 
   const handleSuccessfulLogin = () => {
     const storedEmail = getCookie('email');
-    setIsLoggedIn(true);
     setUserInitials(getInitials(String(storedEmail)));
     setIsOpen(false);
     setNeedsMfa(false);
     setEmail('');
     setPassword('');
     setMfaCode('');
+    signIn(email, password);
   };
 
   const handleLogout = () => {
-    logout(); // Remove the token cookie
-    deleteCookie('email'); // Remove the email cookie
-    setIsLoggedIn(false);
+    signOut();
     setUserInitials('');
+    setEmail('');
+    setPassword('');
+    setMfaCode('');
+    setError('');
+    setPreAuthToken('');
+    setNeedsMfa(false);
+    setActiveTab('login');
+    setIsOpen(false);
   };
 
   const getInitials = (name: string) => {
@@ -206,10 +217,10 @@ export default function Navbar() {
                         />
                       </div>
                       {error && (
-                        <div className="text-red-500 flex items-center">
-                          <AlertCircle className="mr-2" size={16} />
-                          {error}
-                        </div>
+                        <Alert variant="destructive">
+                          <AlertTitle>Error</AlertTitle>
+                          <AlertDescription>{error}</AlertDescription>
+                        </Alert>
                       )}
                       <Button
                         type="submit"

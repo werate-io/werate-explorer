@@ -5,7 +5,7 @@ import RightSidebar from '@/components/RightSidebar';
 import LeftSidebar from '@/components/LeftSidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
-
+import { useAuth } from '@/context/AuthContext';
 import dynamic from 'next/dynamic';
 
 const Map = dynamic(() => import('@/components/MapboxMap'), {
@@ -13,6 +13,7 @@ const Map = dynamic(() => import('@/components/MapboxMap'), {
 });
 
 export default function Home() {
+  const { signOut, isLoggedIn } = useAuth();
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [, setDataBounds] = useState<string>('');
@@ -33,7 +34,7 @@ export default function Home() {
   };
 
   const toggleWallet = () => {
-    // Implement wallet toggle logic here
+    signOut();
   };
 
   return (
@@ -46,12 +47,13 @@ export default function Home() {
             <div className="flex-grow flex flex-col pointer-events-auto z-10">
               <Map setDataBounds={setDataBounds} reviews={[]} highlightedId={null} />
             </div>
-            <RightSidebar
-              isOpen={isRightSidebarOpen}
-              setIsOpen={toggleRightSidebar}
-              side="right"
-              handleLogout={() => {}}
-            />
+            {isLoggedIn && (
+              <RightSidebar
+                isOpen={isRightSidebarOpen}
+                setIsOpen={toggleRightSidebar}
+                side="right"
+              />
+            )}
           </div>
         )}
         {isMobile && (

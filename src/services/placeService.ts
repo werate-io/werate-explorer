@@ -1,6 +1,7 @@
 import { Place } from '@/types/place';
-import { getData } from '@/services/werate-api';
+import instance from './werate-api';
 
 export async function getPlaceById(placeId: string): Promise<Place> {
-  return await getData<Place>(`/api/v1/places/${placeId}`);
+  const response = await instance.get<Place>(`/api/v1/places/${placeId}`);
+  return response.data;
 }

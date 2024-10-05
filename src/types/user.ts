@@ -19,17 +19,3 @@ export interface ProfileMe {
   countryCode: string;
   birthday: string;
 }
-
-export interface LoginResponse {
-  accessToken?: string;
-  refreshToken?: string;
-  accessExpirationDate?: string;
-  refreshExpirationDate?: string;
-  preAuthToken?: string;
-  error?: string;
-}
-
-export interface RegisterResponse {
-  success?: boolean;
-  error?: string;
-}

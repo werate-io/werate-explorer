@@ -7,10 +7,11 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Sheet, SheetContent } from '@/components/ui/Sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
-import { login, logout, register } from '@/services/auth';
-import { getCookie, deleteCookie } from 'cookies-next';
+import { login, register } from '@/services/auth';
+import { getCookie } from 'cookies-next';
 import RightSidebar from './RightSidebar';
-
+import { useAuth } from '@/context/AuthContext';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
 interface MobileNavBarProps {
   isLeftSidebarOpen: boolean;
   isRightSidebarOpen: boolean;
@@ -25,7 +26,7 @@ export default function MobileNavBar({
   setIsLeftSidebarOpen,
   setIsRightSidebarOpen
 }: MobileNavBarProps) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, signIn } = useAuth();
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,7 +37,6 @@ export default function MobileNavBar({
   useEffect(() => {
     const storedEmail = getCookie('email');
     if (storedEmail) {
-      setIsLoggedIn(true);
       setUserInitials(getInitials(String(storedEmail)));
     }
   }, [isLoggedIn]);
@@ -59,8 +59,7 @@ export default function MobileNavBar({
       if (activeTab === 'register') {
         const data = await register(email, password);
         if (data && data.error) {
-          // Updated check for data
-          setError(data.error);
+          setError(data.error.message);
         } else {
           setError('Registration successful. Please log in.');
           setActiveTab('login');
@@ -70,7 +69,7 @@ export default function MobileNavBar({
         if (data?.accessToken) {
           handleSuccessfulLogin();
         } else {
-          setError(data?.error || 'Login failed');
+          setError(data?.error?.message || 'Login failed');
         }
       }
     } catch (err) {
@@ -80,18 +79,11 @@ export default function MobileNavBar({
 
   const handleSuccessfulLogin = () => {
     const storedEmail = getCookie('email');
-    setIsLoggedIn(true);
     setUserInitials(getInitials(String(storedEmail)));
     setShowLoginForm(false);
     setEmail('');
     setPassword('');
-  };
-
-  const handleLogout = () => {
-    logout();
-    deleteCookie('email');
-    setIsLoggedIn(false);
-    setUserInitials('');
+    signIn(email, password);
   };
 
   return (
@@ -180,7 +172,12 @@ export default function MobileNavBar({
                       className="bg-gray-800 border-gray-700"
                     />
                   </div>
-                  {error && <p className="text-red-500">{error}</p>}
+                  {error && (
+                    <Alert variant="destructive">
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                  )}
                   <Button className="w-full bg-purple-600 hover:bg-purple-700" type="submit">
                     Login
                   </Button>
@@ -227,12 +224,7 @@ export default function MobileNavBar({
       {isLoggedIn && (
         <Sheet open={isRightSidebarOpen} onOpenChange={setIsRightSidebarOpen}>
           <SheetContent side="right" className="w-[300px] sm:w-[400px] text-white p-0">
-            <RightSidebar
-              isOpen={true}
-              setIsOpen={() => {}}
-              side="right"
-              handleLogout={handleLogout}
-            />
+            <RightSidebar isOpen={true} setIsOpen={() => {}} side="right" />
           </SheetContent>
         </Sheet>
       )}

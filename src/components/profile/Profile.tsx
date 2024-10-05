@@ -12,7 +12,10 @@ import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
 import { useProfile } from '@/hooks/useProfile';
 import ProfileSkeleton from '@/components/skeletons/ProfileSkeleton';
-export default function ProfileWithStats({ handleLogout }: { handleLogout: () => void }) {
+import { useAuth } from '@/context/AuthContext';
+
+export default function ProfileWithStats() {
+  const { signOut } = useAuth();
   const { data: profile, isLoading } = useProfile();
   const { publicKey, connected, connecting, signMessage, disconnect } = useWallet();
 
@@ -82,7 +85,7 @@ export default function ProfileWithStats({ handleLogout }: { handleLogout: () =>
                 className="flex items-center gap-2 bg-purple-600 hover:bg-purple-800 text-white p-2 rounded"
                 onClick={() => {
                   disconnect();
-                  handleLogout();
+                  signOut();
                 }}>
                 <Wallet className="h-5 w-5" />
                 Disconnect
