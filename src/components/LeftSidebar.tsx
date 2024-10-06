@@ -27,7 +27,7 @@ import {
 } from 'recharts';
 import { COLORS } from '@/lib/constants';
 import { useOverallReviewStatistics } from '@/hooks/useOverallReviewStatistics';
-import { TimelineData, TimelineFilter } from '@/types/review';
+import { TimelineFilter } from '@/types/review';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -45,7 +45,9 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
   const [reviewTimelineData, setReviewTimelineData] = useState<
     Array<{ date: TimelineFilter; count: number }>
   >([]);
-  const [phoneUsageData, setPhoneUsageData] = useState<Array<{ name: string; percentage: number }>>([]);
+  const [phoneUsageData, setPhoneUsageData] = useState<Array<{ name: string; percentage: number }>>(
+    []
+  );
   const [countryData, setCountryData] = useState<Array<{ country: string; count: number }>>([]);
   const [ratingCategoriesData, setRatingCategoriesData] = useState<
     Array<{ name: string; median: number; q1: number; q3: number; min: number; max: number }>
@@ -87,17 +89,19 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
         <Card className="mb-4 bg-slate-50 border-none">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl font-semibold">Timeline of Reviews</CardTitle>
-            <Select value={timelineFilter} onValueChange={(value) => {
+            <Select
+              value={timelineFilter}
+              onValueChange={(value) => {
                 setTimelineFilter(value as TimelineFilter);
               }}>
               <SelectTrigger className="w-[80px]">
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='1D'>1D</SelectItem>
-                <SelectItem value='1W'>1W</SelectItem>
-                <SelectItem value='1M'>1M</SelectItem>
-                <SelectItem value='1Y'>1Y</SelectItem>
+                <SelectItem value="1D">1D</SelectItem>
+                <SelectItem value="1W">1W</SelectItem>
+                <SelectItem value="1M">1M</SelectItem>
+                <SelectItem value="1Y">1Y</SelectItem>
               </SelectContent>
             </Select>
           </CardHeader>
@@ -107,7 +111,13 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
                 <XAxis dataKey="date" stroke="#8B5CF6" />
                 <YAxis stroke="#8B5CF6" />
                 <Tooltip />
-                <Line type="monotone" dataKey="count" stroke="#8B5CF6" strokeWidth={2} dot={false} />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="#8B5CF6"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
