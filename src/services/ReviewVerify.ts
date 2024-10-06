@@ -1,5 +1,5 @@
 import { hashReview } from '../utils/hashing';
-import { UIReview } from '../types/review';
+import { Review } from '../types/review';
 import { getTransaction } from 'arweavekit/transaction';
 
 export interface GetTransactionProps {
@@ -7,10 +7,10 @@ export interface GetTransactionProps {
   environment: 'local' | 'mainnet';
 }
 
-export const reviewVerify = async (review: UIReview) => {
+export const reviewVerify = async (review: Review) => {
   const reviewHash = hashReview(review);
   const params: GetTransactionProps = {
-    transactionId: review.arweave_tx_id,
+    transactionId: review.arweave_txn_id,
     environment: 'mainnet'
   };
 
