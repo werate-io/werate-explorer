@@ -1,11 +1,10 @@
-import { mockReviews } from '@/mock';
 import { Review } from '@/types/review';
 import { ProfileMe } from '@/types/user'; // Import the Profile type
 import { create } from 'zustand';
 
 interface ReviewState {
   totalReviews: Review[];
-  selectedReview: Review;
+  selectedReview: Review | null;
   setTotalReviews: (total: Review[]) => void;
   setSelectedReview: (review: Review) => void;
 }
@@ -17,12 +16,9 @@ interface UserState {
   setPlayerId: (playerId: string) => void; // Function to set playerId
 }
 
-const mockReviewsState = mockReviews;
-const mockInitialReviewState = mockReviews[0];
-
 export const useReviewStore = create<ReviewState>((set) => ({
-  totalReviews: mockReviewsState,
-  selectedReview: mockInitialReviewState,
+  totalReviews: [],
+  selectedReview: null,
   setTotalReviews: (total: Review[]) => set({ totalReviews: total }),
   setSelectedReview: (review: Review) => set({ selectedReview: review })
 }));
