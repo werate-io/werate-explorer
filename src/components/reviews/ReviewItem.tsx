@@ -17,6 +17,10 @@ import {
 } from '@/components/ui/Carousel';
 import { Check, Loader2, StarIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { reviewMint } from '../../services/ReviewMint';
+import { reviewVerify } from '../../services/ReviewVerify';
+
 import { MapPin } from 'lucide-react';
 import { useReviewStore } from '@/zustand/store';
 import 'leaflet/dist/leaflet.css';
@@ -46,6 +50,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isMinted, setIsMinted] = useState(false);
+  const wallet = useWallet();
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Add state for dialog
 
   function renderStars(starRatings: number) {
@@ -76,29 +81,28 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
 
   async function handleVerify() {
     setIsVerifying(true);
-    // Simulate verification process
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsVerified(true);
-    setIsVerifying(false);
+    const verify_result = await reviewVerify(review);
+    if (verify_result) {
+      setIsVerified(true);
+      setIsVerifying(false);
+    } else {
+      alert('Verify failed');
+    }
   }
 
   async function handleMintNFT() {
     setIsMinting(true);
-    try {
-      // TODO: Implement actual minting logic here
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating minting process
+    const mint_result = await reviewMint(review.id, review.hash, wallet);
+    if (mint_result) {
       setIsMinted(true);
-    } catch (error) {
-      console.error('Minting failed:', error);
-      // TODO: Handle error (e.g., show error message to user)
-    } finally {
-      setIsMinting(false);
+    } else {
+      alert('Minting failed');
     }
   }
 
   const handleVerifyClick = () => {
-    handleVerify(); // Call the verify function
-    setIsDialogOpen(true); // Open the dialog after verification
+    handleVerify();
+    setIsDialogOpen(true);
   };
 
   const ReviewSummary = () => (

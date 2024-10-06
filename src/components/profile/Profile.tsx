@@ -40,11 +40,11 @@ export default function ProfileWithStats() {
 
       // Connect a user's wallet to the profile
       const response = await postWalletLink(data);
-      if (response && response.data.success) {
-        alert('Wallet is connected to your profile!');
-      } else {
+      if (response && response.data.error) {
         disconnect();
         alert(response?.data?.message || 'An error occurred');
+      } else {
+        alert('Wallet is connected to your profile!');
       }
     } catch (error: unknown) {
       alert(`Sign Message failed: ${(error as Error)?.message}`);
