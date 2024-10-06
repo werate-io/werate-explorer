@@ -53,9 +53,11 @@ export interface OverallReviewStatisticsResponse {
   totalUniqueUsers: number;
   totalUniqueCountries: number;
   timeline: {
-    date: TimelineFilter;
-    count: number;
-  }[];
+    [key in TimelineFilter]: {
+      date: TimelineFilter;
+      count: number;
+    }[];
+  };
   phoneUsageData: {
     name: string;
     percentage: number;
