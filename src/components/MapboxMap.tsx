@@ -116,7 +116,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
         onMoveEnd={handleMoveEnd}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         ref={mapRef}
-        style={{ width: '100%', height: '100%', zIndex: 40 }}
+        style={{ width: '100%', height: '100%', zIndex: 40, display: 'flex' }}
         minZoom={5}
         maxZoom={15}
         mapStyle="mapbox://styles/mapbox/dark-v11">
