@@ -53,7 +53,6 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
 
   useEffect(() => {
     if (resp && !isLoading && isOpen) {
-      console.log(resp);
       setTotalReviews(resp.totalReviews);
       setTotalUsers(resp.totalUniqueUsers);
       setTotalContinents(resp.totalUniqueCountries);
@@ -89,10 +88,8 @@ export default function Sidebar({ isOpen, setIsOpen, side }: SidebarProps) {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl font-semibold">Timeline of Reviews</CardTitle>
             <Select value={timelineFilter} onValueChange={(value) => {
-                console.log("Selected value:", value); // Log the selected value
                 setTimelineFilter(value as TimelineFilter);
-                console.log("set value:", value); // Log the selected value
-            }}>
+              }}>
               <SelectTrigger className="w-[80px]">
                 <SelectValue placeholder="Filter" />
               </SelectTrigger>
