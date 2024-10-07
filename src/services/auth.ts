@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { setCookie, deleteCookie } from 'cookies-next'; // Add cookies-next package to handle cookies
 
-const API_BASE_URL = 'https://api.werate.io/api';
+const API_BASE_URL = 'https://explorer.werate.io/api';
 const TOKEN_COOKIE_NAME = 'authToken'; // Define the token cookie name
 
 // Registration function

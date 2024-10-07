@@ -4,7 +4,7 @@ module.exports = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://api.werate.io/:path*' // Proxy to Backend
+        destination: 'https://explorer.werate.io/:path*' // Proxy to Backend
       }
     ];
   }

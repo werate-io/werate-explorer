@@ -4,28 +4,21 @@ import { getCookie } from 'cookies-next';
 
 dotenv.config({ path: '.env' });
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8080'
-});
+const instance = axios.create({ baseURL: process.env.API_PREFIX });
 
 const getBearerToken = (): string => {
-  const accessToken = getCookie('authToken'); // Use cookies instead of localStorage
+  const accessToken = getCookie('authToken');
   // TODO add error handling
   return `Bearer ${accessToken}`;
 };
 
-const getBaseHeaders = (): Record<string, string> => ({
-  'Content-Type': 'application/json',
-  Authorization: getBearerToken()
-});
-
-const baseHeaders = getBaseHeaders();
-
 export const postData = async <T>(backendApi: string, data?: object): Promise<T> => {
   try {
-    const response = await instance.post(backendApi, data, {
-      headers: baseHeaders
-    });
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      Authorization: getBearerToken()
+    };
+    const response = await instance.post(backendApi, data, headers);
     return response as T;
   } catch (error) {
     console.error('Error posting data:', error);
@@ -38,10 +31,11 @@ export const getData = async <T>(
   params?: Record<string, unknown>
 ): Promise<T> => {
   try {
-    const response = await instance.get<T>(backendApi, {
-      headers: baseHeaders,
-      params
-    });
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      Authorization: getBearerToken()
+    };
+    const response = await instance.get<T>(backendApi, { ...headers, ...params });
 
     return response as T;
   } catch (error) {
