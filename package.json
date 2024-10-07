@@ -19,7 +19,7 @@
       "eslint --fix"
     ]
   },
-  "proxy": "https://api.werate.io",
+  "proxy": "https://explorer.werate.io",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
