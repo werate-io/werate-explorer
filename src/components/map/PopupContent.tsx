@@ -143,23 +143,22 @@ const PopupContent = ({ placeId }: { placeId: string }) => {
               {reviewsByPlaceId?.content.map((review) => (
                 <div key={review.id} className="space-y-4">
                   <div className="flex flex-row items-start space-x-4">
-                    {/* I want border for avatar rounded */}
                     <Avatar className="w-10 h-10 border-2 border-purple-300 rounded-full">
                       <AvatarImage
                         src="https://robohash.org/mail@ashallendesign.co.uk"
-                        alt={review.reviewAuthorNickname ?? ''}
+                        alt={review?.reviewAuthorNickname ?? ''}
                       />
                       <AvatarFallback>
-                        {review.reviewAuthorNickname && (
+                        {review?.reviewAuthorNickname && (
                           <>
-                            {review.reviewAuthorNickname.charAt(0)}
-                            {review.reviewAuthorNickname.split(' ')[1]?.charAt(0)}
+                            {review?.reviewAuthorNickname.charAt(0)}
+                            {review?.reviewAuthorNickname.split(' ')[1]?.charAt(0)}
                           </>
                         )}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
-                      <h3 className="font-semibold">{review.reviewAuthorNickname}</h3>
+                      <h3 className="font-semibold">{review?.reviewAuthorNickname}</h3>
                       {/* TODO: Add review count and photos count of user */}
                       <div className="items-center mt-1">
                         <RatingStars rating={review.rating} />

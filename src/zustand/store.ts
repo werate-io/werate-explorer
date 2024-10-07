@@ -1,12 +1,12 @@
-import { Review } from '@/types/review';
+import { FlattenedReviews } from '@/types/review';
 import { ProfileMe } from '@/types/user'; // Import the Profile type
 import { create } from 'zustand';
 
 interface ReviewState {
-  totalReviews: Review[];
-  selectedReview: Review | null;
-  setTotalReviews: (total: Review[]) => void;
-  setSelectedReview: (review: Review) => void;
+  totalReviews: FlattenedReviews[];
+  selectedReview: FlattenedReviews | null;
+  setTotalReviews: (total: FlattenedReviews[]) => void;
+  setSelectedReview: (review: FlattenedReviews) => void;
 }
 
 interface UserState {
@@ -19,8 +19,8 @@ interface UserState {
 export const useReviewStore = create<ReviewState>((set) => ({
   totalReviews: [],
   selectedReview: null,
-  setTotalReviews: (total: Review[]) => set({ totalReviews: total }),
-  setSelectedReview: (review: Review) => set({ selectedReview: review })
+  setTotalReviews: (total: FlattenedReviews[]) => set({ totalReviews: total }),
+  setSelectedReview: (review: FlattenedReviews) => set({ selectedReview: review })
 }));
 
 export const useUserStore = create<UserState>((set) => ({

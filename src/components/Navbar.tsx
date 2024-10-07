@@ -35,7 +35,7 @@ export default function Navbar() {
     if (error) {
       const timer = setTimeout(() => {
         setError('');
-      }, 5000);
+      }, 10000);
 
       return () => clearTimeout(timer);
     }
@@ -52,7 +52,6 @@ export default function Navbar() {
           setError(data?.error?.message || 'Registration failed');
         } else {
           setActiveTab('login');
-          setIsOpen(false);
         }
       } else {
         const data = await login(email, password);
@@ -89,12 +88,12 @@ export default function Navbar() {
   };
 
   const handleSuccessfulLogin = () => {
+    signIn(email, password); // Ensure this updates the context state
     setIsOpen(false);
     setNeedsMfa(false);
     setEmail('');
     setPassword('');
     setMfaCode('');
-    signIn(email, password); // Ensure this updates the context state
   };
 
   const handleLogout = () => {
@@ -153,7 +152,7 @@ export default function Navbar() {
                 Login
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-gray-800 text-white z-50">
+            <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-primary to-slate-200 text-white z-50">
               <DialogHeader>
                 <DialogTitle>{needsMfa ? '2FA Verification' : 'Login / Register'}</DialogTitle>
               </DialogHeader>
@@ -166,7 +165,7 @@ export default function Navbar() {
                       type="text"
                       value={mfaCode}
                       onChange={(e) => setMfaCode(e.target.value)}
-                      className="bg-gray-700 text-white border-gray-600"
+                      className="bg-slate-300 text-white shadow-xl"
                     />
                   </div>
                   {error && (
@@ -204,7 +203,7 @@ export default function Navbar() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       <div>
@@ -214,7 +213,7 @@ export default function Navbar() {
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       {error && (
@@ -239,7 +238,7 @@ export default function Navbar() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       <div>
@@ -249,7 +248,7 @@ export default function Navbar() {
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       {error && (

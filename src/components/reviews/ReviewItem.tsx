@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Review } from '@/types/review';
+import { FlattenedReviews, Review } from '@/types/review';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/Card';
 import { Avatar } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
@@ -43,7 +43,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     } else {
       console.error('Map reference is not set.'); // Log error if mapRef is null
     }
-    setSelectedReview(review as unknown as Review);
+    setSelectedReview(review as unknown as FlattenedReviews);
   };
 
   const [isVerified, setIsVerified] = useState(false);

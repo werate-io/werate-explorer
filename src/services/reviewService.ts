@@ -1,5 +1,10 @@
 import instance from './werate-api';
-import { FlattenedReviews, OverallReviewStatisticsResponse, ReviewsResponse } from '@/types/review';
+import {
+  FlattenedReviews,
+  OverallReviewStatisticsResponse,
+  PlaceReviewsResponse,
+  ReviewsResponse
+} from '@/types/review';
 
 export async function getReviews(skip: number, take: number): Promise<ReviewsResponse> {
   const response = await instance.get<ReviewsResponse>('/api/v1/game/players/reviews', {
@@ -56,8 +61,8 @@ export async function getTotalReviews(
   });
 }
 
-export async function getReviewsByPlaceId(placeId: string): Promise<ReviewsResponse> {
-  const response = await instance.get<ReviewsResponse>(
+export async function getReviewsByPlaceId(placeId: string): Promise<PlaceReviewsResponse> {
+  const response = await instance.get<PlaceReviewsResponse>(
     `/api/v1/places/${placeId}/reviews?skip=0&take=5`
   );
   return response.data;

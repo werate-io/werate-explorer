@@ -15,9 +15,9 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddr
 
   const mockAddresses: ReviewAddress[] =
     reviews?.map((review) => ({
-      address: `${review.metadata.country}, ${review.metadata.region}`,
-      latitude: review.metadata.latitude,
-      longitude: review.metadata.longitude
+      address: review.country,
+      latitude: review.latitude,
+      longitude: review.longitude
     })) || [];
 
   // console.log(mockAddresses);

@@ -4,7 +4,7 @@ import ReactMapGL, { Marker, MapRef, ViewState } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useLocalState } from '@/hooks/useLocalStorage';
 import { SearchBox } from '@/components/map/SearchBox';
-import { MapReview, Review } from '@/types/review';
+import { FlattenedReviews } from '@/types/review';
 import { MapPinCheckIcon } from 'lucide-react';
 import PopupContent from './map/PopupContent';
 import { Dialog, DialogContent } from './ui/DialogShad';
@@ -24,7 +24,6 @@ import Navbar from './Navbar';
 
 interface IProps {
   setDataBounds: (bounds: string) => void;
-  reviews: MapReview[];
   highlightedId: string | null;
 }
 const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
@@ -81,12 +80,12 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
   };
 
   // Filter reviews based on selected filters
-  const filteredReviews = totalReviews?.filter((review: Review) => {
-    if (venueType && review.placeCategory !== venueType) return false;
+  const filteredReviews = totalReviews?.filter((review: FlattenedReviews) => {
+    /* if (venueType && review.placeCategory !== venueType) return false; */
     // Updated logic to handle decimal ratings
-    if (starRating && review.rating < starRating) return false;
+    if (starRating && review.overall_rating < starRating) return false;
     // Updated logic to check against globally stored playerId
-    if (showMyReviews && review.playerId !== playerId) return false; // Assuming globalPlayerId is defined
+    if (showMyReviews && review.userId !== playerId) return false; // Assuming globalPlayerId is defined
     return true;
   });
 
@@ -96,7 +95,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
       const bounds = new mapboxgl.LngLatBounds();
       if (filteredReviews) {
         // Check if filteredReviews is defined
-        filteredReviews.forEach((review: Review) => {
+        filteredReviews.forEach((review: FlattenedReviews) => {
           bounds.extend([review.longitude, review.latitude]);
         });
       }
@@ -115,7 +114,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
   };
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative min-w-full h-screen flex">
       <ReactMapGL
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
@@ -152,12 +151,12 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
 
         {!isLoading &&
           filteredReviews &&
-          filteredReviews.map((review: Review) => (
+          filteredReviews.map((review: FlattenedReviews) => (
             <Marker
-              key={review.id}
+              key={review.userId}
               latitude={review.latitude}
               longitude={review.longitude}
-              className={highlightedId === review.id ? 'marker-active' : ''}>
+              className={highlightedId === review.userId ? 'marker-active' : ''}>
               <button
                 style={{ width: '30px', height: '30px', fontSize: '30px' }}
                 type="button"
@@ -171,7 +170,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
             </Marker>
           ))}
 
-        {selectedReview && (
+        {selectedReview && selectedReview?.placeId && (
           <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(false)}>
             <DialogContent className="p-0">
               <PopupContent placeId={selectedReview.placeId} />
@@ -181,9 +180,9 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
         {/* Filter controls */}
 
         <div className="absolute bottom-0 left-0 right-0 bg-transparent p-4 flex justify-end gap-4 items-center">
-          <Select onValueChange={(value) => setVenueType(value)} value={venueType}>
+          <Select onValueChange={(value) => setVenueType(value)} value={venueType} disabled={true}>
             <SelectTrigger className="w-[200px] bg-black/50 text-slate-300">
-              <SelectValue placeholder="Type of venue" />
+              <SelectValue placeholder="COMING SOON" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="RESTAURANT">Restaurant</SelectItem>

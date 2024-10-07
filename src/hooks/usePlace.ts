@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { getPlaceById } from '@/services/placeService';
 import type { Place } from '@/types/place';
-import { ReviewsResponse } from '@/types/review';
+import { PlaceReviewsResponse } from '@/types/review';
 
 import { getReviewsByPlaceId } from '@/services/reviewService';
 export function usePlace(placeId: string) {
@@ -9,7 +9,7 @@ export function usePlace(placeId: string) {
 }
 
 export function useReviewsByPlaceId(placeId: string) {
-  return useQuery<ReviewsResponse>(['reviewsByPlaceId', placeId], () =>
+  return useQuery<PlaceReviewsResponse>(['reviewsByPlaceId', placeId], () =>
     getReviewsByPlaceId(placeId)
   );
 }

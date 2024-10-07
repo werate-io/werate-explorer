@@ -1,8 +1,8 @@
 export interface LoginResponse {
   accessToken?: string;
   refreshToken?: string;
-  accessExpirationDate?: string;
-  refreshExpirationDate?: string;
+  accessExpirationDate?: Date | string | number;
+  refreshExpirationDate?: Date | string | number;
   preAuthToken?: string;
   error?: {
     message: string;
