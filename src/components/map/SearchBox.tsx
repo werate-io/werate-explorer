@@ -26,7 +26,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddr
 
   const handleSearch = (value: string) => {
     setInputValue(value);
-    if (value.length > 1) {
+    if (value.length >= 1) {
       const filtered = mockAddresses.filter((place) =>
         place.address.toLowerCase().includes(value.toLowerCase())
       );
