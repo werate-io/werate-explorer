@@ -30,11 +30,11 @@ export async function getOverallReviewStatistics(): Promise<OverallReviewStatist
 
 export async function getTotalReviews(
   skip: number = 0,
-  take: number = 10,
+  take: number = 100,
   allReviews: FlattenedReviews[] = []
 ): Promise<FlattenedReviews[]> {
   // Fetch reviews with current skip and take values
-  const response = await instance.get<ReviewsResponse>('/api/v1/game/players/reviews', {
+  const response = await instance.get<FlattenedReviews[]>('/api/v1/game/reviews', {
     params: {
       take,
       skip
@@ -42,7 +42,7 @@ export async function getTotalReviews(
   });
 
   // Add newly fetched reviews to the total
-  const fetchedReviews = response.data.content;
+  const fetchedReviews = response.data;
   allReviews = [...allReviews, ...fetchedReviews];
 
   // If fewer reviews than requested were fetched, stop recursion

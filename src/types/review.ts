@@ -42,7 +42,9 @@ export interface Review {
 }
 
 export interface FlattenedReviews {
+  id: string;
   userId: string;
+  placeId: string;
   text: string;
   created_at: string;
   location_rating: number;
@@ -59,8 +61,7 @@ export interface FlattenedReviews {
 }
 
 export interface ReviewsResponse {
-  content: FlattenedReviews[];
-
+  content: Review[];
   total_elements: number;
 }
 export interface PlaceReviewsResponse {
