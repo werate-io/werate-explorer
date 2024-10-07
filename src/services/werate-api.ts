@@ -4,7 +4,7 @@ import { getCookie } from 'cookies-next';
 dotenv.config({ path: '.env' });
 
 const instance: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL
+  baseURL: 'https://explorer.werate.io'
 });
 
 const getBearerToken = (): string => {
