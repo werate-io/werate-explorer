@@ -25,8 +25,15 @@ import Navbar from './Navbar';
 interface IProps {
   setDataBounds: (bounds: string) => void;
   highlightedId: string | null;
+  isLeftSidebarOpen: boolean;
+  isRightSidebarOpen: boolean;
 }
-const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
+const Map: React.FC<IProps> = ({
+  setDataBounds,
+  highlightedId,
+  isLeftSidebarOpen,
+  isRightSidebarOpen
+}) => {
   const { isLoading, data: totalReviews } = useOverallReviews();
   const { selectedReview } = useReviewStore();
   const { playerId } = useUserStore();
@@ -69,6 +76,23 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
       }));
     }
   }, [selectedReview, setViewState]);
+
+  useEffect(() => {
+    const mapInstance = mapRef.current?.getMap();
+    let timeoutId: NodeJS.Timeout;
+
+    if (mapInstance && !isLeftSidebarOpen && !isRightSidebarOpen) {
+      // Set a timeout to resize the map after the sidebar closes
+      timeoutId = setTimeout(() => {
+        mapInstance.resize();
+      }, 300); // Adjust the timeout duration as needed
+    }
+
+    // Cleanup function to clear the timeout if the component unmounts or sidebar state changes
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isLeftSidebarOpen, isRightSidebarOpen]);
 
   const handleMoveEnd = () => {
     if (mapRef.current && mapRef.current.getMap) {
@@ -114,7 +138,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
   };
 
   return (
-    <div className="relative min-w-full h-screen flex">
+    <div className="relative min-w-[100%] h-screen flex-1 flex-grow ">
       <ReactMapGL
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
@@ -125,7 +149,9 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
           width: '100%',
           height: '100%',
           zIndex: 50,
-          display: 'flex'
+          display: 'flex',
+          flex: 1,
+          flexGrow: 'inherit'
         }}
         minZoom={2}
         maxZoom={30}

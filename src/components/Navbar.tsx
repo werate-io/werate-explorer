@@ -109,7 +109,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 w-full text-white p-4 bg-transparent flex justify-end items-end z-60">
+    <div className="absollute top-0 left-0 right-0 w-full text-white p-4 bg-transparent flex justify-end items-end z-50">
       {/* Right section - Login/User Info */}
       <div className="flex-1 flex justify-end">
         {isLoggedIn ? (
@@ -270,6 +270,6 @@ export default function Navbar() {
           </Dialog>
         )}
       </div>
-    </nav>
+    </div>
   );
 }

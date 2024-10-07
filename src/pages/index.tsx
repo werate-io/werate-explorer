@@ -41,12 +41,17 @@ export default function Home() {
       <main className="relative h-screen w-screen overflow-hidden">
         {!isMobile && (
           <>
-            <div className="absolute inset-0 flex flex-grow">
+            <div className="absolute inset-0 flex flex-grow w-screen">
               <div className="pointer-events-auto z-50">
                 <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
               </div>
-              <div className="z-50 w-full">
-                <Map setDataBounds={setDataBounds} highlightedId={null} />
+              <div className="w-full">
+                <Map
+                  setDataBounds={setDataBounds}
+                  isLeftSidebarOpen={isLeftSidebarOpen}
+                  isRightSidebarOpen={isRightSidebarOpen}
+                  highlightedId={null}
+                />
               </div>
               {isLoggedIn && (
                 <div className="pointer-events-auto z-50">
