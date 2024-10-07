@@ -162,7 +162,11 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
                 style={{ width: '30px', height: '30px', fontSize: '30px' }}
                 type="button"
                 onClick={() => setIsDialogOpen(true)}>
-                <MapPinCheckIcon className="text-blue-600" />
+                {showMyReviews ? (
+                  <MapPinCheckIcon className="text-blue-600" />
+                ) : (
+                  <MapPinCheckIcon className="text-green-600" />
+                )}
               </button>
             </Marker>
           ))}
