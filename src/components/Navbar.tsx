@@ -115,20 +115,20 @@ export default function Navbar() {
         {isLoggedIn ? (
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="bg-primary hover:bg-primary/55 text-white">
+              <Button variant="outline" className="bg-primary text-white rounded-full border-none">
                 {/* I neeed icon of user */}
                 <User className="mr-2 h-4 w-4" />
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-36 bg-gray-800 text-white border-gray-700">
-              <div className="grid gap-2">
+            <PopoverContent className="!w-32 !px-1 hover:!px-1">
+              <div className="grid gap-1">
                 <Button variant="ghost" className="w-full justify-start">
-                  <Settings className="mr-2 h-4 w-4" />
+                  <Settings className="mr-2 h-4 w-3" />
                   Settings
                 </Button>
                 <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
+                  <LogOut className="mr-2 h-4 w-3" />
                   Sign out
                 </Button>
                 {/* include disconnect wallet  */}
@@ -139,7 +139,7 @@ export default function Navbar() {
                     disconnect();
                     signOut();
                   }}>
-                  <Wallet className="mr-2 h-4 w-4" />
+                  <Wallet className="mr-2 h-4 w-3" />
                   Disconnect
                 </Button>
               </div>
