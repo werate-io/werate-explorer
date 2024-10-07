@@ -56,8 +56,8 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
     if (selectedReview) {
       setViewState((old) => ({
         ...old,
-        latitude: selectedReview.metadata.latitude,
-        longitude: selectedReview.metadata.longitude,
+        latitude: selectedReview.latitude,
+        longitude: selectedReview.longitude,
         zoom: 12
       }));
       setIsDialogOpen(false);
@@ -97,7 +97,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
       if (filteredReviews) {
         // Check if filteredReviews is defined
         filteredReviews.forEach((review: Review) => {
-          bounds.extend([review.metadata.longitude, review.metadata.latitude]);
+          bounds.extend([review.longitude, review.latitude]);
         });
       }
       mapRef.current?.getMap().fitBounds(bounds, { padding: 50 });
@@ -155,8 +155,8 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
           filteredReviews.map((review: Review) => (
             <Marker
               key={review.id}
-              latitude={review.metadata.latitude}
-              longitude={review.metadata.longitude}
+              latitude={review.latitude}
+              longitude={review.longitude}
               className={highlightedId === review.id ? 'marker-active' : ''}>
               <button
                 style={{ width: '30px', height: '30px', fontSize: '30px' }}

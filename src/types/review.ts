@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface Review {
   id: string;
   placeId: string;
@@ -36,13 +37,30 @@ export interface Review {
   createdAt: string;
   images: string[];
   hash: string;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
+
   arweave_txn_id: string;
 }
 
+export interface FlattenedReviews {
+  userId: string;
+  text: string;
+  created_at: string;
+  location_rating: number;
+  vibe_rating: number;
+  price_rating: number;
+  quality_rating: number;
+  service_rating: number;
+  overall_rating: number;
+  cleanliness_rating: number;
+  imagesHash: string;
+  latitude: number;
+  longitude: number;
+  country: string;
+}
+
 export interface ReviewsResponse {
-  content: Review[];
-  // eslint-disable-next-line @typescript-eslint/naming-convention
+  content: FlattenedReviews[];
+
   total_elements: number;
 }
 export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
