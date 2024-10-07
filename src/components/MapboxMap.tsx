@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import mapboxgl from 'mapbox-gl';
+import Navbar from './Navbar';
 
 interface IProps {
   setDataBounds: (bounds: string) => void;
@@ -101,6 +102,11 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
       }
       mapRef.current?.getMap().fitBounds(bounds, { padding: 50 });
     }
+    // Zoom out to world map
+    setViewState((old) => ({
+      ...old,
+      zoom: 1 // Set zoom level to 1 for world view
+    }));
   };
   const clearFilters = () => {
     setVenueType(''); // Reset venue type
@@ -116,12 +122,17 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
         onMoveEnd={handleMoveEnd}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         ref={mapRef}
-        style={{ width: '100%', height: '100%', zIndex: 40, display: 'flex' }}
-        minZoom={5}
-        maxZoom={15}
+        style={{
+          width: '100%',
+          height: '100%',
+          zIndex: 50,
+          display: 'flex'
+        }}
+        minZoom={2}
+        maxZoom={30}
         mapStyle="mapbox://styles/mapbox/dark-v11">
-        <div className="absolute top-0 right-0 w-full z-20 flex justify-between items-center p-4">
-          <div className="flex justify-center w-full">
+        <div className="absolute top-0 right-0 w-full z-50 flex justify-between items-center p-4">
+          <div className="flex justify-end w-full">
             <SearchBox
               defaultValue=""
               onSelectAddress={(_address, latitude, longitude) => {
@@ -136,6 +147,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, highlightedId }) => {
               }}
             />
           </div>
+          <Navbar />
         </div>
 
         {!isLoading &&

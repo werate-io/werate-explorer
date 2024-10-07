@@ -38,13 +38,14 @@ const RatingStars = ({ rating }: { rating: number }) => (
 // export default function PopupContent({ placeId, onClick }: { placeId: string; onClick: () => void }) {
 const PopupContent = ({ placeId }: { placeId: string }) => {
   const [isOpen] = useState(true);
-  const { data: placeData, isLoading: isPlaceDataLoading } = usePlace(placeId);
+  const { data: placeData } = usePlace(placeId);
   const { data: reviewsByPlaceId, isLoading: isReviewsByPlaceIdLoading } =
     useReviewsByPlaceId(placeId);
   // New loading state check
+  const isPlaceDataLoading = true;
   if (isPlaceDataLoading || isReviewsByPlaceIdLoading) {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full p-4">
         <Loader /> {/* Replace with your spinner component */}
       </div>
     );

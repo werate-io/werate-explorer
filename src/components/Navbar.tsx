@@ -110,7 +110,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 text-white p-4 flex justify-between items-center z-50">
+    <nav className="relative top-0 left-0 right-0 w-full text-white p-4 bg-transparent flex justify-end items-end z-60">
       {/* Right section - Login/User Info */}
       <div className="flex-1 flex justify-end">
         {isLoggedIn ? (
