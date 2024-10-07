@@ -58,13 +58,13 @@ export default function ProfileWithStats() {
         <CardHeader className="flex flex-col items-center justify-center gap-4 p-4">
           <CardTitle className="text-white text-2xl font-bold"></CardTitle>
 
-          <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-800 text-white font-bold py-2 w-full px-4 rounded text-sm flex items-center gap-2">
+          <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-800 text-white font-bold px-4 rounded-xl shadow-xl text-sm flex items-center gap-2 h-10">
             <WalletIcon className="h-5 w-5" />
-            {!connecting ? (
-              <span className="ml-2">Connect Wallet</span>
-            ) : (
-              <span className="ml-2">Connecting ...</span>
-            )}
+            <span className="flex items-center leading-5">
+              {' '}
+              {/* Added leading-5 for better alignment */}
+              {!connecting ? <span>Connect Wallet</span> : <span>Connecting ...</span>}
+            </span>
           </WalletMultiButton>
         </CardHeader>
       </Card>
