@@ -143,7 +143,7 @@ const Map: React.FC<IProps> = ({
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
         onMoveEnd={handleMoveEnd}
-        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        mapboxAccessToken={'pk.eyJ1Ijoid2VyYXRlZGV2IiwiYSI6ImNtMWk0amFhaDBraWUyc3F5ZHloamZmcHQifQ.Zk0bYw1S6YI1mAwTms2VTA'}
         ref={mapRef}
         style={{
           width: '100%',
