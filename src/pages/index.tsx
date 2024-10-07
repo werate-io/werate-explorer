@@ -1,21 +1,21 @@
 'use client';
 import React, { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import dynamic from 'next/dynamic';
 import RightSidebar from '@/components/RightSidebar';
 import LeftSidebar from '@/components/LeftSidebar';
 import AppWalletProvider from '@/components/AppWalletProvider';
 import MobileNavBar from '@/components/MobileNavBar';
-import Navbar from '@/components/Navbar';
-
-const LazyMap = dynamic(() => import('@/components/Map'), {
-  ssr: false,
-  loading: () => <p>Loading map...</p>
+import { useAuth } from '@/context/AuthContext';
+import dynamic from 'next/dynamic';
+const Map = dynamic(() => import('@/components/MapboxMap'), {
+  ssr: false
 });
 
 export default function Home() {
+  const { signOut, isLoggedIn } = useAuth();
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const [, setDataBounds] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const toggleLeftSidebar = () => {
@@ -33,25 +33,37 @@ export default function Home() {
   };
 
   const toggleWallet = () => {
-    // Implement wallet toggle logic here
+    signOut();
   };
 
   return (
     <AppWalletProvider>
       <main className="relative h-screen w-screen overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <LazyMap />
-        </div>
         {!isMobile && (
-          <div className="absolute inset-0 z-10 pointer-events-none flex">
-            <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
-
-            <div className="flex-grow flex flex-col pointer-events-auto z-20">
-              <Navbar />
+          <>
+            <div className="absolute inset-0 flex flex-grow w-screen">
+              <div className="pointer-events-auto z-50">
+                <LeftSidebar isOpen={isLeftSidebarOpen} setIsOpen={toggleLeftSidebar} side="left" />
+              </div>
+              <div className="w-full">
+                <Map
+                  setDataBounds={setDataBounds}
+                  isLeftSidebarOpen={isLeftSidebarOpen}
+                  isRightSidebarOpen={isRightSidebarOpen}
+                  highlightedId={null}
+                />
+              </div>
+              {isLoggedIn && (
+                <div className="pointer-events-auto z-50">
+                  <RightSidebar
+                    isOpen={isRightSidebarOpen}
+                    setIsOpen={toggleRightSidebar}
+                    side="right"
+                  />
+                </div>
+              )}
             </div>
-
-            <RightSidebar isOpen={isRightSidebarOpen} setIsOpen={toggleRightSidebar} side="right" />
-          </div>
+          </>
         )}
         {isMobile && (
           <MobileNavBar

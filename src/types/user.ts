@@ -11,3 +11,11 @@ export interface Profile {
   watEarnedAmount: number;
   overallRating: number;
 }
+
+export interface ProfileMe {
+  userId: string;
+  email: string;
+  nickname: string;
+  countryCode: string;
+  birthday: string;
+}

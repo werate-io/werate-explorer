@@ -1,7 +1,7 @@
 import { ActionResponse } from '@/types/actions';
-import { postData } from './werate-api';
+import instance from './werate-api';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export async function postWalletLink(data: object): Promise<ActionResponse<any>> {
-  const result = await postData<any>('/api/v1/wallets/link', data);
-  return { data: result } as ActionResponse<any>;
+  const response = await instance.post<any>('/api/v1/wallets/link', data);
+  return { data: response.data } as ActionResponse<any>;
 }

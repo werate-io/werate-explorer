@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface Review {
   id: string;
   placeId: string;
@@ -16,70 +17,71 @@ export interface Review {
     service: number;
   };
   metadata: {
+    name: string;
+    category: string;
+    formattedAddress: string;
     latitude: number;
     longitude: number;
     region: string;
     country: string;
     device: string;
+    locality: string;
+    postalCode: string;
+    images: string[];
   };
+  bohemianId: string;
+  biometricsHash: string;
   text: string;
   avatarId: string;
   likeCount: number;
   createdAt: string;
-  photoUrls: string[];
+  images: string[];
   hash: string;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  arweave_tx_id: string;
+
+  arweave_txn_id: string;
 }
 
-export interface UIReview {
+export interface FlattenedReviews {
   id: string;
-  placeId: string;
-  description: string;
-  starRatings: number;
-  photos: string[];
-  timestamp: string;
-  biometricsHash: string;
   userId: string;
-  bohemianId: string;
-  categoryRatings: {
-    overall: number;
-    location: number;
-    vibe: number;
-    price: number;
-    quality: number;
-    cleanliness: number;
-    service: number;
-  };
-  venueLocation: {
-    name: string;
-    country: string;
-    locality: string;
-    region: string;
-    type: string;
-    lat: number;
-    long: number;
-  };
-  device: string;
-  hash: string;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  arweave_tx_id: string;
+  placeId: string;
+  text: string;
+  created_at: string;
+  location_rating: number;
+  vibe_rating: number;
+  price_rating: number;
+  quality_rating: number;
+  service_rating: number;
+  overall_rating: number;
+  cleanliness_rating: number;
+  imagesHash: string;
+  latitude: number;
+  longitude: number;
+  country: string;
 }
 
 export interface ReviewsResponse {
   content: Review[];
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   total_elements: number;
 }
+export interface PlaceReviewsResponse {
+  content: Review[];
+
+  total_elements: number;
+}
+export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
+export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;
 
 export interface OverallReviewStatisticsResponse {
   totalReviews: number;
   totalUniqueUsers: number;
   totalUniqueCountries: number;
   timeline: {
-    date: TimelineFilter;
-    count: number;
-  }[];
+    [key in TimelineFilter]: {
+      date: TimelineFilter;
+      count: number;
+    }[];
+  };
   phoneUsageData: {
     name: string;
     percentage: number;
@@ -97,5 +99,9 @@ export interface OverallReviewStatisticsResponse {
     max: number;
   }[];
 }
-export type TimelineFilter = '1D' | '1W' | '1M' | '1Y';
-export type TimelineData = Record<TimelineFilter, { date: string; count: number }[]>;
+
+export interface ReviewAddress {
+  address: string;
+  latitude: number;
+  longitude: number;
+}

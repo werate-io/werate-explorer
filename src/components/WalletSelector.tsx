@@ -2,8 +2,13 @@
 
 import React from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Button } from '@/components/ui/Button';
+import dynamic from 'next/dynamic';
+
+const WalletMultiButtonNoSSR = dynamic(
+  () => import('@solana/wallet-adapter-react-ui').then((mod) => mod.WalletMultiButton),
+  { ssr: false }
+);
 
 interface WalletSelectorProps {
   isOpen: boolean;
@@ -34,7 +39,7 @@ export default function WalletSelector({ isOpen, setIsOpen }: WalletSelectorProp
           </Button>
         </div>
       ) : (
-        <WalletMultiButton className="!bg-primary hover:!bg-primary-dark text-white font-bold py-2 px-4 rounded text-xs md:text-sm" />
+        <WalletMultiButtonNoSSR className="!bg-primary hover:!bg-primary-dark text-white font-bold py-2 px-4 rounded text-xs md:text-sm" />
       )}
     </div>
   );

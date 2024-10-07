@@ -26,8 +26,8 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
   };
 
   const contentVariants = {
-    open: { opacity: 1, x: 0 },
-    closed: { opacity: 0, x: side === 'left' ? -300 : 300 }
+    open: { opacity: 1 },
+    closed: { opacity: 0 }
   };
 
   const SidebarIcon = side === 'left' ? BarChart : UserCircle;
@@ -36,7 +36,7 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
     <motion.div
       className={`h-full bg-white/80 backdrop-blur-sm text-slate-800 shadow-lg relative pointer-events-auto ${
         side === 'left' ? 'left-0' : 'right-0'
-      } max-w-[450px] w-full`}
+      } max-w-[600px] w-full`}
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
       initial="closed">

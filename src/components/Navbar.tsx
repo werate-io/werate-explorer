@@ -14,10 +14,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Label } from '@/components/ui/Label';
 import { AlertCircle, ChevronDown, Settings, LogOut } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/PopoverShad';
-import { checkMfa, login, register, logout } from '@/services/auth'; // Import logout function
-import { getCookie, deleteCookie } from 'cookies-next'; // Import cookie functions
-
+import { useAuth } from '@/context/AuthContext';
+import { login, register, checkMfa } from '@/services/auth';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
+import { User, Wallet } from 'lucide-react';
+import { useWallet } from '@solana/wallet-adapter-react';
 export default function Navbar() {
+  const { signOut, isLoggedIn, signIn } = useAuth();
+  const { disconnect } = useWallet();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
   const [email, setEmail] = useState('');
@@ -26,16 +30,16 @@ export default function Navbar() {
   const [error, setError] = useState('');
   const [needsMfa, setNeedsMfa] = useState(false);
   const [preAuthToken, setPreAuthToken] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInitials, setUserInitials] = useState('');
 
   useEffect(() => {
-    const storedEmail = getCookie('email');
-    if (storedEmail) {
-      setIsLoggedIn(true);
-      setUserInitials(getInitials(String(storedEmail)));
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 10000);
+
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [error]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,21 +48,22 @@ export default function Navbar() {
     try {
       if (activeTab === 'register') {
         const data = await register(email, password);
-        if (data.error) {
-          setError(data.error);
+        if (data && data?.error) {
+          setError(data?.error?.message || 'Registration failed');
         } else {
-          setError('Registration successful. Please log in.');
           setActiveTab('login');
         }
       } else {
         const data = await login(email, password);
-        if (data.preAuthToken) {
-          setPreAuthToken(data.preAuthToken);
+        if (data?.preAuthToken) {
+          setPreAuthToken(data?.preAuthToken);
           setNeedsMfa(true);
-        } else if (data.accessToken) {
-          handleSuccessfulLogin();
+        } else if (data?.accessToken) {
+          handleSuccessfulLogin(); // This will now update the logged-in state
         } else {
-          setError(data.error || 'Login failed');
+          setEmail('');
+          setPassword('');
+          setError(data?.error?.message || 'Login failed');
         }
       }
     } catch (err) {
@@ -72,10 +77,10 @@ export default function Navbar() {
 
     try {
       const data = await checkMfa(preAuthToken, mfaCode);
-      if (data.accessToken) {
+      if (data) {
         handleSuccessfulLogin();
       } else {
-        setError(data.error || 'MFA verification failed');
+        setError('MFA verification failed');
       }
     } catch (err) {
       setError(`An error occurred: ${err instanceof Error ? err.message : 'Please try again.'}`);
@@ -83,9 +88,7 @@ export default function Navbar() {
   };
 
   const handleSuccessfulLogin = () => {
-    const storedEmail = getCookie('email');
-    setIsLoggedIn(true);
-    setUserInitials(getInitials(String(storedEmail)));
+    signIn(email, password); // Ensure this updates the context state
     setIsOpen(false);
     setNeedsMfa(false);
     setEmail('');
@@ -94,53 +97,54 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    logout(); // Remove the token cookie
-    deleteCookie('email'); // Remove the email cookie
-    setIsLoggedIn(false);
-    setUserInitials('');
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((part) => part[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+    signOut();
+    setEmail('');
+    setPassword('');
+    setMfaCode('');
+    setError('');
+    setPreAuthToken('');
+    setNeedsMfa(false);
+    setActiveTab('login');
+    setIsOpen(false);
   };
 
   return (
-    <nav className="relative top-0 left-0 right-0 bg-white text-white p-4 flex justify-between items-center z-50">
-      <div className="flex-1">
-        <Input
-          type="search"
-          placeholder="Search for venue, location, bohemian, date?"
-          className="max-w-sm bg-gray-800 text-white placeholder-gray-400 border-gray-700"
-        />
-      </div>
-      <div className="flex items-center space-x-4">
+    <div className="absollute top-0 left-0 right-0 w-full text-white p-4 bg-transparent flex justify-end items-end z-50">
+      {/* Right section - Login/User Info */}
+      <div className="flex-1 flex justify-end">
         {isLoggedIn ? (
-          <>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="bg-primary hover:bg-primary/55 text-white">
-                  {userInitials} <ChevronDown className="ml-2 h-4 w-4" />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="bg-primary text-white rounded-full border-none">
+                {/* I neeed icon of user */}
+                <User className="mr-2 h-4 w-4" />
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="!w-32 !px-1 hover:!px-1">
+              <div className="grid gap-1">
+                <Button variant="ghost" className="w-full justify-start">
+                  <Settings className="mr-2 h-4 w-3" />
+                  Settings
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-36 bg-gray-800 text-white border-gray-700">
-                <div className="grid gap-2">
-                  <Button variant="ghost" className="w-full justify-start">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Settings
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </>
+                <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-3" />
+                  Sign out
+                </Button>
+                {/* include disconnect wallet  */}
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => {
+                    disconnect();
+                    signOut();
+                  }}>
+                  <Wallet className="mr-2 h-4 w-3" />
+                  Disconnect
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         ) : (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -148,7 +152,7 @@ export default function Navbar() {
                 Login
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-gray-800 text-white z-50">
+            <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-primary to-slate-200 text-white z-50">
               <DialogHeader>
                 <DialogTitle>{needsMfa ? '2FA Verification' : 'Login / Register'}</DialogTitle>
               </DialogHeader>
@@ -161,7 +165,7 @@ export default function Navbar() {
                       type="text"
                       value={mfaCode}
                       onChange={(e) => setMfaCode(e.target.value)}
-                      className="bg-gray-700 text-white border-gray-600"
+                      className="bg-slate-300 text-white shadow-xl"
                     />
                   </div>
                   {error && (
@@ -199,7 +203,7 @@ export default function Navbar() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       <div>
@@ -209,14 +213,14 @@ export default function Navbar() {
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       {error && (
-                        <div className="text-red-500 flex items-center">
-                          <AlertCircle className="mr-2" size={16} />
-                          {error}
-                        </div>
+                        <Alert variant="destructive">
+                          <AlertTitle>Error</AlertTitle>
+                          <AlertDescription>{error}</AlertDescription>
+                        </Alert>
                       )}
                       <Button
                         type="submit"
@@ -234,7 +238,7 @@ export default function Navbar() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       <div>
@@ -244,7 +248,7 @@ export default function Navbar() {
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="bg-gray-700 text-white border-gray-600"
+                          className="bg-slate-300 text-slate-700 shadow-xl"
                         />
                       </div>
                       {error && (
@@ -266,6 +270,6 @@ export default function Navbar() {
           </Dialog>
         )}
       </div>
-    </nav>
+    </div>
   );
 }

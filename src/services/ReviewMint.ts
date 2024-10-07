@@ -2,16 +2,14 @@ import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
 import { generateSigner } from '@metaplex-foundation/umi';
 import { createV1, mplCore } from '@metaplex-foundation/mpl-core';
 import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
-import { getData } from './werate-api';
+import instance from './werate-api';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
 interface NftMetadataResponse {
-  data: {
-    /* eslint-disable */
-    ipfs_hash: string;
+  /* eslint-disable */
+  ipfs_hash: string;
 	/* eslint-enable */
-    message?: string;
-  };
+  message?: string;
 }
 
 export const reviewMint = async (
@@ -25,7 +23,7 @@ export const reviewMint = async (
     .use(mplCore());
 
   // Send NFT metadata to backend
-  const response = await getData<NftMetadataResponse>(
+  const response = await instance.get<NftMetadataResponse>(
     `/api/v1/games/reviews/nftMetadata/${review_id}/${review_hash}`
   );
   if (response && response.data.ipfs_hash) {

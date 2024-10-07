@@ -1,4 +1,4 @@
-import { UIReview } from '../types/review';
+import { Review } from '../types/review';
 import { createHash } from 'crypto';
 import { ObfuscatedReview } from '../schemas/ObfuscatedReviewSchema';
 
@@ -6,12 +6,12 @@ const hashData = (...args: string[]) => {
   return createHash('sha256').update(args.filter(Boolean).join('')).digest('hex');
 };
 
-export const obfuscateReview = (review: UIReview): ObfuscatedReview => {
+export const obfuscateReview = (review: Review): ObfuscatedReview => {
   /* eslint-disable */
   return {
-    userId: review.userId,
-    text: review.description,
-    created_at: new Date(review.timestamp),
+    userId: review.playerId,
+    text: review.text,
+    created_at: new Date(review.createdAt),
     location_rating: review.categoryRatings.location,
     vibe_rating: review.categoryRatings.vibe,
     price_rating: review.categoryRatings.price,
@@ -19,15 +19,15 @@ export const obfuscateReview = (review: UIReview): ObfuscatedReview => {
     service_rating: review.categoryRatings.service,
     overall_rating: review.categoryRatings.overall,
     cleanliness_rating: review.categoryRatings.cleanliness,
-    imagesHash: hashData(...review.photos),
-    latitude: review.venueLocation.lat,
-    longitude: review.venueLocation.long,
-    country: review.venueLocation.country
+    imagesHash: hashData(...review.images),
+    latitude: review.metadata.latitude,
+    longitude: review.metadata.longitude,
+    country: review.metadata.country
   };
   /* eslint-enable */
 };
 
-export const hashReview = (review: UIReview): string => {
+export const hashReview = (review: Review): string => {
   const obfuscatedReview = obfuscateReview(review);
 
   const userHash = hashData(obfuscatedReview.userId);

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useTransformedReviews } from '@/hooks/useTransformedReviews';
+import { useUserReviews } from '@/hooks/useUserReviews';
 import ReviewItem from '@/components/reviews/ReviewItem';
 import {
   Pagination,
@@ -15,16 +15,17 @@ import ReviewSkeleton from '@/components/skeletons/ReviewSkeleton';
 import { TAKE } from '@/lib/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Loader2 } from 'lucide-react';
-import { UIReview } from '@/types/review';
+import { Review } from '@/types/review';
+import { useAuth } from '@/context/AuthContext';
 
 const ReviewsList: React.FC = () => {
+  const { isLoggedIn } = useAuth();
   const { publicKey } = useWallet();
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // Moved outside the conditional
+
   const skip = useMemo(() => (currentPage - 1) * TAKE, [currentPage]);
-
-  const { reviews, totalReviews, isLoading, error } = useTransformedReviews(skip, TAKE);
-
+  const { reviews, totalReviews, isLoading, error } = useUserReviews(skip, TAKE);
   const totalPages = useMemo(() => Math.ceil(totalReviews / TAKE), [totalReviews]);
 
   useEffect(() => {
@@ -41,6 +42,16 @@ const ReviewsList: React.FC = () => {
       setLoading(false);
     }
   }, [reviews, isLoading]);
+
+  if (!isLoggedIn || !publicKey) {
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        {' '}
+        {/* Ensure the parent has a height */}
+        <p className="text-xl font-semibold text-center">Connect your wallet to view reviews</p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -71,24 +82,18 @@ const ReviewsList: React.FC = () => {
           <Loader2 className="animate-spin text-primary" size={36} />
         </div>
       )}
-      {publicKey ? (
-        <ReviewContent
-          reviews={reviews}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handlePageChange={handlePageChange}
-        />
-      ) : (
-        <div className="flex items-center justify-center w-full">
-          <p className="text-xl font-semibold text-center">Connect your wallet to view reviews</p>
-        </div>
-      )}
+      <ReviewContent
+        reviews={reviews}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 };
 
 interface ReviewContentProps {
-  reviews: UIReview[];
+  reviews: Review[];
   currentPage: number;
   totalPages: number;
   handlePageChange: (page: number) => void;

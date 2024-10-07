@@ -2,8 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { StatCard } from '@/components/StatCard';
-import { MapPinIcon, StarIcon, GlobeIcon } from 'lucide-react';
-import { WalletIcon, Wallet } from 'lucide-react';
+import { MapPinIcon, StarIcon, GlobeIcon, WalletIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '../ui/wallet-adapter-react-ui';
@@ -12,9 +11,12 @@ import { decodeUTF8 } from 'tweetnacl-util';
 import bs58 from 'bs58';
 import { useProfile } from '@/hooks/useProfile';
 import ProfileSkeleton from '@/components/skeletons/ProfileSkeleton';
+import { useAuth } from '@/context/AuthContext';
+
 export default function ProfileWithStats() {
-  const { data: profile, isLoading } = useProfile();
+  const { isLoggedIn, signOut } = useAuth();
   const { publicKey, connected, connecting, signMessage, disconnect } = useWallet();
+  const { data: profile, isLoading } = useProfile();
 
   useEffect(() => {
     if (connected && publicKey && signMessage) {
@@ -50,19 +52,19 @@ export default function ProfileWithStats() {
     }
   }, [publicKey, signMessage]);
 
-  if (!publicKey) {
+  if (!isLoggedIn || !publicKey) {
     return (
       <Card className="w-full bg-primary p-4 rounded-lg shadow-lg">
         <CardHeader className="flex flex-col items-center justify-center gap-4 p-4">
-          <CardTitle className="text-white text-2xl font-bold">Connect Your Wallet</CardTitle>
+          <CardTitle className="text-white text-2xl font-bold"></CardTitle>
 
-          <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-800 text-white font-bold py-2 px-4 rounded text-sm flex items-center gap-2">
+          <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-800 text-white font-bold px-4 rounded-xl shadow-xl text-sm flex items-center gap-2 h-10">
             <WalletIcon className="h-5 w-5" />
-            {!connecting ? (
-              <span className="ml-2">Connect Wallet</span>
-            ) : (
-              <span className="ml-2">Connectinig ...</span>
-            )}
+            <span className="flex items-center leading-5">
+              {' '}
+              {/* Added leading-5 for better alignment */}
+              {!connecting ? <span>Connect Wallet</span> : <span>Connecting ...</span>}
+            </span>
           </WalletMultiButton>
         </CardHeader>
       </Card>
@@ -80,8 +82,11 @@ export default function ProfileWithStats() {
               <CardTitle className="text-white text-lg md:text-xl font-bold">Profile</CardTitle>
               <Button
                 className="flex items-center gap-2 bg-purple-600 hover:bg-purple-800 text-white p-2 rounded"
-                onClick={disconnect}>
-                <Wallet className="h-5 w-5" />
+                onClick={() => {
+                  disconnect();
+                  signOut();
+                }}>
+                <WalletIcon className="h-5 w-5" />
                 Disconnect
               </Button>
             </CardHeader>
