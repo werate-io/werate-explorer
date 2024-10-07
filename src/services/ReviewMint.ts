@@ -34,7 +34,7 @@ export const reviewMint = async (
       const result = await createV1(umi, {
         asset: assetSigner,
         name: 'Werate NFT',
-        uri: response.data.ipfs_hash
+        uri: 'https://gateway.pinata.cloud/ipfs/' + response.data.ipfs_hash
       }).sendAndConfirm(umi);
 
       if (result) {
