@@ -10,7 +10,7 @@ export const reviewVerify = async (review: Review) => {
   const reviewHash = hashReview(review);
 
   try {
-    if(reviewHash) {
+    if (reviewHash) {
       return true;
     }
   } catch (error) {
