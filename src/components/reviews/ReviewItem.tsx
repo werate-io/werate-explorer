@@ -82,6 +82,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   async function handleVerify() {
     setIsVerifying(true);
     const verify_result = await reviewVerify(review);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     if (verify_result) {
       setIsVerified(true);
       setIsVerifying(false);
