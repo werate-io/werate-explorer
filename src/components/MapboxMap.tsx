@@ -55,7 +55,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, isLeftSidebarOpen, isRightSideba
   const [starRating, setStarRating] = useState<number | null>(null);
   const [showMyReviews, setShowMyReviews] = useState<boolean>(false);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (selectedReview) {
       setViewState((old) => ({
         ...old,
@@ -72,7 +72,7 @@ const Map: React.FC<IProps> = ({ setDataBounds, isLeftSidebarOpen, isRightSideba
         zoom: 13
       }));
     }
-  }, [selectedReview, setViewState]);
+  }, [selectedReview, setViewState]); */
 
   useEffect(() => {
     const mapInstance = mapRef.current?.getMap();
