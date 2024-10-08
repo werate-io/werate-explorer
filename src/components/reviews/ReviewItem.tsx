@@ -171,7 +171,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
           {review.metadata.images?.length > 0 && (
             <Carousel className="w-full max-w-xs mx-auto mt-4">
               <CarouselContent>
-                {review.images.map((src, index) => (
+                {review.photoUrls.map((src, index) => (
                   <CarouselItem key={index}>
                     <div className="p-1">
                       <img
