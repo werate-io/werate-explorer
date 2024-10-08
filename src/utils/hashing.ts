@@ -19,7 +19,7 @@ export const obfuscateReview = (review: Review): ObfuscatedReview => {
     service_rating: review.categoryRatings.service,
     overall_rating: review.categoryRatings.overall,
     cleanliness_rating: review.categoryRatings.cleanliness,
-    imagesHash: hashData(...review.images),
+    imagesHash: hashData(...review.photoUrls),
     latitude: review.metadata.latitude,
     longitude: review.metadata.longitude,
     country: review.metadata.country
