@@ -35,7 +35,7 @@ export interface Review {
   avatarId: string;
   likeCount: number;
   createdAt: string;
-  images: string[];
+  photoUrls: string[];
   hash: string;
 
   arweave_txn_id: string;
