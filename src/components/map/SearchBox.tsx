@@ -22,7 +22,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddr
 
   // console.log(mockAddresses);
   const [inputValue, setInputValue] = useState(defaultValue);
-  const [suggestions, setSuggestions] = useState<typeof mockAddresses>([]);
+  const [suggestions, setSuggestions] = useState<ReviewAddress[]>([]);
 
   const handleSearch = (value: string) => {
     setInputValue(value);
@@ -30,7 +30,17 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddr
       const filtered = mockAddresses.filter((place) =>
         place.address.toLowerCase().includes(value.toLowerCase())
       );
-      setSuggestions(filtered);
+
+      // Use a Set to filter out duplicates based on the address
+      const uniqueSuggestions = Array.from(new Set(filtered.map((place) => place.address))).map(
+        (address) => filtered.find((place) => place.address === address)
+      );
+
+      setSuggestions(
+        uniqueSuggestions.filter(
+          (suggestion): suggestion is ReviewAddress => suggestion !== undefined
+        )
+      );
     } else {
       setSuggestions([]);
     }
