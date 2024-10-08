@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 import { getCookie, setCookie, deleteCookie } from 'cookies-next';
 import { login, register } from '@/services/auth';
 import { LoginResponse, RegisterResponse } from '@/types/auth';
+import { useWallet } from '@solana/wallet-adapter-react'; // Import the wallet context
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -13,7 +14,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { disconnect } = useWallet(); // Access the wallet disconnect function
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [logoutTimer, setLogoutTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const token = getCookie('authToken');
@@ -27,6 +30,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (data.accessToken) {
       setCookie('authToken', data.accessToken, { path: '/' });
       setIsLoggedIn(true);
+
+      // Set a timer to log out the user after 1 hour
+      const timer = setTimeout(() => {
+        signOut();
+      }, 3600000); // 1 hour in milliseconds
+      setLogoutTimer(timer);
     } else {
       throw new Error('Login failed');
     }
@@ -35,6 +44,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signOut = () => {
     deleteCookie('authToken');
     setIsLoggedIn(false);
+    if (logoutTimer) {
+      clearTimeout(logoutTimer); // Clear the timer if it exists
+    }
+    disconnect(); // Disconnect the wallet
   };
 
   const signUp = async (email: string, password: string): Promise<RegisterResponse> => {
