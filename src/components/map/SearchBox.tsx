@@ -59,7 +59,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onSelectAddr
         type="text"
         value={inputValue}
         onChange={(e) => handleSearch(e.target.value)}
-        placeholder="Search by country code..."
+        placeholder="Search for an address, bohemian, etc."
         className="bg-black/50 shadow-lg rounded-sm text-purple-300 placeholder:text-purple-300 border-t-0 border-r-0 border-l-0 pl-10"
       />
       {/* TODO: add a search icon */}

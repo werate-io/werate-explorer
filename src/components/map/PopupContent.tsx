@@ -42,7 +42,7 @@ const PopupContent = ({ placeId }: { placeId: string }) => {
   const { data: reviewsByPlaceId, isLoading: isReviewsByPlaceIdLoading } =
     useReviewsByPlaceId(placeId);
   // New loading state check
-  if (isReviewsByPlaceIdLoading || isReviewsByPlaceIdLoading) {
+  if (isReviewsByPlaceIdLoading) {
     return (
       <div className="flex justify-center items-center h-full p-4">
         <Loader /> {/* Replace with your spinner component */}
