@@ -24,7 +24,7 @@ import { reviewVerify } from '../../services/ReviewVerify';
 import { MapPin } from 'lucide-react';
 import { useReviewStore } from '@/zustand/store';
 import 'leaflet/dist/leaflet.css';
-import { AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
+import { AvatarFallback } from '@/components/ui/Avatar';
 interface ReviewItemProps {
   review: Review;
 }
