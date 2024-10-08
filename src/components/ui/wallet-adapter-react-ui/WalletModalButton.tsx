@@ -1,3 +1,5 @@
+'use client';
+
 import type { FC, MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 import type { ButtonProps } from './Button';
