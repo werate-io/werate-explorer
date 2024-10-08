@@ -15,7 +15,12 @@ export const WalletListItem: FC<WalletListItemProps> = ({ handleClick, tabIndex,
   return (
     <li>
       <Button onClick={handleClick} startIcon={<WalletIcon wallet={wallet} />} tabIndex={tabIndex}>
-        {wallet.adapter.name}
+        {wallet.adapter.name && typeof wallet.adapter.name === 'string' ? (
+          <span>{wallet.adapter.name}</span>
+        ) : (
+          <span>Unknown Wallet</span>
+        )}
+
         {wallet.readyState === WalletReadyState.Installed ? (
           <span>Detected</span>
         ) : wallet.adapter.name == 'Solflare' ? (

@@ -24,7 +24,7 @@ import { reviewVerify } from '../../services/ReviewVerify';
 import { MapPin } from 'lucide-react';
 import { useReviewStore } from '@/zustand/store';
 import 'leaflet/dist/leaflet.css';
-import { AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
+import { AvatarFallback } from '@/components/ui/Avatar';
 interface ReviewItemProps {
   review: Review;
 }
@@ -111,7 +111,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
       <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
         <Flex gap="2" align="center" className="flex-col sm:flex-row">
           <Avatar className="w-12 h-12 bg-slate-500">
-            <AvatarImage src={review.images[0]} alt="User avatar" />
+            {/* <AvatarImage src={review.images[0]} alt="User avatar" /> */}
             <AvatarFallback>{review?.metadata.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           <Box className="text-center sm:text-left mt-2 sm:mt-0">
@@ -171,7 +171,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
           {review.metadata.images?.length > 0 && (
             <Carousel className="w-full max-w-xs mx-auto mt-4">
               <CarouselContent>
-                {review.images.map((src, index) => (
+                {review.photoUrls.map((src, index) => (
                   <CarouselItem key={index}>
                     <div className="p-1">
                       <img

@@ -166,13 +166,18 @@ export const WalletModal: FC<WalletModalProps> = ({ className = '', container = 
                   Connect a wallet on Solana to continue
                 </h1>
                 <ul className="wallet-adapter-modal-list">
-                  <WalletListItem
-                    key={solflareWallet[0].adapter.name}
-                    handleClick={(event) =>
-                      handleWalletClick(event, solflareWallet[0].adapter.name)
-                    }
-                    wallet={solflareWallet[0]}
-                  />
+                  {solflareWallet &&
+                  solflareWallet.length > 0 &&
+                  solflareWallet[0] &&
+                  solflareWallet[0].adapter ? (
+                    <WalletListItem
+                      key={solflareWallet[0].adapter.name}
+                      handleClick={(event) =>
+                        handleWalletClick(event, solflareWallet[0].adapter.name)
+                      }
+                      wallet={solflareWallet[0]}
+                    />
+                  ) : null}
                   {installedWallets.map((wallet) => (
                     <WalletListItem
                       key={wallet.adapter.name}
