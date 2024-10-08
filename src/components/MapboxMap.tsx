@@ -1,11 +1,11 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactMapGL, { Marker, MapRef, ViewState } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useLocalState } from '@/hooks/useLocalStorage';
 import { SearchBox } from '@/components/map/SearchBox';
 import { FlattenedReviews } from '@/types/review';
-import { MapPinCheckIcon } from 'lucide-react';
+import { MapPinCheckIcon, MapPinIcon } from 'lucide-react';
 import PopupContent from './map/PopupContent';
 import { Dialog, DialogContent } from './ui/DialogShad';
 import { useReviewStore, useUserStore } from '@/zustand/store';
@@ -21,6 +21,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import mapboxgl from 'mapbox-gl';
 import Navbar from './Navbar';
+import Supercluster, { AnyProps, PointFeature } from 'supercluster';
 
 interface IProps {
   setDataBounds: (bounds: string) => void;
@@ -28,17 +29,13 @@ interface IProps {
   isLeftSidebarOpen: boolean;
   isRightSidebarOpen: boolean;
 }
-const Map: React.FC<IProps> = ({
-  setDataBounds,
-  highlightedId,
-  isLeftSidebarOpen,
-  isRightSidebarOpen
-}) => {
+const Map: React.FC<IProps> = ({ setDataBounds, isLeftSidebarOpen, isRightSidebarOpen }) => {
   const { isLoading, data: totalReviews } = useOverallReviews();
-  const { selectedReview } = useReviewStore();
+  const { selectedReview, setSelectedReview } = useReviewStore();
   const { playerId } = useUserStore();
-  const mapRef = useRef<MapRef | null>(null);
+  const mapRef = useRef<MapRef>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [viewState, setViewState] = useLocalState<ViewState>('viewState', {
     latitude: 50.8503,
     longitude: 4.3517,
@@ -104,14 +101,13 @@ const Map: React.FC<IProps> = ({
   };
 
   // Filter reviews based on selected filters
-  const filteredReviews = totalReviews?.filter((review: FlattenedReviews) => {
-    /* if (venueType && review.placeCategory !== venueType) return false; */
-    // Updated logic to handle decimal ratings
-    if (starRating && review.overall_rating < starRating) return false;
-    // Updated logic to check against globally stored playerId
-    if (showMyReviews && review.userId !== playerId) return false; // Assuming globalPlayerId is defined
-    return true;
-  });
+  const filteredReviews = useMemo(() => {
+    return totalReviews?.filter((review: FlattenedReviews) => {
+      if (starRating && review.overall_rating < starRating) return false;
+      if (showMyReviews && review.userId !== playerId) return false;
+      return true;
+    });
+  }, [totalReviews, starRating, showMyReviews, playerId]);
 
   // Function to handle filter changes
   const applyFilters = () => {
@@ -136,6 +132,118 @@ const Map: React.FC<IProps> = ({
     setStarRating(null); // Reset star rating
     setShowMyReviews(false); // Reset show my reviews
   };
+
+  useEffect(() => {
+    // Fetching or loading map data here
+    if (filteredReviews) {
+      setLoading(false); // Data is ready, stop loading
+    }
+  }, [filteredReviews]);
+
+  // Create a memoized supercluster instance
+
+  // Get clusters based on zoom and bounds
+  const cluster = useMemo(() => {
+    if (!filteredReviews || filteredReviews.length === 0) return null; // safeguard for empty reviews
+
+    const supercluster = new Supercluster({
+      radius: 40, // pixel radius for clustering
+      maxZoom: 16 // max zoom to cluster points
+    });
+
+    const points: GeoJSON.Feature[] = filteredReviews.map((review) => ({
+      // Specify the type for points
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [review.longitude, review.latitude]
+      },
+      properties: {
+        ...review
+      }
+    }));
+
+    const pointFeatures = points.filter(
+      (point): point is PointFeature<AnyProps> => point.geometry.type === 'Point'
+    );
+    supercluster.load(pointFeatures);
+    return supercluster;
+  }, [filteredReviews]);
+
+  const getClusters = useCallback(() => {
+    if (!cluster || !mapRef.current) return []; // safeguard for undefined cluster or mapRef
+
+    const bounds = mapRef.current?.getMap()?.getBounds();
+    if (!bounds) return [];
+
+    const zoom = Math.floor(viewState.zoom); // Ensure zoom is properly calculated
+    const formattedBbox: [number, number, number, number] = [
+      bounds.getWest(),
+      bounds.getSouth(),
+      bounds.getEast(),
+      bounds.getNorth()
+    ];
+
+    return cluster.getClusters(formattedBbox, zoom); // Use the correct bbox format
+  }, [viewState, cluster]);
+
+  const clusters = useMemo(() => getClusters(), [viewState, getClusters]);
+
+  // Memoized rendering for markers
+  const renderMarkers = useCallback(() => {
+    if (!clusters) return null; // Check if clusters is undefined
+    return clusters.map((clusterData) => {
+      const [longitude, latitude] = clusterData.geometry.coordinates;
+      const { cluster: isCluster, point_count: pointCount } = clusterData.properties;
+
+      if (isCluster) {
+        return (
+          <Marker key={`cluster-${clusterData.id}`} latitude={latitude} longitude={longitude}>
+            <div
+              className="relative flex items-center justify-center text-white font-bold"
+              style={{
+                cursor: 'pointer',
+                width: `${30 + (pointCount / (filteredReviews?.length || 1)) * 5}px`
+              }}
+              onClick={() => {
+                const expansionZoom = cluster
+                  ? Math.min(cluster.getClusterExpansionZoom(clusterData.id as number) ?? 16, 16)
+                  : 16; // Default value if cluster is null
+                setViewState({
+                  ...viewState,
+                  latitude,
+                  longitude,
+                  zoom: expansionZoom
+                });
+              }}>
+              {/* Map pin icon with a number inside it */}
+              <MapPinIcon
+                className="text-green-600"
+                style={{
+                  fontSize: `${30 + (pointCount / (filteredReviews?.length || 1)) * 5}px`,
+                  position: 'relative'
+                }}
+              />
+              {/* Display point count number in the middle */}
+              <span className="absolute text-white text-sm">{pointCount}</span>
+            </div>
+          </Marker>
+        );
+      } else {
+        return (
+          <Marker key={clusterData.properties.reviewId} latitude={latitude} longitude={longitude}>
+            <button
+              onClick={() => {
+                setIsDialogOpen(true);
+                setSelectedReview(clusterData.properties as FlattenedReviews); // Type assertion
+              }}>
+              <MapPinCheckIcon className="text-green-600" />
+            </button>
+          </Marker>
+        );
+      }
+    });
+  }, [clusters, filteredReviews, viewState, cluster]);
 
   return (
     <div className="relative min-w-[100%] h-screen flex-1 flex-grow ">
@@ -176,8 +284,13 @@ const Map: React.FC<IProps> = ({
           </div>
           <Navbar />
         </div>
-
-        {!isLoading &&
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black opacity-75">
+            <div className="text-white text-lg">Loading...</div>
+          </div>
+        )}
+        {!isLoading && renderMarkers()}
+        {/* {!isLoading &&
           filteredReviews &&
           filteredReviews.map((review: FlattenedReviews) => (
             <Marker
@@ -196,7 +309,7 @@ const Map: React.FC<IProps> = ({
                 )}
               </button>
             </Marker>
-          ))}
+          ))} */}
 
         {selectedReview && selectedReview?.placeId && (
           <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(false)}>
