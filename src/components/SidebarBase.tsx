@@ -35,7 +35,7 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
   return (
     <motion.div
       className={`h-full bg-white/80 backdrop-blur-sm text-slate-800 shadow-lg relative pointer-events-auto ${
-        side === 'left' ? 'left-0' : 'right-0'
+        side === 'left' ? '-left-0' : 'right-0'
       } max-w-[600px] w-full`}
       variants={sidebarVariants}
       animate={isOpen ? 'open' : 'closed'}
@@ -49,6 +49,7 @@ export default function SidebarBase({ isOpen, setIsOpen, side, children }: Sideb
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}>
+        {/* Increased z-index for overlay */}
         {!isOpen ? (
           <SidebarIcon className="w-6 h-6 text-primary" />
         ) : side === 'left' ? (

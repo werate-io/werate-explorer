@@ -150,7 +150,7 @@ const Map: React.FC<IProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          zIndex: 50,
+          zIndex: 40,
           display: 'flex',
           flex: 1,
           flexGrow: 'inherit'
