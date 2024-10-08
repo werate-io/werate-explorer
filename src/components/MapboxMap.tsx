@@ -7,9 +7,10 @@ import { SearchBox } from '@/components/map/SearchBox';
 import { FlattenedReviews } from '@/types/review';
 import { MapPinCheckIcon, MapPinIcon } from 'lucide-react';
 import PopupContent from './map/PopupContent';
-import { Dialog, DialogContent } from './ui/DialogShad';
+import { Dialog, DialogContent, DialogTitle } from './ui/DialogShad';
 import { useReviewStore, useUserStore } from '@/zustand/store';
 import { useOverallReviews } from '@/hooks/useOverallReviews';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 import {
   Select,
@@ -313,6 +314,9 @@ const Map: React.FC<IProps> = ({ setDataBounds, isLeftSidebarOpen, isRightSideba
 
         {selectedReview && selectedReview?.placeId && (
           <Dialog open={isDialogOpen} onOpenChange={() => setIsDialogOpen(false)}>
+            <VisuallyHidden>
+              <DialogTitle>Review Details</DialogTitle>
+            </VisuallyHidden>
             <DialogContent className="p-0">
               <PopupContent placeId={selectedReview.placeId} />
             </DialogContent>
