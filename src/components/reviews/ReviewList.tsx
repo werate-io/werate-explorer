@@ -25,7 +25,7 @@ const ReviewsList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1); // Moved outside the conditional
 
   const skip = useMemo(() => (currentPage - 1) * TAKE, [currentPage]);
-  const { reviews, totalReviews, isLoading, error } = useUserReviews(skip, TAKE);
+  const { reviews, totalReviews, loading: isLoading, error } = useUserReviews(skip, TAKE);
   const totalPages = useMemo(() => Math.ceil(totalReviews / TAKE), [totalReviews]);
 
   useEffect(() => {

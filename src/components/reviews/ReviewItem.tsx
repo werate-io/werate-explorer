@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { FlattenedReviews, Review } from '@/types/review';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/Card';
-import { Avatar } from '@/components/ui/Avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/Avatar';
 import { Flex } from '@/components/ui/Flex';
 import { Box } from '@/components/ui/Box';
 import { Button } from '@/components/ui/Button';
@@ -24,7 +24,6 @@ import { reviewVerify } from '../../services/ReviewVerify';
 import { MapPin } from 'lucide-react';
 import { useReviewStore } from '@/zustand/store';
 import 'leaflet/dist/leaflet.css';
-import { AvatarFallback } from '@/components/ui/Avatar';
 interface ReviewItemProps {
   review: Review;
 }
@@ -111,7 +110,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
       <Flex gap="3" align="center" justify="between" className="flex-col sm:flex-row">
         <Flex gap="2" align="center" className="flex-col sm:flex-row">
           <Avatar className="w-12 h-12 bg-slate-500">
-            {/* <AvatarImage src={review.images[0]} alt="User avatar" /> */}
+            <AvatarImage src={review.metadata.images[0]} alt="User avatar" />
             <AvatarFallback>{review?.metadata.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           <Box className="text-center sm:text-left mt-2 sm:mt-0">
@@ -171,7 +170,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
           {review.metadata.images?.length > 0 && (
             <Carousel className="w-full max-w-xs mx-auto mt-4">
               <CarouselContent>
-                {review.photoUrls.map((src, index) => (
+                {review.metadata.images.map((src, index) => (
                   <CarouselItem key={index}>
                     <div className="p-1">
                       <img
