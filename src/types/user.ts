@@ -9,7 +9,8 @@ export interface Profile {
   uniqueVisitsCount: number;
   avatarCount: number;
   watEarnedAmount: number;
-  overallRating: number;
+  averageRating: number;
+  totalUniqueCountries: number;
 }
 
 export interface ProfileMe {

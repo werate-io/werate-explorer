@@ -109,9 +109,17 @@ export default function ProfileWithStats() {
           </Card>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <StatCard title="Reviews" value={profile?.reviewCount ?? 0} icon={StarIcon} />
-            <StatCard title="Venues" value={profile?.avatarCount ?? 0} icon={MapPinIcon} />
-            <StatCard title="Countries" value={profile?.uniqueVisitsCount ?? 0} icon={GlobeIcon} />
-            <StatCard title="Avg Rating" value={profile?.overallRating ?? 0} icon={StarIcon} />
+            <StatCard title="Venues" value={profile?.uniqueVisitsCount ?? 0} icon={MapPinIcon} />
+            <StatCard
+              title="Countries"
+              value={profile?.totalUniqueCountries ?? 0}
+              icon={GlobeIcon}
+            />
+            <StatCard
+              title="Avg Rating"
+              value={Number((profile?.averageRating ?? 0).toFixed(2))}
+              icon={StarIcon}
+            />
           </div>
         </>
       )}
